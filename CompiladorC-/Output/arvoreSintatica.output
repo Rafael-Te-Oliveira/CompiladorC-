@@ -1,0 +1,378 @@
+	1: Reserved Word: int
+	1: ID: vet
+	1: [
+	1: Number: 10
+	1: ]
+	1: ;
+	3: Reserved Word: int
+	3: ID: minloc
+	3: (
+	3: Reserved Word: int
+	3: ID: a
+	3: [
+	3: ]
+	3: ,
+	3: Reserved Word: int
+	3: ID: low
+	3: ,
+	3: Reserved Word: int
+	3: ID: high
+	3: )
+	4: {
+	4: Reserved Word: int
+	4: ID: i
+	4: ;
+	4: Reserved Word: int
+	4: ID: x
+	4: ;
+	4: Reserved Word: int
+	4: ID: k
+	4: ;
+	5: ID: k
+	5: Symbol: =
+	5: ID: low
+	5: ;
+	6: ID: x
+	6: Symbol: =
+	6: ID: a
+	6: [
+	6: ID: low
+	6: ]
+	6: ;
+	7: ID: i
+	7: Symbol: =
+	7: ID: low
+	7: +
+	7: Number: 1
+	7: ;
+	8: Reserved Word: while
+	8: (
+	8: ID: i
+	8: <
+	8: ID: high
+	8: )
+	8: {
+	9: Reserved Word: if
+	9: (
+	9: ID: a
+	9: [
+	9: ID: i
+	9: ]
+	9: <
+	9: ID: x
+	9: )
+	9: {
+	10: ID: x
+	10: Symbol: =
+	10: ID: a
+	10: [
+	10: ID: i
+	10: ]
+	10: ;
+	11: ID: k
+	11: Symbol: =
+	11: ID: i
+	11: ;
+	12: }
+	13: ID: i
+	13: Symbol: =
+	13: ID: i
+	13: +
+	13: Number: 1
+	13: ;
+	14: }
+	15: Reserved Word: return
+	15: ID: k
+	15: ;
+	16: }
+	18: Reserved Word: void
+	18: ID: sort
+	18: (
+	18: Reserved Word: int
+	18: ID: a
+	18: [
+	18: ]
+	18: ,
+	18: Reserved Word: int
+	18: ID: low
+	18: ,
+	18: Reserved Word: int
+	18: ID: high
+	18: )
+	19: {
+	19: Reserved Word: int
+	19: ID: i
+	19: ;
+	19: Reserved Word: int
+	19: ID: k
+	19: ;
+	20: ID: i
+	20: Symbol: =
+	20: ID: low
+	20: ;
+	21: Reserved Word: while
+	21: (
+	21: ID: i
+	21: <
+	21: ID: high
+	21: -
+	21: Number: 1
+	21: )
+	21: {
+	22: Reserved Word: int
+	22: ID: t
+	22: ;
+	23: ID: k
+	23: Symbol: =
+	23: ID: minloc
+	23: (
+	23: ID: a
+	23: ,
+	23: ID: i
+	23: ,
+	23: ID: high
+	23: )
+	23: ;
+	24: ID: t
+	24: Symbol: =
+	24: ID: a
+	24: [
+	24: ID: k
+	24: ]
+	24: ;
+	25: ID: a
+	25: [
+	25: ID: k
+	25: ]
+	25: Symbol: =
+	25: ID: a
+	25: [
+	25: ID: i
+	25: ]
+	25: ;
+	26: ID: a
+	26: [
+	26: ID: i
+	26: ]
+	26: Symbol: =
+	26: ID: t
+	26: ;
+	27: ID: i
+	27: Symbol: =
+	27: ID: i
+	27: +
+	27: Number: 1
+	27: ;
+	28: }
+	29: }
+	31: Reserved Word: void
+	31: ID: main
+	31: (
+	31: Reserved Word: void
+	31: )
+	32: {
+	33: Reserved Word: int
+	33: ID: i
+	33: ;
+	34: ID: i
+	34: Symbol: =
+	34: Number: 0
+	34: ;
+	35: Reserved Word: while
+	35: (
+	35: ID: i
+	35: <
+	35: Number: 10
+	35: )
+	35: {
+	36: ID: vet
+	36: [
+	36: ID: i
+	36: ]
+	36: Symbol: =
+	36: ID: input
+	36: (
+	36: )
+	36: ;
+	37: ID: i
+	37: Symbol: =
+	37: ID: i
+	37: +
+	37: Number: 1
+	37: ;
+	38: }
+	39: ID: sort
+	39: (
+	39: ID: vet
+	39: ,
+	39: Number: 0
+	39: ,
+	39: Number: 10
+	39: )
+	39: ;
+	40: ID: i
+	40: Symbol: =
+	40: Number: 0
+	40: ;
+	41: Reserved Word: while
+	41: (
+	41: ID: i
+	41: <
+	41: Number: 10
+	41: )
+	41: {
+	42: ID: output
+	42: (
+	42: ID: vet
+	42: [
+	42: ID: i
+	42: ]
+	42: )
+	42: ;
+	43: ID: i
+	43: Symbol: =
+	43: ID: i
+	43: +
+	43: Number: 1
+	43: ;
+	44: }
+	45: }
+	46: EOF
+Type integer
+  Variable vet
+Type integer
+  Function minloc
+    Type integer
+      Variable a
+    Type integer
+      Variable low
+    Type integer
+      Variable high
+    Type integer
+      Variable i
+    Type integer
+      Variable x
+    Type integer
+      Variable k
+    Assign
+      Id: k
+      Id: low
+    Assign
+      Id: x
+      Vector: a
+        Id: low
+    Assign
+      Id: i
+      Operation: +
+        Id: low
+        Constant: 1
+    While
+      Operation: <
+        Id: i
+        Id: high
+      If
+        Operation: <
+          Vector: a
+            Id: i
+          Id: x
+        Assign
+          Id: x
+          Vector: a
+            Id: i
+        Assign
+          Id: k
+          Id: i
+      Assign
+        Id: i
+        Operation: +
+          Id: i
+          Constant: 1
+    Return
+      Id: k
+Type void
+  Function sort
+    Type integer
+      Variable a
+    Type integer
+      Variable low
+    Type integer
+      Variable high
+    Type integer
+      Variable i
+    Type integer
+      Variable k
+    Assign
+      Id: i
+      Id: low
+    While
+      Operation: <
+        Id: i
+        Operation: -
+          Id: high
+          Constant: 1
+      Type integer
+        Variable t
+      Assign
+        Id: k
+        Call to Function minloc 
+          Id: a
+          Id: i
+          Id: high
+      Assign
+        Id: t
+        Vector: a
+          Id: k
+      Assign
+        Vector: a
+          Id: k
+        Vector: a
+          Id: i
+      Assign
+        Vector: a
+          Id: i
+        Id: t
+      Assign
+        Id: i
+        Operation: +
+          Id: i
+          Constant: 1
+Type void
+  Function main
+    Type void
+    Type integer
+      Variable i
+    Assign
+      Id: i
+      Constant: 0
+    While
+      Operation: <
+        Id: i
+        Constant: 10
+      Assign
+        Vector: vet
+          Id: i
+        Call to Function input 
+      Assign
+        Id: i
+        Operation: +
+          Id: i
+          Constant: 1
+    Call to Function sort 
+      Id: vet
+      Constant: 0
+      Constant: 10
+    Assign
+      Id: i
+      Constant: 0
+    While
+      Operation: <
+        Id: i
+        Constant: 10
+      Call to Function output 
+        Vector: vet
+          Id: i
+      Assign
+        Id: i
+        Operation: +
+          Id: i
+          Constant: 1

@@ -11,17 +11,13 @@ int lineno = 0;
 FILE *source;
 FILE *listing;
 FILE *code;
-
-/* Flags */
-int EchoSource = FALSE;
-int TraceScan = TRUE;
-int TraceParse = TRUE;
-int TraceAnalyze = TRUE;
-int TraceCode = FALSE;
+FILE * arvSin;
+FILE * tabSim;
 
 int Error = FALSE;
 
-main(int argc, char *argv[])
+
+int main(int argc, char *argv[])
 {
     TreeNode *syntaxTree;
     char pgm[120];
@@ -39,36 +35,31 @@ main(int argc, char *argv[])
         fprintf(stderr, "Arquivo %s não encontrado\n", pgm);
         exit(1);
     }
+
+
     listing = stdout;
-    fprintf(listing, "\nINICIANDO COMPILAÇÃO: %s\n", pgm);
-#if NO_PARSE
-    while (getToken() != ENDFILE);
-#else
+    arvSin = fopen("Output/arvoreSintatica.output", "w+");
+    tabSim = fopen("Output/tabelaSimbolos.output", "w+");
+
+    printf("\nINICIANDO COMPILAÇÃO: %s\n", pgm);
     syntaxTree = parse();
-    if (TraceParse)
-    {
-        fprintf(listing, "\nÁrvore sintática:\n");
-        printTree(syntaxTree);
-    }
-#if !NO_ANALYZE
+    fprintf(listing, "\nGerando arvore sintática...\n");
+    printTree(syntaxTree);
+    
     if (!Error)
     {
         QuadList quadList;
         
-        fprintf(listing, "\nTabela de símbolos:\n");
+        fprintf(listing, "\nGerando tabela de símbolos...\n");
         buildSymtab(syntaxTree);
-
-        fprintf(listing, "\nInício da verificação semântica\n");
         typeCheck(syntaxTree);
-        fprintf(listing, "\nVerificação semântica concluída\n");
 
-        printf("\nGeração de Codigo Intermediario.\n");
+        printf("\nGerando Codigo Intermediario...\n");
         quadList = codeGen(syntaxTree);
-        printf("\nCodigo Intermediario gerado.\n");
     }
 
-#endif
-#endif
     fclose(source);
+    fclose(tabSim);
+    fclose(arvSin);
     return 0;
 }

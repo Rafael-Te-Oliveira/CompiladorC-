@@ -1726,15 +1726,12 @@ TokenType getToken(void)
         firstTime = FALSE;
         lineno++;
         yyin = source;
-        yyout = listing;
+        yyout = arvSin;
       }
       currentToken = yylex();
       strncpy(tokenString,yytext,MAXTOKENLEN);
-      if (TraceScan) 
-      {
-        fprintf(listing,"\t%d: ",lineno);
-        printToken(currentToken,tokenString);
-      }
+      fprintf(arvSin,"\t%d: ",lineno);
+      printToken(currentToken,tokenString);
       if(currentToken == ERROR){
         printf("\nERRO LÉXICO: ");
         printTokenForError(currentToken,tokenString);

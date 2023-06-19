@@ -105,24 +105,24 @@ char* statementFinderType (char* name, char* scope)
 
 
 
-void printSymTab(FILE * listing)
+void printSymTab(FILE * tabSim)
 { int i;
-  fprintf(listing,"NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS\n");
-  fprintf(listing,"--------      ------------     ------------    ------------      ------------\n");
+  fprintf(tabSim,"NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS\n");
+  fprintf(tabSim,"--------      ------------     ------------    ------------      ------------\n");
   for (i=0;i<SIZE;++i)
   { if (hashTable[i] != NULL)
     { BucketList l = hashTable[i];
       while (l != NULL)
       { LineList t = l->lines;
-        fprintf(listing,"%-14s  ",l->name);
-		fprintf(listing,"%-14s  ",l->scope);
-        fprintf(listing,"%-14s  ",l->typeID);
-		fprintf(listing,"%-14s  ",l->typeData);	
+        fprintf(tabSim,"%-14s  ",l->name);
+		fprintf(tabSim,"%-14s  ",l->scope);
+        fprintf(tabSim,"%-14s  ",l->typeID);
+		fprintf(tabSim,"%-14s  ",l->typeData);	
         while (t != NULL)
-        { fprintf(listing,"%4d ",t->lineno);
+        { fprintf(tabSim,"%4d ",t->lineno);
           t = t->next;
         }
-        fprintf(listing,"\n");
+        fprintf(tabSim,"\n");
         l = l->next;
       }
     }

@@ -163,12 +163,8 @@ void buildSymtab(TreeNode *syntaxTree)// Cria tabela de simbolos
         printf("ERRO SEMÂNTICO: main()\n");
         Error = TRUE;
     }
-
-    if (TraceAnalyze)
-    {
-        fprintf(listing, "\nTabela de Símbolos:\n");
-        printSymTab(listing);
-    }
+    fprintf(tabSim, "\nTabela de Símbolos:\n");
+    printSymTab(tabSim);
 }
 
 static void checkNode(TreeNode *t) // Checa tipos

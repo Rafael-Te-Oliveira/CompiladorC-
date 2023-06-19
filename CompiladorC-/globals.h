@@ -1,6 +1,3 @@
-#ifndef _GLOBALS_H_
-#define _GLOBALS_H_
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -27,9 +24,11 @@
 extern FILE* source; 
 extern FILE* listing; 
 extern FILE* code; 
+extern FILE* arvSin;
+extern FILE* tabSim;
+
 
 extern int lineno; 
-
 
 typedef int TokenType;
 
@@ -86,16 +85,5 @@ typedef struct treeNode
      ExpressionType type;
 } TreeNode;
 
-
-extern int EchoSource;
-
-extern int TraceScan;
-
-extern int TraceParse;
-
-extern int TraceAnalyze;
-
-extern int TraceCode;
-
 extern int Error; 
-#endif
+

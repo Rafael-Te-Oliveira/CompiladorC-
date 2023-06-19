@@ -1,0 +1,28 @@
+
+Tabela de Símbolos:
+NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS
+--------      ------------     ------------    ------------      ------------
+a               minloc          variable        integer            3    6    9   10 
+low             minloc          variable        integer            3    5    6    7 
+vet             global          variable        integer            1 
+x               minloc          variable        integer            4    6    9   10 
+main            global          function        void              31 
+low             sort            variable        integer           18   20 
+input           main            call            -                 36 
+high            sort            variable        integer           18   21   23 
+output          global          função        inteiro            0 
+k               sort            variable        integer           19   23   24   25 
+a               sort            variable        integer           18   23   24   25   25   26 
+vet             main            vector          integer           36   39   42 
+input           global          função        inteiro            0 
+sort            global          function        void              18 
+t               sort            variable        integer           22   24   26 
+k               minloc          variable        integer            4    5   11   15 
+high            minloc          variable        integer            3    8 
+i               main            variable        integer           33   34   35   36   37   37   40   41   42   43   43 
+minloc          sort            call            -                 23 
+minloc          global          function        integer            3 
+sort            main            call            -                 39 
+output          main            call            -                 42 
+i               minloc          variable        integer            4    7    8    9   10   11   13   13 
+i               sort            variable        integer           19   20   21   23   25   26   27   27 

@@ -6,94 +6,94 @@ void printToken(TokenType token, const char *tokenString)
   switch (token)
   {
   case IF:
-    fprintf(listing, "Reserved Word: %s\n", tokenString);
+    fprintf(arvSin, "Reserved Word: %s\n", tokenString);
     break;
   case ELSE:
-    fprintf(listing, "Reserved Word: %s\n", tokenString);
+    fprintf(arvSin, "Reserved Word: %s\n", tokenString);
     break;
   case INT:
-    fprintf(listing, "Reserved Word: %s\n", tokenString);
+    fprintf(arvSin, "Reserved Word: %s\n", tokenString);
     break;
   case RETURN:
-    fprintf(listing, "Reserved Word: %s\n", tokenString);
+    fprintf(arvSin, "Reserved Word: %s\n", tokenString);
     break;
   case VOID:
-    fprintf(listing, "Reserved Word: %s\n", tokenString);
+    fprintf(arvSin, "Reserved Word: %s\n", tokenString);
     break;
   case WHILE:
-    fprintf(listing, "Reserved Word: %s\n", tokenString);
+    fprintf(arvSin, "Reserved Word: %s\n", tokenString);
     break;
   case ASSIGN:
-    fprintf(listing, "Symbol: =\n");
+    fprintf(arvSin, "Symbol: =\n");
     break;
   case LESS_THAN:
-    fprintf(listing, "<\n");
+    fprintf(arvSin, "<\n");
     break;
   case EQ:
-    fprintf(listing, "==\n");
+    fprintf(arvSin, "==\n");
     break;
   case GREATER_THAN:
-    fprintf(listing, ">\n");
+    fprintf(arvSin, ">\n");
     break;
   case LESS_THAN_EQUAL:
-    fprintf(listing, "<=\n");
+    fprintf(arvSin, "<=\n");
     break;
   case GREATER_THAN_EQUAL:
-    fprintf(listing, ">=\n");
+    fprintf(arvSin, ">=\n");
     break;
   case NOT_EQUAL:
-    fprintf(listing, "!=\n");
+    fprintf(arvSin, "!=\n");
     break;
   case OPEN_BRACKET:
-    fprintf(listing, "[\n");
+    fprintf(arvSin, "[\n");
     break;
   case CLOSE_BRACKET:
-    fprintf(listing, "]\n");
+    fprintf(arvSin, "]\n");
     break;
   case OPEN_KEYS:
-    fprintf(listing, "{\n");
+    fprintf(arvSin, "{\n");
     break;
   case CLOSE_KEYS:
-    fprintf(listing, "}\n");
+    fprintf(arvSin, "}\n");
     break;
   case OPEN_PARENTHESES:
-    fprintf(listing, "(\n");
+    fprintf(arvSin, "(\n");
     break;
   case CLOSE_PARENTHESES:
-    fprintf(listing, ")\n");
+    fprintf(arvSin, ")\n");
     break;
   case SEMICOLON:
-    fprintf(listing, ";\n");
+    fprintf(arvSin, ";\n");
     break;
   case COMMA:
-    fprintf(listing, ",\n");
+    fprintf(arvSin, ",\n");
     break;
   case SUM:
-    fprintf(listing, "+\n");
+    fprintf(arvSin, "+\n");
     break;
   case SUBTRACT:
-    fprintf(listing, "-\n");
+    fprintf(arvSin, "-\n");
     break;
   case MULTIPLY:
-    fprintf(listing, "*\n");
+    fprintf(arvSin, "*\n");
     break;
   case DIVIDE:
-    fprintf(listing, "/\n");
+    fprintf(arvSin, "/\n");
     break;
   case ENDFILE:
-    fprintf(listing, "EOF\n");
+    fprintf(arvSin, "EOF\n");
     break;
   case NUM:
-    fprintf(listing, "Number: %s\n", tokenString);
+    fprintf(arvSin, "Number: %s\n", tokenString);
     break;
   case ID:
-    fprintf(listing, "ID: %s\n", tokenString);
+    fprintf(arvSin, "ID: %s\n", tokenString);
     break;
   case ERROR:
-    fprintf(listing, "ERROR: %s\n", tokenString);
+    fprintf(arvSin, "ERROR: %s\n", tokenString);
     break;
   default:
-    fprintf(listing, "Unknown token: %d\n", token);
+    fprintf(arvSin, "Unknown token: %d\n", token);
   }
 }
 
@@ -102,94 +102,94 @@ void printTokenForError(TokenType token, const char *tokenString)
   switch (token)
   {
   case IF:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case ELSE:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case INT:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case RETURN:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case VOID:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case WHILE:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case ASSIGN:
-    fprintf(listing, "=");
+    fprintf(arvSin, "=");
     break;
   case LESS_THAN:
-    fprintf(listing, "<");
+    fprintf(arvSin, "<");
     break;
   case EQ:
-    fprintf(listing, "==");
+    fprintf(arvSin, "==");
     break;
   case GREATER_THAN:
-    fprintf(listing, ">");
+    fprintf(arvSin, ">");
     break;
   case LESS_THAN_EQUAL:
-    fprintf(listing, "<=");
+    fprintf(arvSin, "<=");
     break;
   case GREATER_THAN_EQUAL:
-    fprintf(listing, ">=");
+    fprintf(arvSin, ">=");
     break;
   case NOT_EQUAL:
-    fprintf(listing, "!=");
+    fprintf(arvSin, "!=");
     break;
   case OPEN_BRACKET:
-    fprintf(listing, "[");
+    fprintf(arvSin, "[");
     break;
   case CLOSE_BRACKET:
-    fprintf(listing, "]");
+    fprintf(arvSin, "]");
     break;
   case OPEN_KEYS:
-    fprintf(listing, "{");
+    fprintf(arvSin, "{");
     break;
   case CLOSE_KEYS:
-    fprintf(listing, "}");
+    fprintf(arvSin, "}");
     break;
   case OPEN_PARENTHESES:
-    fprintf(listing, "(");
+    fprintf(arvSin, "(");
     break;
   case CLOSE_PARENTHESES:
-    fprintf(listing, ")");
+    fprintf(arvSin, ")");
     break;
   case SEMICOLON:
-    fprintf(listing, ";");
+    fprintf(arvSin, ";");
     break;
   case COMMA:
-    fprintf(listing, ",");
+    fprintf(arvSin, ",");
     break;
   case SUM:
-    fprintf(listing, "+");
+    fprintf(arvSin, "+");
     break;
   case SUBTRACT:
-    fprintf(listing, "-");
+    fprintf(arvSin, "-");
     break;
   case MULTIPLY:
-    fprintf(listing, "*");
+    fprintf(arvSin, "*");
     break;
   case DIVIDE:
-    fprintf(listing, "/");
+    fprintf(arvSin, "/");
     break;
   case ENDFILE:
-    fprintf(listing, "EOF");
+    fprintf(arvSin, "EOF");
     break;
   case NUM:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case ID:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   case ERROR:
-    fprintf(listing, "%s", tokenString);
+    fprintf(arvSin, "%s", tokenString);
     break;
   default:
-    fprintf(listing, "%d", token);
+    fprintf(arvSin, "%d", token);
   }
 }
 
@@ -212,7 +212,7 @@ TreeNode *newStmtNode(StatementKind kind)
   TreeNode *t = (TreeNode *)malloc(sizeof(TreeNode));
   int i;
   if (t == NULL)
-    fprintf(listing, "Out of memory error at line %d\n", lineno);
+    fprintf(arvSin, "Out of memory error at line %d\n", lineno);
   else
   {
     for (i = 0; i < MAXCHILDREN; i++)
@@ -231,7 +231,7 @@ TreeNode *newExpNode(ExpressionIdentifier kind)
   TreeNode *t = (TreeNode *)malloc(sizeof(TreeNode));
   int i;
   if (t == NULL)
-    fprintf(listing, "Out of memory error at line %d\n", lineno);
+    fprintf(arvSin, "Out of memory error at line %d\n", lineno);
   else
   {
     for (i = 0; i < MAXCHILDREN; i++)
@@ -255,13 +255,13 @@ char *copyString(char *s)
   n = strlen(s) + 1;
   t = malloc(n);
   if (t == NULL)
-    fprintf(listing, "Out of memory error at line %d\n", lineno);
+    fprintf(arvSin, "Out of memory error at line %d\n", lineno);
   else
     strcpy(t, s);
   return t;
 }
 
-static indentno = 0;
+static int indentno = 0;
 static int primeiraLinha = 0;
 
 #define INDENT indentno += 2
@@ -271,7 +271,7 @@ static void printSpaces(void)
 {
   int i;
   for (i = 0; i < indentno; i++)
-    fprintf(listing, " ");
+    fprintf(arvSin, " ");
 }
 
 void printTree(TreeNode *tree)
@@ -289,29 +289,29 @@ void printTree(TreeNode *tree)
       switch (tree->kind.stmt)
       {
       case ifK:
-        fprintf(listing, "If\n");
+        fprintf(arvSin, "If\n");
         break;
       case assignK:
-        fprintf(listing, "Assign\n");
+        fprintf(arvSin, "Assign\n");
         break;
       case whileK:
-        fprintf(listing, "While\n");
+        fprintf(arvSin, "While\n");
         break;
       case variableK:
-        fprintf(listing, "Variable %s\n", tree->attr.name);
+        fprintf(arvSin, "Variable %s\n", tree->attr.name);
         break;
       case functionK:
-        fprintf(listing, "Function %s\n", tree->attr.name);
+        fprintf(arvSin, "Function %s\n", tree->attr.name);
         break;
       case callK:
-        fprintf(listing, "Call to Function %s \n", tree->attr.name);
+        fprintf(arvSin, "Call to Function %s \n", tree->attr.name);
         break;
       case returnK:
-        fprintf(listing, "Return\n");
+        fprintf(arvSin, "Return\n");
         break;
 
       default:
-        fprintf(listing, "Unknown ExpNode kind\n");
+        fprintf(arvSin, "Unknown ExpNode kind\n");
         break;
       }
     }
@@ -320,32 +320,32 @@ void printTree(TreeNode *tree)
       switch (tree->kind.exp)
       {
       case operationK:
-        fprintf(listing, "Operation: ");
+        fprintf(arvSin, "Operation: ");
         printToken(tree->attr.op, "\0");
         break;
       case constantK:
-        fprintf(listing, "Constant: %d\n", tree->attr.val);
+        fprintf(arvSin, "Constant: %d\n", tree->attr.val);
         break;
       case idK:
-        fprintf(listing, "Id: %s\n", tree->attr.name);
+        fprintf(arvSin, "Id: %s\n", tree->attr.name);
         break;
       case vectorK:
-        fprintf(listing, "Vector: %s\n", tree->attr.name);
+        fprintf(arvSin, "Vector: %s\n", tree->attr.name);
         break;
       case vectorIdK:
-        fprintf(listing, "Index [%d]\n", tree->attr.val);
+        fprintf(arvSin, "Index [%d]\n", tree->attr.val);
         break;
       case typeK:
-        fprintf(listing, "Type %s\n", tree->attr.name);
+        fprintf(arvSin, "Type %s\n", tree->attr.name);
         break;
 
       default:
-        fprintf(listing, "Unknown ExpNode kind\n");
+        fprintf(arvSin, "Unknown ExpNode kind\n");
         break;
       }
     }
     else
-      fprintf(listing, "Unknown node kind\n");
+      fprintf(arvSin, "Unknown node kind\n");
     for (i = 0; i < MAXCHILDREN; i++)
       printTree(tree->child[i]);
     tree = tree->sibling;

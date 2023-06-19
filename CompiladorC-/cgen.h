@@ -1,6 +1,3 @@
-#ifndef _CGEN_H_
-#define _CGEN_H_
-
 #define nlabel_size 3
 #define ntemp_size 3
 
@@ -19,6 +16,3 @@ void cGen(TreeNode * tree);
 
 void genCallParams(TreeNode * tree);
 
-
-
-#endif
