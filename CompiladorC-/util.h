@@ -1,3 +1,6 @@
+#ifndef _UTIL_H_
+#define _UTIL_H_
+
 /* Procedure printToken prints a token 
  * and its lexeme to the listing file
  */
@@ -23,3 +26,4 @@ char * copyString( char * );
  */
 void printTree( TreeNode * );
 
+#endif

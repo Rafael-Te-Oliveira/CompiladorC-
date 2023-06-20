@@ -4,7 +4,7 @@
 #include "parse.h"
 #include "analyze.h"
 #include "cgen.h"
-
+#include "assembly.h"
 
 /* Variaveis globais */
 int lineno = 0;
@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     if (!Error)
     {
         QuadList quadList;
+        InstructionList assemblyList;
         
         fprintf(listing, "\nGerando tabela de símbolos...\n");
         buildSymtab(syntaxTree);
@@ -56,6 +57,9 @@ int main(int argc, char *argv[])
 
         printf("\nGerando Codigo Intermediario...\n");
         quadList = codeGen(syntaxTree);
+
+        printf("\nGerando Codigo Assembly...\n");
+        assemblyList = assemblyGen(quadList);
     }
 
     fclose(source);

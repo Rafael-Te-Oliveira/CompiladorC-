@@ -6,19 +6,27 @@
  * loc = memory location is inserted only the
  * first time, otherwise ignored
  */
-void stInsert( char * name, int lineno, int loc, char* scope, char* typeID, char* typeData);
+void stInsert( char * name, int lineno,int nParam, int loc, char* scope, char* typeID, char* typeData, int size);
 
-/* Function st_lookup returns the memory 
+/* Function statementFinder returns the memory 
  * location of a variable or -1 if not found
  */
-int st_lookup (char * name, char* scope );
+int statementFinder (char * name, char* scope );
+
+int statementFinderMemloc (char* name, char* scope);
 
 char* statementFinderType(char* name, char* scope);
+
+int statementFinderNparam (char *name, char *scope);
 
 /* Procedure printSymTab prints a formatted 
  * listing of the symbol table contents 
  * to the listing file
  */
 void printSymTab(FILE * listing);
+
+void insertMemoryData(char * name, char * scope, int location, int * instLine);
+
+void printMemInfo();
 
 #endif

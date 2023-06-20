@@ -1,3 +1,6 @@
+#ifndef _GLOBALS_H_
+#define _GLOBALS_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -87,3 +90,4 @@ typedef struct treeNode
 
 extern int Error; 
 
+#endif

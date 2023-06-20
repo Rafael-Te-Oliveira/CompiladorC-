@@ -1,3 +1,6 @@
+#ifndef _CGEN_H_
+#define _CGEN_H_
+
 #define nlabel_size 3
 #define ntemp_size 3
 
@@ -16,3 +19,7 @@ void cGen(TreeNode * tree);
 
 void genCallParams(TreeNode * tree);
 
+extern int nlabel;     // Proxima label a ser criada
+extern int globalSize; // Tamanho para alocacoes de variaveis globais posteriormente
+
+#endif
