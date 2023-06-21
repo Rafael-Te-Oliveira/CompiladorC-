@@ -156,8 +156,8 @@ static void insertNode(TreeNode *t)
 
 void buildSymtab(TreeNode *syntaxTree)// Cria tabela de simbolos
 {
-    stInsert("output",0, 0, location++, "global","função", "inteiro", 1);
-    stInsert("input",0, 0, location++, "global","função", "inteiro", 1);
+    stInsert("output",0, 0, location++, "global","função", "integer", 1);
+    stInsert("input",0, 0, location++, "global","função", "integer", 1);
     traverse(syntaxTree, insertNode, nullProc);
     if (statementFinderMemloc("main", "global") == -1)
     {

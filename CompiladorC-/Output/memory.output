@@ -1,35 +1,17 @@
   Local             Nome          Escopo         TipoDado         Tamanho        Linha da instrucao
 ---------       ------------    ----------      ----------      -----------     --------------------
-$sp+0           a               minloc          integer         0               
-$sp+0           low             minloc          integer         0               
-$sp+0           x               minloc          integer         0               
-$sp+0           low             sort            integer         0               
-$sp+20          input           main            -               0               
-$sp+0           high            sort            integer         0               
-0               output          global          inteiro         0               
-$sp+0           k               sort            integer         0               
-$sp+0           a               sort            integer         0               
-0               U               global          integer         0               
-1               input           global          inteiro         0               
-$sp+0           t               sort            integer         0               
-$sp+0           k               minloc          integer         0               
-$sp+0           high            minloc          integer         0               
-$sp+0           i               main            integer         0               
-$sp+17          minloc          sort            -               0               
-$sp+0           U               main            integer         0               
-$sp+21          sort            main            -               0               
-$sp+22          output          main            -               0               
-$sp+0           i               minloc          integer         0               
-$sp+0           i               sort            integer         0               
+$sp+8           input           main            -               1               
+0               output          global          integer         1               
+$sp+0           u               gcd             integer         1               
+1               input           global          integer         1               
+$sp+1           y               main            integer         1               
+$sp+4           gcd             gcd             -               1               
+$sp+11          gcd             main            -               1               
+$sp+1           v               gcd             integer         1               
+$sp+0           x               main            integer         1               
+$sp+10          output          main            -               1               
 
 ----------------------------------------------------------------------------------------------------
 
----------       L0              ----------      label           ----------      18
----------       L1              ----------      label           ----------      45
----------       L2              ----------      label           ----------      38
----------       L3              ----------      label           ----------      53
----------       L4              ----------      label           ----------      104
----------       L5              ----------      label           ----------      109
----------       L6              ----------      label           ----------      125
----------       L7              ----------      label           ----------      138
----------       L8              ----------      label           ----------      153
+---------       L0              ----------      label           ----------      9
+---------       L1              ----------      label           ----------      26

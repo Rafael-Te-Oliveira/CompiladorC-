@@ -64,11 +64,12 @@ void stInsert( char * name, int lineno,int nParam, int memloc, char* scope,
         l->lines->lineno = lineno;
         l->nParam = nParam;
         l->memloc = memloc;
-        l->size - size;
+        l->size = size;
         l->lines->next = NULL;
         l->scope = scope;
         l->typeID = typeID;
         l->typeData = typeData;
+        l->instLine = NULL;
         l->next = hashTable[h];
         hashTable[h] = l; 
     }
@@ -145,6 +146,15 @@ int statamentFinderSize(char *name, char *scope){ // Procura na tabela e retorna
         return l->size;
 }
 
+int statementFinderInstLine(char * name){
+    int h = hash(name, "global");
+    BucketList l =  hashTable[h];
+
+    while ((l != NULL) && (strcmp(name,l->name) != 0) && (strcmp("global",l->scope) != 0))
+        l = l->next;
+
+    return * l->instLine;
+}
 
 
 

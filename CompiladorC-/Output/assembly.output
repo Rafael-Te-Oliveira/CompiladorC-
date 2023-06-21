@@ -1,166 +1,49 @@
-0 ADDI $sp, $zero, 1
+0 ADDI $sp, $zero, 0
 1 J main
-.minloc
-2 LW $t0, $sp, 0
-3 LW $t1, $sp, 0
-4 ADD $t0, $t1, $zero
-5 SW $t0, $sp, 0
-6 LW $t2, $sp, 0
-7 LW $t3, $sp, 0
-8 ADD $t3, $t3, $sp
-9 LW $t4, $t3, 0
-10 ADD $t2, $t4, $zero
-11 SW $t2, $sp, 0
-12 LW $t5, $sp, 0
-13 LW $t6, $sp, 0
-14 ADDI $t7, $zero, 1
-15 ADD $t8, $t6, $t7
-16 ADD $t5, $t8, $zero
-17 SW $t5, $sp, 0
+.gcd
+2 LW $t0, $sp, 1
+3 ADDI $t1, $zero, 0
+4 BNEQ $t0, $t1, L0
+5 LW $t3, $zero, 0
+6 ADD $v0, $t3, $zero
+7 JR $ra
+8 J L1
 .L0
-18 LW $t9, $sp, 0
-19 LW $t10, $sp, 0
-20 SLT $t11, $t9, $t10
-21 BEQ $t11, $zero, L1
-22 LW $t12, $sp, 0
-23 ADD $t12, $t12, $sp
-24 LW $t13, $t12, 0
-25 LW $t14, $sp, 0
-26 SLT $t15, $t13, $t14
-27 BEQ $t15, $zero, L2
-28 LW $t16, $sp, 0
-29 LW $t0, $sp, 0
-30 ADD $t0, $t0, $sp
-31 LW $t1, $t0, 0
-32 ADD $t16, $t1, $zero
-33 SW $t16, $sp, 0
-34 LW $t2, $sp, 0
-35 LW $t3, $sp, 0
-36 ADD $t2, $t3, $zero
-37 SW $t2, $sp, 0
-.L2
-38 LW $t4, $sp, 0
-39 LW $t5, $sp, 0
-40 ADDI $t6, $zero, 1
-41 ADD $t7, $t5, $t6
-42 ADD $t4, $t7, $zero
-43 SW $t4, $sp, 0
-44 J L0
+9 LW $t4, $sp, 1
+10 ADD $a0, $t4, $zero
+11 LW $t5, $zero, 0
+12 LW $t6, $zero, 0
+13 LW $t7, $sp, 1
+14 DIV $t8, $t6, $t7
+15 LW $t9, $sp, 1
+16 MUL $t10, $t8, $t9
+17 SUB $t11, $t5, $t10
+18 ADD $a1, $t11, $zero
+19 SW $ra, $sp, 2
+20 ADDI $sp, $sp, 3
+21 JAL gcd
+22 SUBI $sp, $sp, 3
+23 LW $ra, $sp, 2
+24 ADD $v0, $t12, $zero
+25 JR $ra
 .L1
-45 LW $t8, $sp, 0
-46 ADD $v0, $t8, $zero
-47 JR $ra
-48 JR $ra
-.sort
-49 LW $t9, $sp, 0
-50 LW $t10, $sp, 0
-51 ADD $t9, $t10, $zero
-52 SW $t9, $sp, 0
-.L3
-53 LW $t11, $sp, 0
-54 LW $t12, $sp, 0
-55 ADDI $t13, $zero, 1
-56 SUB $t14, $t12, $t13
-57 SLT $t15, $t11, $t14
-58 BEQ $t15, $zero, L4
-59 LW $t16, $sp, 0
-60 LW $t0, $sp, 0
-61 ADD $a0, $t0, $zero
-62 LW $t1, $sp, 0
-63 ADD $a1, $t1, $zero
-64 LW $t2, $sp, 0
-65 ADD $a2, $t2, $zero
-66 SW $t16, $sp, 0
-67 SW $ra, $sp, 1
-68 ADDI $sp, $sp, 2
-69 JAL minloc
-70 SUBI $sp, $sp, 2
-71 LW $ra, $sp, 1
-72 LW $t16, $sp, 0
-73 ADD $t16, $t3, $zero
-74 SW $t16, $sp, 0
-75 LW $t4, $sp, 0
-76 LW $t5, $sp, 0
-77 ADD $t5, $t5, $sp
-78 LW $t6, $t5, 0
-79 ADD $t4, $t6, $zero
-80 SW $t4, $sp, 0
-81 LW $t7, $sp, 0
-82 ADD $t7, $t7, $sp
-83 LW $t8, $t7, 0
-84 LW $t9, $sp, 0
-85 ADD $t9, $t9, $sp
-86 LW $t10, $t9, 0
-87 ADD $t8, $t10, $zero
-88 ADD $t9, $t9, $sp
-89 SW $t8, $t9, 0
-90 LW $t11, $sp, 0
-91 ADD $t11, $t11, $sp
-92 LW $t12, $t11, 0
-93 LW $t13, $sp, 0
-94 ADD $t12, $t13, $zero
-95 ADD $t11, $t11, $sp
-96 SW $t12, $t11, 0
-97 LW $t14, $sp, 0
-98 LW $t15, $sp, 0
-99 ADDI $t16, $zero, 1
-100 ADD $t0, $t15, $t16
-101 ADD $t14, $t0, $zero
-102 SW $t14, $sp, 0
-103 J L3
-.L4
-104 JR $ra
+26 JR $ra
 .main
-105 LW $t1, $sp, 0
-106 ADDI $t2, $zero, 0
-107 ADD $t1, $t2, $zero
-108 SW $t1, $sp, 0
-.L5
-109 LW $t3, $sp, 0
-110 ADDI $t4, $zero, 10
-111 SLT $t5, $t3, $t4
-112 BEQ $t5, $zero, L6
-113 LW $t6, $sp, 0
-114 LW $t7, $t6, 0
-115 IN $t8
-116 ADD $t7, $t8, $zero
-117 SW $t7, $t6, 0
-118 LW $t9, $sp, 0
-119 LW $t10, $sp, 0
-120 ADDI $t11, $zero, 1
-121 ADD $t12, $t10, $t11
-122 ADD $t9, $t12, $zero
-123 SW $t9, $sp, 0
-124 J L5
-.L6
-125 LW $t13, $zero, 0
-126 ADD $a0, $t13, $zero
-127 ADDI $t14, $zero, 0
-128 ADD $a1, $t14, $zero
-129 ADDI $t15, $zero, 10
-130 ADD $a2, $t15, $zero
-131 ADDI $sp, $sp, 0
-132 JAL sort
-133 SUBI $sp, $sp, 0
-134 LW $t0, $sp, 0
-135 ADDI $t1, $zero, 0
-136 ADD $t0, $t1, $zero
-137 SW $t0, $sp, 0
-.L7
-138 LW $t2, $sp, 0
-139 ADDI $t3, $zero, 10
-140 SLT $t4, $t2, $t3
-141 BEQ $t4, $zero, L8
-142 LW $t5, $sp, 0
-143 LW $t6, $t5, 0
-144 ADD $a0, $t6, $zero
-145 OUT $a0
-146 LW $t8, $sp, 0
-147 LW $t9, $sp, 0
-148 ADDI $t10, $zero, 1
-149 ADD $t11, $t9, $t10
-150 ADD $t8, $t11, $zero
-151 SW $t8, $sp, 0
-152 J L7
-.L8
-153 HLT
+27 LW $t13, $sp, 0
+28 IN $t14
+29 ADD $t13, $t14, $zero
+30 SW $t13, $sp, 0
+31 LW $t15, $sp, 1
+32 IN $t16
+33 ADD $t15, $t16, $zero
+34 SW $t15, $sp, 1
+35 LW $t0, $sp, 0
+36 ADD $a0, $t0, $zero
+37 LW $t1, $sp, 1
+38 ADD $a1, $t1, $zero
+39 ADDI $sp, $sp, 2
+40 JAL gcd
+41 SUBI $sp, $sp, 2
+42 ADD $a0, $t2, $zero
+43 OUT $a0
+44 HLT
