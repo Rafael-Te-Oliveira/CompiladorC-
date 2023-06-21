@@ -154,7 +154,7 @@ void genStatement(TreeNode * tree){
             }
             break;
 
-        case numberK:
+        case paramK:
             if(tree->type == integerK)
                 arg1 = "int";
             else 

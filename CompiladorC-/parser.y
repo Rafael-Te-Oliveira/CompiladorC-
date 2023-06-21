@@ -40,21 +40,22 @@ declaration         :   var_declaration{$$ = $1;}
                     
 var_declaration     :   INT ident SEMICOLON
 			{
-			$$ = newExpNode(typeK);
+			            $$ = newExpNode(typeK);
                         $$->type = integerK;
                         $$->attr.name = "integer";
                         $$->child[0] = $2;
                         $2->nodekind = statementK;
                         $2->kind.stmt = variableK;
-			$2->type = integerK;}
-                    |   INT ident OPEN_BRACKET num CLOSE_BRACKET SEMICOLON{
+			            $2->type = integerK;
+                        }
+                 |   INT ident OPEN_BRACKET num CLOSE_BRACKET SEMICOLON{
                         $$ = newExpNode(typeK);
                         $$->type = integerK;
                         $$->attr.name = "integer";
                         $$->child[0] = $2;
                         $2->nodekind = statementK;
                         $2->kind.stmt = variableK;
-			$2->type = integerK; 
+			            $2->type = arrayK; 
                         $2->attr.len = $4->attr.val;
                         }
                     ;
@@ -124,7 +125,7 @@ param               :   INT ident
 						   	
                            $$ = newExpNode(typeK);
 					       $2->nodekind = statementK;
-                           $2->kind.stmt = variableK;
+                           $2->kind.stmt = paramK;
                            $$->type = integerK;
 						   $2->type = integerK; 	
                            $$->attr.name = "integer";
@@ -135,11 +136,11 @@ param               :   INT ident
 							
                             $$ = newExpNode(typeK);
 							$2->nodekind = statementK;
-                            $2->kind.stmt = variableK;
-                            $$->type = integerK;
-                            $$->attr.name = "integer";
+                            $2->kind.stmt = paramK;
+                            $$->type = arrayK;
+                            $$->attr.name = "vector integer";
                             $$->child[0] = $2;
-						    $2->type = integerK;
+						    $2->type = arrayK;
                         }
                     ;
                     
@@ -295,7 +296,7 @@ var                :   ident
                             $$ = $1;
                             $$->child[0] = $3;
                             $$->kind.exp = vectorK;
-							$$->type = integerK;
+							$$->type = arrayK;
                        }
                     ;
                     

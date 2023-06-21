@@ -249,11 +249,11 @@ void assemblyGen_PARAM(Quad q){                                                 
 void assemblyGen_ALLOC(Quad q){                                     // Tratamento da quadrupla ALLOC                                                                                                                 // Se a variavel a ser alocada nao for um vetor
     if(strcmp(q.arg2,"global") == 0){                               // Se o escopo da variavel for global
         insertMemoryData(q.arg1, q.arg2, globalVarLocation, NULL);  // Aloca-se um espaço na memoria na area global
-        globalVarLocation += statamentFinderSize(q.arg1, q.arg2);        // Soma-se a proxima posicao a ser inserida na area global
+        globalVarLocation += statementFinderSize(q.arg1, q.arg2);        // Soma-se a proxima posicao a ser inserida na area global
     }
     else{                                                           // Se for uma variavel local
         insertMemoryData(q.arg1, q.arg2, sPos, NULL);               // Aloca-se um espaco na memoria na area local
-        sPos += statamentFinderSize(q.arg1, q.arg2);                     // Soma-se o topo da pilha
+        sPos += statementFinderSize(q.arg1, q.arg2);                     // Soma-se o topo da pilha
     }
 }
 
@@ -306,7 +306,7 @@ void assemblyGen_CALL(Quad q){                                                  
             unusedRegister = unusedRegister->prev;                                          // Retrocede para o registrador anterior da lsita
         }
 
-        if(strcmp(statementFinderType(q.arg2,"global"),"inteiro") == 0){                           // Se a funcao tiver retorno int, salva-se o conteudo de $v0 no registrador temp necessario
+        if(strcmp(statementFinderType(q.arg2,"global"),"integer") == 0){                           // Se a funcao tiver retorno int, salva-se o conteudo de $v0 no registrador temp necessario
             assemblyInsert(ADD, tempRegister(q.arg1), $v0, $zero, 0, lineNo, R, Inst, "");  // Insere-se a instrucao ADD que faz a passagem do valor retornado ao temp
             lineNo++;                                                                       // Soma-se o numero da linha de instrucao
             unusedRegInsert(tempRegister(q.arg1));                                          // Insere na lista de regs nao usados o temp que se armazena o retorno da funcao

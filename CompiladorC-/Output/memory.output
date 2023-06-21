@@ -1,17 +1,35 @@
   Local             Nome          Escopo         TipoDado         Tamanho        Linha da instrucao
 ---------       ------------    ----------      ----------      -----------     --------------------
-$sp+8           input           main            -               1               
+$sp+0           a               minloc          vector arg      2               
+$sp+1           low             minloc          integer         1               
+0               vet             global          vector          10              
+$sp+4           x               minloc          integer         1               
+$sp+1           low             sort            integer         1               
+$sp+20          input           main            -               1               
+$sp+2           high            sort            integer         1               
 0               output          global          integer         1               
-$sp+0           u               gcd             integer         1               
+$sp+4           k               sort            integer         1               
+$sp+0           a               sort            vector arg      2               
+$sp+0           vet             main            integer         1               
 1               input           global          integer         1               
-$sp+1           y               main            integer         1               
-$sp+4           gcd             gcd             -               1               
-$sp+11          gcd             main            -               1               
-$sp+1           v               gcd             integer         1               
-$sp+0           x               main            integer         1               
-$sp+10          output          main            -               1               
+$sp+5           t               sort            integer         1               
+$sp+5           k               minloc          integer         1               
+$sp+2           high            minloc          integer         1               
+$sp+0           i               main            integer         1               
+$sp+17          minloc          sort            -               1               
+$sp+21          sort            main            -               1               
+$sp+22          output          main            -               1               
+$sp+3           i               minloc          integer         1               
+$sp+3           i               sort            integer         1               
 
 ----------------------------------------------------------------------------------------------------
 
----------       L0              ----------      label           ----------      9
----------       L1              ----------      label           ----------      26
+---------       L0              ----------      label           ----------      21
+---------       L1              ----------      label           ----------      48
+---------       L2              ----------      label           ----------      41
+---------       L3              ----------      label           ----------      59
+---------       L4              ----------      label           ----------      111
+---------       L5              ----------      label           ----------      116
+---------       L6              ----------      label           ----------      132
+---------       L7              ----------      label           ----------      145
+---------       L8              ----------      label           ----------      160

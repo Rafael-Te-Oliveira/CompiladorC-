@@ -42,13 +42,13 @@ typedef enum
 
 typedef enum
 {
-	ifK, whileK, assignK, variableK, functionK, callK, returnK, numberK
+	ifK, whileK, assignK, variableK, functionK, callK, returnK, paramK
 
 } StatementKind;
 
 typedef enum
 {
-	operationK, constantK, idK, vectorK, vectorIdK, typeK
+	operationK, constantK, idK, vectorK, typeK
 
 } ExpressionIdentifier;
 

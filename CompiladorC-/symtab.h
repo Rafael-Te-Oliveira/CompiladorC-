@@ -19,7 +19,9 @@ char* statementFinderType(char* name, char* scope);
 
 int statementFinderNparam (char *name, char *scope);
 
-int statamentFinderSize(char *name, char *scope);
+int statementFinderSize(char *name, char *scope);
+
+int statementFinderInstLine(char * name);
 
 /* Procedure printSymTab prints a formatted 
  * listing of the symbol table contents 

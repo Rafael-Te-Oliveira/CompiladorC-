@@ -332,9 +332,7 @@ void printTree(TreeNode *tree)
       case vectorK:
         fprintf(arvSin, "Vector: %s\n", tree->attr.name);
         break;
-      case vectorIdK:
-        fprintf(arvSin, "Index [%d]\n", tree->attr.val);
-        break;
+
       case typeK:
         fprintf(arvSin, "Type %s\n", tree->attr.name);
         break;

@@ -557,13 +557,13 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    20,    20,    23,    34,    37,    38,    41,    50,    62,
-      77,    92,    96,   103,   116,   122,   133,   146,   159,   163,
-     167,   172,   185,   191,   204,   210,   214,   218,   222,   226,
-     232,   236,   241,   247,   257,   265,   270,   277,   283,   289,
-     293,   302,   308,   314,   320,   326,   332,   338,   344,   352,
-     358,   364,   369,   376,   382,   388,   393,   400,   404,   408,
-     412,   418,   425,   433,   446,   452,   459
+       0,    20,    20,    23,    34,    37,    38,    41,    51,    63,
+      78,    93,    97,   104,   117,   123,   134,   147,   160,   164,
+     168,   173,   186,   192,   205,   211,   215,   219,   223,   227,
+     233,   237,   242,   248,   258,   266,   271,   278,   284,   290,
+     294,   303,   309,   315,   321,   327,   333,   339,   345,   353,
+     359,   365,   370,   377,   383,   389,   394,   401,   405,   409,
+     413,   419,   426,   434,   447,   453,   460
 };
 #endif
 
@@ -1247,33 +1247,34 @@ yyreduce:
   case 7: /* var_declaration: INT ident SEMICOLON  */
 #line 42 "parser.y"
                         {
-			yyval = newExpNode(typeK);
+			            yyval = newExpNode(typeK);
                         yyval->type = integerK;
                         yyval->attr.name = "integer";
                         yyval->child[0] = yyvsp[-1];
                         yyvsp[-1]->nodekind = statementK;
                         yyvsp[-1]->kind.stmt = variableK;
-			yyvsp[-1]->type = integerK;}
-#line 1258 "parser.tab.c"
+			            yyvsp[-1]->type = integerK;
+                        }
+#line 1259 "parser.tab.c"
     break;
 
   case 8: /* var_declaration: INT ident OPEN_BRACKET num CLOSE_BRACKET SEMICOLON  */
-#line 50 "parser.y"
-                                                                          {
+#line 51 "parser.y"
+                                                                       {
                         yyval = newExpNode(typeK);
                         yyval->type = integerK;
                         yyval->attr.name = "integer";
                         yyval->child[0] = yyvsp[-4];
                         yyvsp[-4]->nodekind = statementK;
                         yyvsp[-4]->kind.stmt = variableK;
-			yyvsp[-4]->type = integerK; 
+			            yyvsp[-4]->type = arrayK; 
                         yyvsp[-4]->attr.len = yyvsp[-2]->attr.val;
                         }
-#line 1273 "parser.tab.c"
+#line 1274 "parser.tab.c"
     break;
 
   case 9: /* fun_declaration: INT ident OPEN_PARENTHESES params CLOSE_PARENTHESES compound_decl  */
-#line 63 "parser.y"
+#line 64 "parser.y"
                         {
                         yyval = newExpNode(typeK);
                         yyval->type = integerK;
@@ -1288,11 +1289,11 @@ yyreduce:
 			aggScope(yyvsp[-4]->child[0], yyvsp[-4]->attr.name);
 			aggScope(yyvsp[-4]->child[1], yyvsp[-4]->attr.name);
                         }
-#line 1292 "parser.tab.c"
+#line 1293 "parser.tab.c"
     break;
 
   case 10: /* fun_declaration: VOID ident OPEN_PARENTHESES params CLOSE_PARENTHESES compound_decl  */
-#line 78 "parser.y"
+#line 79 "parser.y"
                         {
                         yyval = newExpNode(typeK);
                         yyval->type = voidK;
@@ -1305,28 +1306,28 @@ yyreduce:
 			aggScope(yyvsp[-4]->child[0], yyvsp[-4]->attr.name);
 			aggScope(yyvsp[-4]->child[1], yyvsp[-4]->attr.name);
                         }
-#line 1309 "parser.tab.c"
+#line 1310 "parser.tab.c"
     break;
 
   case 11: /* params: param_list  */
-#line 93 "parser.y"
+#line 94 "parser.y"
                         {
                         yyval = yyvsp[0];
                         }
-#line 1317 "parser.tab.c"
+#line 1318 "parser.tab.c"
     break;
 
   case 12: /* params: VOID  */
-#line 97 "parser.y"
+#line 98 "parser.y"
                         {
 			yyval = newExpNode(typeK);
            		yyval->attr.name = "void";
 			}
-#line 1326 "parser.tab.c"
+#line 1327 "parser.tab.c"
     break;
 
   case 13: /* param_list: param_list COMMA param  */
-#line 104 "parser.y"
+#line 105 "parser.y"
                         {
                            YYSTYPE t = yyvsp[-2];
                            if(t != NULL)
@@ -1339,49 +1340,49 @@ yyreduce:
                             else
                               yyval = yyvsp[0];
                         }
-#line 1343 "parser.tab.c"
+#line 1344 "parser.tab.c"
     break;
 
   case 14: /* param_list: param  */
-#line 117 "parser.y"
+#line 118 "parser.y"
                         {
                             yyval = yyvsp[0];
                         }
-#line 1351 "parser.tab.c"
+#line 1352 "parser.tab.c"
     break;
 
   case 15: /* param: INT ident  */
-#line 123 "parser.y"
+#line 124 "parser.y"
                         {
 						   	
                            yyval = newExpNode(typeK);
 					       yyvsp[0]->nodekind = statementK;
-                           yyvsp[0]->kind.stmt = variableK;
+                           yyvsp[0]->kind.stmt = paramK;
                            yyval->type = integerK;
 						   yyvsp[0]->type = integerK; 	
                            yyval->attr.name = "integer";
                            yyval->child[0] = yyvsp[0];
                         }
-#line 1366 "parser.tab.c"
+#line 1367 "parser.tab.c"
     break;
 
   case 16: /* param: INT ident OPEN_BRACKET CLOSE_BRACKET  */
-#line 134 "parser.y"
+#line 135 "parser.y"
                         {
 							
                             yyval = newExpNode(typeK);
 							yyvsp[-2]->nodekind = statementK;
-                            yyvsp[-2]->kind.stmt = variableK;
-                            yyval->type = integerK;
-                            yyval->attr.name = "integer";
+                            yyvsp[-2]->kind.stmt = paramK;
+                            yyval->type = arrayK;
+                            yyval->attr.name = "vector integer";
                             yyval->child[0] = yyvsp[-2];
-						    yyvsp[-2]->type = integerK;
+						    yyvsp[-2]->type = arrayK;
                         }
-#line 1381 "parser.tab.c"
+#line 1382 "parser.tab.c"
     break;
 
   case 17: /* compound_decl: OPEN_KEYS local_declarations statement_list CLOSE_KEYS  */
-#line 147 "parser.y"
+#line 148 "parser.y"
                         {
                             YYSTYPE t = yyvsp[-2];
                             if(t != NULL)
@@ -1394,34 +1395,34 @@ yyreduce:
                             else
                                yyval = yyvsp[-1];
                         }
-#line 1398 "parser.tab.c"
+#line 1399 "parser.tab.c"
     break;
 
   case 18: /* compound_decl: OPEN_KEYS local_declarations CLOSE_KEYS  */
-#line 160 "parser.y"
+#line 161 "parser.y"
                         {
                             yyval = yyvsp[-1];
                         }
-#line 1406 "parser.tab.c"
+#line 1407 "parser.tab.c"
     break;
 
   case 19: /* compound_decl: OPEN_KEYS statement_list CLOSE_KEYS  */
-#line 164 "parser.y"
+#line 165 "parser.y"
                         {
                             yyval = yyvsp[-1];
                         }
-#line 1414 "parser.tab.c"
+#line 1415 "parser.tab.c"
     break;
 
   case 20: /* compound_decl: OPEN_KEYS CLOSE_KEYS  */
-#line 168 "parser.y"
+#line 169 "parser.y"
                         {
 			   			}
-#line 1421 "parser.tab.c"
+#line 1422 "parser.tab.c"
     break;
 
   case 21: /* local_declarations: local_declarations var_declaration  */
-#line 173 "parser.y"
+#line 174 "parser.y"
                         {
                             YYSTYPE t = yyvsp[-1];
                             if(t != NULL)
@@ -1434,19 +1435,19 @@ yyreduce:
                             else
                                yyval = yyvsp[0];
                         }
-#line 1438 "parser.tab.c"
+#line 1439 "parser.tab.c"
     break;
 
   case 22: /* local_declarations: var_declaration  */
-#line 186 "parser.y"
+#line 187 "parser.y"
                         {
                             yyval = yyvsp[0];
                         }
-#line 1446 "parser.tab.c"
+#line 1447 "parser.tab.c"
     break;
 
   case 23: /* statement_list: statement_list statement  */
-#line 192 "parser.y"
+#line 193 "parser.y"
                         {
                            YYSTYPE t = yyvsp[-1];
                            if(t != NULL)
@@ -1459,84 +1460,84 @@ yyreduce:
                            else
                              yyval = yyvsp[0];
                         }
-#line 1463 "parser.tab.c"
+#line 1464 "parser.tab.c"
     break;
 
   case 24: /* statement_list: statement  */
-#line 205 "parser.y"
+#line 206 "parser.y"
                         {
                            yyval = yyvsp[0];
                         }
-#line 1471 "parser.tab.c"
+#line 1472 "parser.tab.c"
     break;
 
   case 25: /* statement: expression_decl  */
-#line 211 "parser.y"
+#line 212 "parser.y"
                         {
                            yyval = yyvsp[0];
                         }
-#line 1479 "parser.tab.c"
+#line 1480 "parser.tab.c"
     break;
 
   case 26: /* statement: compound_decl  */
-#line 215 "parser.y"
+#line 216 "parser.y"
                         {
                            yyval = yyvsp[0];
                         }
-#line 1487 "parser.tab.c"
+#line 1488 "parser.tab.c"
     break;
 
   case 27: /* statement: selection_decl  */
-#line 219 "parser.y"
+#line 220 "parser.y"
                         {
                            yyval = yyvsp[0];
                         }
-#line 1495 "parser.tab.c"
+#line 1496 "parser.tab.c"
     break;
 
   case 28: /* statement: iterator_decl  */
-#line 223 "parser.y"
+#line 224 "parser.y"
                         {
                            yyval = yyvsp[0];
                         }
-#line 1503 "parser.tab.c"
+#line 1504 "parser.tab.c"
     break;
 
   case 29: /* statement: return_decl  */
-#line 227 "parser.y"
+#line 228 "parser.y"
                         {
                            yyval = yyvsp[0];
                         }
-#line 1511 "parser.tab.c"
+#line 1512 "parser.tab.c"
     break;
 
   case 30: /* expression_decl: expression SEMICOLON  */
-#line 233 "parser.y"
+#line 234 "parser.y"
                         {
                            yyval = yyvsp[-1];
                         }
-#line 1519 "parser.tab.c"
+#line 1520 "parser.tab.c"
     break;
 
   case 31: /* expression_decl: SEMICOLON  */
-#line 237 "parser.y"
+#line 238 "parser.y"
                         {
 						}
-#line 1526 "parser.tab.c"
+#line 1527 "parser.tab.c"
     break;
 
   case 32: /* selection_decl: IF OPEN_PARENTHESES expression CLOSE_PARENTHESES statement  */
-#line 242 "parser.y"
+#line 243 "parser.y"
                         {
                              yyval = newStmtNode(ifK);
                              yyval->child[0] = yyvsp[-2];
                              yyval->child[1] = yyvsp[0];
                         }
-#line 1536 "parser.tab.c"
+#line 1537 "parser.tab.c"
     break;
 
   case 33: /* selection_decl: IF OPEN_PARENTHESES expression CLOSE_PARENTHESES statement ELSE statement  */
-#line 248 "parser.y"
+#line 249 "parser.y"
                         {
 							 
                              yyval = newStmtNode(ifK);
@@ -1544,279 +1545,279 @@ yyreduce:
                              yyval->child[1] = yyvsp[-2];
                              yyval->child[2] = yyvsp[0];
                         }
-#line 1548 "parser.tab.c"
+#line 1549 "parser.tab.c"
     break;
 
   case 34: /* iterator_decl: WHILE OPEN_PARENTHESES expression CLOSE_PARENTHESES statement  */
-#line 258 "parser.y"
+#line 259 "parser.y"
                         {
                              yyval = newStmtNode(whileK);
                              yyval->child[0] = yyvsp[-2];
                              yyval->child[1] = yyvsp[0];
                         }
-#line 1558 "parser.tab.c"
+#line 1559 "parser.tab.c"
     break;
 
   case 35: /* return_decl: RETURN SEMICOLON  */
-#line 266 "parser.y"
+#line 267 "parser.y"
                        {
                             yyval = newStmtNode(returnK);
 							yyval->type = voidK;
                        }
-#line 1567 "parser.tab.c"
+#line 1568 "parser.tab.c"
     break;
 
   case 36: /* return_decl: RETURN expression SEMICOLON  */
-#line 271 "parser.y"
+#line 272 "parser.y"
                        {
                             yyval = newStmtNode(returnK);
                             yyval->child[0] = yyvsp[-1];
                        }
-#line 1576 "parser.tab.c"
+#line 1577 "parser.tab.c"
     break;
 
   case 37: /* expression: var ASSIGN expression  */
-#line 278 "parser.y"
+#line 279 "parser.y"
                        {
                             yyval = newStmtNode(assignK);
                             yyval->child[0] = yyvsp[-2];
                             yyval->child[1] = yyvsp[0];
                        }
-#line 1586 "parser.tab.c"
+#line 1587 "parser.tab.c"
     break;
 
   case 38: /* expression: simple_expression  */
-#line 284 "parser.y"
+#line 285 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1594 "parser.tab.c"
+#line 1595 "parser.tab.c"
     break;
 
   case 39: /* var: ident  */
-#line 290 "parser.y"
+#line 291 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1602 "parser.tab.c"
+#line 1603 "parser.tab.c"
     break;
 
   case 40: /* var: ident OPEN_BRACKET expression CLOSE_BRACKET  */
-#line 294 "parser.y"
+#line 295 "parser.y"
                        {
                             yyval = yyvsp[-3];
                             yyval->child[0] = yyvsp[-1];
                             yyval->kind.exp = vectorK;
-							yyval->type = integerK;
+							yyval->type = arrayK;
                        }
-#line 1613 "parser.tab.c"
+#line 1614 "parser.tab.c"
     break;
 
   case 41: /* simple_expression: sum_expression relational sum_expression  */
-#line 303 "parser.y"
+#line 304 "parser.y"
                        {
                             yyval = yyvsp[-1];
                             yyval->child[0] = yyvsp[-2];
                             yyval->child[1] = yyvsp[0];
                        }
-#line 1623 "parser.tab.c"
+#line 1624 "parser.tab.c"
     break;
 
   case 42: /* simple_expression: sum_expression  */
-#line 309 "parser.y"
+#line 310 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1631 "parser.tab.c"
+#line 1632 "parser.tab.c"
     break;
 
   case 43: /* relational: EQ  */
-#line 315 "parser.y"
+#line 316 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = EQ;  
 							yyval->type = booleanK;                          
                        }
-#line 1641 "parser.tab.c"
+#line 1642 "parser.tab.c"
     break;
 
   case 44: /* relational: NOT_EQUAL  */
-#line 321 "parser.y"
+#line 322 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = NOT_EQUAL;
 							yyval->type = booleanK;                            
                        }
-#line 1651 "parser.tab.c"
+#line 1652 "parser.tab.c"
     break;
 
   case 45: /* relational: LESS_THAN  */
-#line 327 "parser.y"
+#line 328 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = LESS_THAN;                            
 							yyval->type = booleanK;
                        }
-#line 1661 "parser.tab.c"
+#line 1662 "parser.tab.c"
     break;
 
   case 46: /* relational: LESS_THAN_EQUAL  */
-#line 333 "parser.y"
+#line 334 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = LESS_THAN_EQUAL;                            
 							yyval->type = booleanK;
                        }
-#line 1671 "parser.tab.c"
+#line 1672 "parser.tab.c"
     break;
 
   case 47: /* relational: GREATER_THAN  */
-#line 339 "parser.y"
+#line 340 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = GREATER_THAN;                            
 							yyval->type = booleanK;
                        }
-#line 1681 "parser.tab.c"
+#line 1682 "parser.tab.c"
     break;
 
   case 48: /* relational: GREATER_THAN_EQUAL  */
-#line 345 "parser.y"
+#line 346 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = GREATER_THAN_EQUAL;                            
 							yyval->type = booleanK;
                        }
-#line 1691 "parser.tab.c"
+#line 1692 "parser.tab.c"
     break;
 
   case 49: /* sum_expression: sum_expression sum term  */
-#line 353 "parser.y"
+#line 354 "parser.y"
                        {
                             yyval = yyvsp[-1];
                             yyval->child[0] = yyvsp[-2];
                             yyval->child[1] = yyvsp[0];
                        }
-#line 1701 "parser.tab.c"
+#line 1702 "parser.tab.c"
     break;
 
   case 50: /* sum_expression: term  */
-#line 359 "parser.y"
+#line 360 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1709 "parser.tab.c"
+#line 1710 "parser.tab.c"
     break;
 
   case 51: /* sum: SUM  */
-#line 365 "parser.y"
+#line 366 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = SUM;                            
                        }
-#line 1718 "parser.tab.c"
+#line 1719 "parser.tab.c"
     break;
 
   case 52: /* sum: SUBTRACT  */
-#line 370 "parser.y"
+#line 371 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = SUBTRACT;                            
                        }
-#line 1727 "parser.tab.c"
+#line 1728 "parser.tab.c"
     break;
 
   case 53: /* term: term mult factor  */
-#line 377 "parser.y"
+#line 378 "parser.y"
                        {
                             yyval = yyvsp[-1];
                             yyval->child[0] = yyvsp[-2];
                             yyval->child[1] = yyvsp[0];
                        }
-#line 1737 "parser.tab.c"
+#line 1738 "parser.tab.c"
     break;
 
   case 54: /* term: factor  */
-#line 383 "parser.y"
+#line 384 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1745 "parser.tab.c"
+#line 1746 "parser.tab.c"
     break;
 
   case 55: /* mult: MULTIPLY  */
-#line 389 "parser.y"
+#line 390 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = MULTIPLY;                            
                        }
-#line 1754 "parser.tab.c"
+#line 1755 "parser.tab.c"
     break;
 
   case 56: /* mult: DIVIDE  */
-#line 394 "parser.y"
+#line 395 "parser.y"
                        {
                             yyval = newExpNode(operationK);
                             yyval->attr.op = DIVIDE;                            
                        }
-#line 1763 "parser.tab.c"
+#line 1764 "parser.tab.c"
     break;
 
   case 57: /* factor: OPEN_PARENTHESES expression CLOSE_PARENTHESES  */
-#line 401 "parser.y"
+#line 402 "parser.y"
                        {
                             yyval = yyvsp[-1];
                        }
-#line 1771 "parser.tab.c"
+#line 1772 "parser.tab.c"
     break;
 
   case 58: /* factor: var  */
-#line 405 "parser.y"
+#line 406 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1779 "parser.tab.c"
+#line 1780 "parser.tab.c"
     break;
 
   case 59: /* factor: activation  */
-#line 409 "parser.y"
+#line 410 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1787 "parser.tab.c"
+#line 1788 "parser.tab.c"
     break;
 
   case 60: /* factor: num  */
-#line 413 "parser.y"
+#line 414 "parser.y"
                        {
                             yyval = yyvsp[0];
                        }
-#line 1795 "parser.tab.c"
+#line 1796 "parser.tab.c"
     break;
 
   case 61: /* activation: ident OPEN_PARENTHESES arg_list CLOSE_PARENTHESES  */
-#line 419 "parser.y"
+#line 420 "parser.y"
                        {
                             yyval = yyvsp[-3];
                             yyval->child[0] = yyvsp[-1];
                             yyval->nodekind = statementK;
                             yyval->kind.stmt = callK;
                        }
-#line 1806 "parser.tab.c"
+#line 1807 "parser.tab.c"
     break;
 
   case 62: /* activation: ident OPEN_PARENTHESES CLOSE_PARENTHESES  */
-#line 426 "parser.y"
+#line 427 "parser.y"
                                            {
                             yyval = yyvsp[-2];
                             yyval->nodekind = statementK;
                             yyval->kind.stmt = callK;
                        }
-#line 1816 "parser.tab.c"
+#line 1817 "parser.tab.c"
     break;
 
   case 63: /* arg_list: arg_list COMMA expression  */
-#line 434 "parser.y"
+#line 435 "parser.y"
                        {
                             YYSTYPE t = yyvsp[-2];
                              if(t != NULL)
@@ -1829,38 +1830,38 @@ yyreduce:
                              else
                                  yyval = yyvsp[0];
                         }
-#line 1833 "parser.tab.c"
+#line 1834 "parser.tab.c"
     break;
 
   case 64: /* arg_list: expression  */
-#line 447 "parser.y"
+#line 448 "parser.y"
                         {
                         yyval = yyvsp[0];
                         }
-#line 1841 "parser.tab.c"
+#line 1842 "parser.tab.c"
     break;
 
   case 65: /* ident: ID  */
-#line 453 "parser.y"
+#line 454 "parser.y"
                         {
                         yyval = newExpNode(idK);
                         yyval->attr.name = copyString(tokenString);
                         }
-#line 1850 "parser.tab.c"
+#line 1851 "parser.tab.c"
     break;
 
   case 66: /* num: NUM  */
-#line 460 "parser.y"
+#line 461 "parser.y"
                         {
                         yyval = newExpNode(constantK);
                         yyval->attr.val = atoi(tokenString);
 			yyval->type = integerK;
 			}
-#line 1860 "parser.tab.c"
+#line 1861 "parser.tab.c"
     break;
 
 
-#line 1864 "parser.tab.c"
+#line 1865 "parser.tab.c"
 
       default: break;
     }
@@ -2053,7 +2054,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 467 "parser.y"
+#line 468 "parser.y"
 
 
 int yyerror(char* message){

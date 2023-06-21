@@ -134,7 +134,7 @@ int statementFinderNparam (char *name, char *scope){ // Procura na tabela e reto
       return l->nParam;
 }
 
-int statamentFinderSize(char *name, char *scope){ // Procura na tabela e retorna o tamanho do vetor
+int statementFinderSize(char *name, char *scope){ // Procura na tabela e retorna o tamanho do vetor
     int h = hash(name, scope);	
     BucketList l =  hashTable[h];
     while ((l != NULL) && (strcmp(name,l->name) != 0) && (strcmp(scope,l->scope) != 0)){

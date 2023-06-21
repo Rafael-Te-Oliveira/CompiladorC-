@@ -1,49 +1,173 @@
-0 ADDI $sp, $zero, 0
+0 ADDI $sp, $zero, 10
 1 J main
-.gcd
-2 LW $t0, $sp, 1
-3 ADDI $t1, $zero, 0
-4 BNEQ $t0, $t1, L0
-5 LW $t3, $zero, 0
-6 ADD $v0, $t3, $zero
-7 JR $ra
-8 J L1
+.minloc
+2 SW $a0, $sp, 0
+3 SW $a1, $sp, 1
+4 SW $a2, $sp, 2
+5 LW $t0, $sp, 5
+6 LW $t1, $sp, 1
+7 ADD $t0, $t1, $zero
+8 SW $t0, $sp, 5
+9 LW $t2, $sp, 4
+10 LW $t3, $sp, 1
+11 ADD $t3, $t3, $sp
+12 LW $t4, $t3, 0
+13 ADD $t2, $t4, $zero
+14 SW $t2, $sp, 4
+15 LW $t5, $sp, 3
+16 LW $t6, $sp, 1
+17 ADDI $t7, $zero, 1
+18 ADD $t8, $t6, $t7
+19 ADD $t5, $t8, $zero
+20 SW $t5, $sp, 3
 .L0
-9 LW $t4, $sp, 1
-10 ADD $a0, $t4, $zero
-11 LW $t5, $zero, 0
-12 LW $t6, $zero, 0
-13 LW $t7, $sp, 1
-14 DIV $t8, $t6, $t7
-15 LW $t9, $sp, 1
-16 MUL $t10, $t8, $t9
-17 SUB $t11, $t5, $t10
-18 ADD $a1, $t11, $zero
-19 SW $ra, $sp, 2
-20 ADDI $sp, $sp, 3
-21 JAL gcd
-22 SUBI $sp, $sp, 3
-23 LW $ra, $sp, 2
-24 ADD $v0, $t12, $zero
-25 JR $ra
+21 LW $t9, $sp, 3
+22 LW $t10, $sp, 2
+23 SLT $t11, $t9, $t10
+24 BEQ $t11, $zero, L1
+25 LW $t12, $sp, 3
+26 ADD $t12, $t12, $sp
+27 LW $t13, $t12, 0
+28 LW $t14, $sp, 4
+29 SLT $t15, $t13, $t14
+30 BEQ $t15, $zero, L2
+31 LW $t16, $sp, 4
+32 LW $t0, $sp, 3
+33 ADD $t0, $t0, $sp
+34 LW $t1, $t0, 0
+35 ADD $t16, $t1, $zero
+36 SW $t16, $sp, 4
+37 LW $t2, $sp, 5
+38 LW $t3, $sp, 3
+39 ADD $t2, $t3, $zero
+40 SW $t2, $sp, 5
+.L2
+41 LW $t4, $sp, 3
+42 LW $t5, $sp, 3
+43 ADDI $t6, $zero, 1
+44 ADD $t7, $t5, $t6
+45 ADD $t4, $t7, $zero
+46 SW $t4, $sp, 3
+47 J L0
 .L1
-26 JR $ra
+48 LW $t8, $sp, 5
+49 ADD $v0, $t8, $zero
+50 JR $ra
+51 JR $ra
+.sort
+52 SW $a0, $sp, 0
+53 SW $a1, $sp, 1
+54 SW $a2, $sp, 2
+55 LW $t9, $sp, 3
+56 LW $t10, $sp, 1
+57 ADD $t9, $t10, $zero
+58 SW $t9, $sp, 3
+.L3
+59 LW $t11, $sp, 3
+60 LW $t12, $sp, 2
+61 ADDI $t13, $zero, 1
+62 SUB $t14, $t12, $t13
+63 SLT $t15, $t11, $t14
+64 BEQ $t15, $zero, L4
+65 LW $t16, $sp, 4
+66 LW $t0, $sp, 0
+67 ADD $a0, $t0, $zero
+68 LW $t1, $sp, 3
+69 ADD $a1, $t1, $zero
+70 LW $t2, $sp, 2
+71 ADD $a2, $t2, $zero
+72 SW $t16, $sp, 6
+73 SW $ra, $sp, 7
+74 ADDI $sp, $sp, 8
+75 JAL minloc
+76 SUBI $sp, $sp, 8
+77 LW $ra, $sp, 7
+78 LW $t16, $sp, 6
+79 ADD $t3, $v0, $zero
+80 ADD $t16, $t3, $zero
+81 SW $t16, $sp, 4
+82 LW $t4, $sp, 5
+83 LW $t5, $sp, 4
+84 ADD $t5, $t5, $sp
+85 LW $t6, $t5, 0
+86 ADD $t4, $t6, $zero
+87 SW $t4, $sp, 5
+88 LW $t7, $sp, 4
+89 ADD $t7, $t7, $sp
+90 LW $t8, $t7, 0
+91 LW $t9, $sp, 3
+92 ADD $t9, $t9, $sp
+93 LW $t10, $t9, 0
+94 ADD $t8, $t10, $zero
+95 ADD $t9, $t9, $sp
+96 SW $t8, $t9, 0
+97 LW $t11, $sp, 3
+98 ADD $t11, $t11, $sp
+99 LW $t12, $t11, 0
+100 LW $t13, $sp, 5
+101 ADD $t12, $t13, $zero
+102 ADD $t11, $t11, $sp
+103 SW $t12, $t11, 0
+104 LW $t14, $sp, 3
+105 LW $t15, $sp, 3
+106 ADDI $t16, $zero, 1
+107 ADD $t0, $t15, $t16
+108 ADD $t14, $t0, $zero
+109 SW $t14, $sp, 3
+110 J L3
+.L4
+111 JR $ra
 .main
-27 LW $t13, $sp, 0
-28 IN $t14
-29 ADD $t13, $t14, $zero
-30 SW $t13, $sp, 0
-31 LW $t15, $sp, 1
-32 IN $t16
-33 ADD $t15, $t16, $zero
-34 SW $t15, $sp, 1
-35 LW $t0, $sp, 0
-36 ADD $a0, $t0, $zero
-37 LW $t1, $sp, 1
-38 ADD $a1, $t1, $zero
-39 ADDI $sp, $sp, 2
-40 JAL gcd
-41 SUBI $sp, $sp, 2
-42 ADD $a0, $t2, $zero
-43 OUT $a0
-44 HLT
+112 LW $t1, $sp, 0
+113 ADDI $t2, $zero, 0
+114 ADD $t1, $t2, $zero
+115 SW $t1, $sp, 0
+.L5
+116 LW $t3, $sp, 0
+117 ADDI $t4, $zero, 10
+118 SLT $t5, $t3, $t4
+119 BEQ $t5, $zero, L6
+120 LW $t6, $sp, 0
+121 LW $t7, $t6, 0
+122 IN $t8
+123 ADD $t7, $t8, $zero
+124 SW $t7, $t6, 0
+125 LW $t9, $sp, 0
+126 LW $t10, $sp, 0
+127 ADDI $t11, $zero, 1
+128 ADD $t12, $t10, $t11
+129 ADD $t9, $t12, $zero
+130 SW $t9, $sp, 0
+131 J L5
+.L6
+132 LW $t13, $zero, 0
+133 ADD $a0, $t13, $zero
+134 ADDI $t14, $zero, 0
+135 ADD $a1, $t14, $zero
+136 ADDI $t15, $zero, 10
+137 ADD $a2, $t15, $zero
+138 ADDI $sp, $sp, 1
+139 JAL sort
+140 SUBI $sp, $sp, 1
+141 LW $t0, $sp, 0
+142 ADDI $t1, $zero, 0
+143 ADD $t0, $t1, $zero
+144 SW $t0, $sp, 0
+.L7
+145 LW $t2, $sp, 0
+146 ADDI $t3, $zero, 10
+147 SLT $t4, $t2, $t3
+148 BEQ $t4, $zero, L8
+149 LW $t5, $sp, 0
+150 LW $t6, $t5, 0
+151 ADD $a0, $t6, $zero
+152 OUT $a0
+153 LW $t8, $sp, 0
+154 LW $t9, $sp, 0
+155 ADDI $t10, $zero, 1
+156 ADD $t11, $t9, $t10
+157 ADD $t8, $t11, $zero
+158 SW $t8, $sp, 0
+159 J L7
+.L8
+160 HLT

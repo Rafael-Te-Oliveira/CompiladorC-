@@ -79,7 +79,7 @@ static void insertNode(TreeNode *t)
                         printSemanticError(t); //Variavel ja declarada 
                     break;
         
-        case numberK:
+        case paramK:
                     if (statementFinderMemloc(t->attr.name, t->attr.scope)==-1 && statementFinderMemloc(t->attr.name, "global")== -1){ // Variavel nao esta na tabela
                         if(t->type != voidK){
                                 if(t->type == arrayK)
@@ -138,11 +138,6 @@ static void insertNode(TreeNode *t)
             else
                 stInsert(t->attr.name, t->lineno, 0, 0, t->attr.scope, "vector", "integer", 1);
             break;
-        case vectorIdK:
-            if (statementFinderMemloc(t->attr.name, t->attr.scope) == -1 && statementFinderMemloc(t->attr.name, "global") == -1)
-                printSemanticError(t); // Expressão não foi declarada
-            else
-                stInsert(t->attr.name, t->lineno, 0, 0, t->attr.scope, "vector index", "integer", 1);
         case typeK:
             break;
         default:
