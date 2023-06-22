@@ -5,6 +5,7 @@
 #include "analyze.h"
 #include "cgen.h"
 #include "assembly.h"
+#include "binary.h"
 
 /* Variaveis globais */
 int lineno = 0;
@@ -60,6 +61,11 @@ int main(int argc, char *argv[])
 
         printf("\nGerando Codigo Assembly...\n");
         assemblyList = assemblyGen(quadList);
+
+        printf("\nGerando Codigo Binário...\n");
+        binaryGen(assemblyList);
+
+        printf("\nConcluído\n");
     }
 
     fclose(source);
