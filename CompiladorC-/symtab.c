@@ -205,12 +205,12 @@ void printMemInfo(FILE * memoryFile){
                         fprintf(memoryFile,"$sp+%-10d  ",l->memloc);
                     else 
                         fprintf(memoryFile,"%-14d  ",l->memloc);
-                    fprintf(memoryFile,"%-14s  ",l->name);
-                    fprintf(memoryFile,"%-14s  ",l->scope);
-                    fprintf(memoryFile,"%-14s  ",l->typeData);
-                    fprintf(memoryFile,"%-14d  ",l->size); 
+                        fprintf(memoryFile,"%-14s  ",l->name);
+                        fprintf(memoryFile,"%-14s  ",l->scope);
+                        fprintf(memoryFile,"%-14s  ",l->typeData);
+                        fprintf(memoryFile,"%-14d  ",l->size); 
                     if(l->instLine != NULL) fprintf(memoryFile,"%-14d  ",*l->instLine); 
-                fprintf(memoryFile,"\n");
+                        fprintf(memoryFile,"\n");
                 }
                 l = l->next;
             }

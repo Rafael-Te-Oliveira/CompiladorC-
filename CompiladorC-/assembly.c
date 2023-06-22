@@ -349,7 +349,7 @@ void assemblyGen_LOAD(Quad q){                                                  
         else{                                                                                                                       // Se for uma variavel local
             location = statementFinderMemloc(q.arg2,currentScope);                                                                        // Pega o local da variavel na memoria na area local
             if(strcmp(q.arg3,"-") != 0){                                                                                            // Se for um vetor e precisar acessar algum indice
-                if(strcmp(statementFinderType(q.arg2,currentScope),"vetor arg") == 0){                                                     // Se for um vetor como argumento, ele possui o endereco base de um vetor de outro escopo
+                if(strcmp(statementFinderType(q.arg2,currentScope),"vector arg") == 0){                                                     // Se for um vetor como argumento, ele possui o endereco base de um vetor de outro escopo
                     assemblyInsert(LW, tempRegister(q.arg1), $sp, 0, location, lineNo, I, Inst, "");                                // Insere-se a instrucao LW para carregar o endereco base desse vetor
                     lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
                     assemblyInsert(ADD, tempRegister(q.arg1), tempRegister(q.arg1), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // Insere-se a instrucao ADD para pegar o endereco base do vetor + indice
@@ -386,7 +386,7 @@ void assemblyGen_STORE(Quad q){                                                 
     else{                                                                                                           // Se for uma variavel local                                  
         location = statementFinderMemloc(q.arg1,currentScope);                                                            // Pega o local da variavel na memoria na area local
         if(strcmp(q.arg3,"-") != 0){                                                                                // Se for um vetor e precisar acessar algum indice
-            if(strcmp(statementFinderType(q.arg1,currentScope),"vetor arg") == 0){                                         // Se for um vetor como argumento, ele possui o endereco base de um vetor de outro escopo 
+            if(strcmp(statementFinderType(q.arg1,currentScope),"vector arg") == 0){                                         // Se for um vetor como argumento, ele possui o endereco base de um vetor de outro escopo 
                 assemblyInsert(LW, $ad, $sp, 0, location, lineNo, I, Inst, "");                                     // Insere-se a instrucao LW para carregar o endereco base desse vetor no registrador $ad
                 lineNo++;                                                                                           // Soma-se o numero da linha de instrucao
                 assemblyInsert(ADD, $ad, $ad, tempRegister(q.arg3), 0, lineNo, R, Inst, "");                        // Insere-se a instrucao ADD para pegar o endereco base do vetor + indice
