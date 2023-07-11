@@ -24,159 +24,154 @@
 .L0
 22 LW $t9, $sp, 3
 23 LW $t10, $sp, 2
-24 SLT $t11, $t9, $t10
-25 BEQ $t11, $zero, L1
-26 LW $t12, $sp, 3
-27 LW $t13, $sp, 0
-28 ADD $t13, $t13, $t12
-29 LW $t13, $t13, 0
-30 LW $t14, $sp, 4
-31 SLT $t15, $t13, $t14
-32 BEQ $t15, $zero, L2
-33 LW $t16, $sp, 4
-34 LW $t0, $sp, 3
-35 LW $t1, $sp, 0
-36 ADD $t1, $t1, $t0
-37 LW $t1, $t1, 0
-38 ADD $t16, $t1, $zero
-39 SW $t16, $sp, 4
-40 LW $t2, $sp, 5
-41 LW $t3, $sp, 3
-42 ADD $t2, $t3, $zero
-43 SW $t2, $sp, 5
+24 BGE $t9, $t10, $zero
+25 LW $t12, $sp, 3
+26 LW $t13, $sp, 0
+27 ADD $t13, $t13, $t12
+28 LW $t13, $t13, 0
+29 LW $t14, $sp, 4
+30 BGE $t13, $t14, $zero
+31 LW $t16, $sp, 4
+32 LW $t17, $sp, 3
+33 LW $t18, $sp, 0
+34 ADD $t18, $t18, $t17
+35 LW $t18, $t18, 0
+36 ADD $t16, $t18, $zero
+37 SW $t16, $sp, 4
+38 LW $t19, $sp, 5
+39 LW $t20, $sp, 3
+40 ADD $t19, $t20, $zero
+41 SW $t19, $sp, 5
 .L2
-44 LW $t4, $sp, 3
-45 LW $t5, $sp, 3
-46 ADDI $t6, $zero, 1
-47 ADD $t7, $t5, $t6
-48 ADD $t4, $t7, $zero
-49 SW $t4, $sp, 3
-50 J L0
+42 LW $t21, $sp, 3
+43 LW $t22, $sp, 3
+44 ADDI $t23, $zero, 1
+45 ADD $t0, $t22, $t23
+46 ADD $t21, $t0, $zero
+47 SW $t21, $sp, 3
+48 J L0
 .L1
-51 LW $t8, $sp, 5
-52 ADD $v0, $t8, $zero
-53 JR $ra
-54 JR $ra
+49 LW $t1, $sp, 5
+50 ADD $v0, $t1, $zero
+51 JR $ra
+52 JR $ra
 .sort
-55 SW $a0, $sp, 0
-56 SW $a1, $sp, 1
-57 SW $a2, $sp, 2
-58 LW $t9, $sp, 3
-59 LW $t10, $sp, 1
-60 ADD $t9, $t10, $zero
-61 SW $t9, $sp, 3
+53 SW $a0, $sp, 0
+54 SW $a1, $sp, 1
+55 SW $a2, $sp, 2
+56 LW $t2, $sp, 3
+57 LW $t3, $sp, 1
+58 ADD $t2, $t3, $zero
+59 SW $t2, $sp, 3
 .L3
-62 LW $t11, $sp, 3
-63 LW $t12, $sp, 2
-64 ADDI $t13, $zero, 1
-65 SUB $t14, $t12, $t13
-66 SLT $t15, $t11, $t14
-67 BEQ $t15, $zero, L4
-68 LW $t16, $sp, 4
-69 LW $t0, $sp, 0
-70 ADD $a0, $t0, $zero
-71 LW $t1, $sp, 3
-72 ADD $a1, $t1, $zero
-73 LW $t2, $sp, 2
-74 ADD $a2, $t2, $zero
-75 SW $t16, $sp, 6
-76 SW $ra, $sp, 7
-77 ADDI $sp, $sp, 8
-78 JAL minloc
-79 SUBI $sp, $sp, 8
-80 LW $ra, $sp, 7
-81 LW $t16, $sp, 6
-82 ADD $t3, $v0, $zero
-83 ADD $t16, $t3, $zero
-84 SW $t16, $sp, 4
-85 LW $t4, $sp, 5
-86 LW $t5, $sp, 4
-87 LW $t6, $sp, 0
-88 ADD $t6, $t6, $t5
-89 LW $t6, $t6, 0
-90 ADD $t4, $t6, $zero
-91 SW $t4, $sp, 5
-92 LW $t7, $sp, 4
-93 LW $t8, $sp, 0
-94 ADD $t8, $t8, $t7
-95 LW $t8, $t8, 0
-96 LW $t9, $sp, 3
-97 LW $t10, $sp, 0
-98 ADD $t10, $t10, $t9
-99 LW $t10, $t10, 0
-100 ADD $t8, $t10, $zero
-101 LW $ad, $sp, 0
-102 ADD $ad, $ad, $t9
-103 SW $t8, $ad, 0
-104 LW $t11, $sp, 3
-105 LW $t12, $sp, 0
-106 ADD $t12, $t12, $t11
-107 LW $t12, $t12, 0
-108 LW $t13, $sp, 5
-109 ADD $t12, $t13, $zero
-110 LW $ad, $sp, 0
-111 ADD $ad, $ad, $t11
-112 SW $t12, $ad, 0
-113 LW $t14, $sp, 3
-114 LW $t15, $sp, 3
-115 ADDI $t16, $zero, 1
-116 ADD $t0, $t15, $t16
-117 ADD $t14, $t0, $zero
-118 SW $t14, $sp, 3
-119 J L3
+60 LW $t4, $sp, 3
+61 LW $t5, $sp, 2
+62 ADDI $t6, $zero, 1
+63 SUB $t7, $t5, $t6
+64 BGE $t4, $t7, $zero
+65 LW $t9, $sp, 4
+66 LW $t10, $sp, 0
+67 ADD $a0, $t10, $zero
+68 LW $t11, $sp, 3
+69 ADD $a1, $t11, $zero
+70 LW $t12, $sp, 2
+71 ADD $a2, $t12, $zero
+72 SW $t9, $sp, 6
+73 SW $ra, $sp, 7
+74 ADDI $sp, $sp, 8
+75 JAL minloc
+76 SUBI $sp, $sp, 8
+77 LW $ra, $sp, 7
+78 LW $t9, $sp, 6
+79 ADD $t13, $v0, $zero
+80 ADD $t9, $t13, $zero
+81 SW $t9, $sp, 4
+82 LW $t14, $sp, 5
+83 LW $t15, $sp, 4
+84 LW $t16, $sp, 0
+85 ADD $t16, $t16, $t15
+86 LW $t16, $t16, 0
+87 ADD $t14, $t16, $zero
+88 SW $t14, $sp, 5
+89 LW $t17, $sp, 4
+90 LW $t18, $sp, 0
+91 ADD $t18, $t18, $t17
+92 LW $t18, $t18, 0
+93 LW $t19, $sp, 3
+94 LW $t20, $sp, 0
+95 ADD $t20, $t20, $t19
+96 LW $t20, $t20, 0
+97 ADD $t18, $t20, $zero
+98 LW $ad, $sp, 0
+99 ADD $ad, $ad, $t19
+100 SW $t18, $ad, 0
+101 LW $t21, $sp, 3
+102 LW $t22, $sp, 0
+103 ADD $t22, $t22, $t21
+104 LW $t22, $t22, 0
+105 LW $t23, $sp, 5
+106 ADD $t22, $t23, $zero
+107 LW $ad, $sp, 0
+108 ADD $ad, $ad, $t21
+109 SW $t22, $ad, 0
+110 LW $t0, $sp, 3
+111 LW $t1, $sp, 3
+112 ADDI $t2, $zero, 1
+113 ADD $t3, $t1, $t2
+114 ADD $t0, $t3, $zero
+115 SW $t0, $sp, 3
+116 J L3
 .L4
-120 JR $ra
+117 JR $ra
 .main
-121 LW $t1, $sp, 0
-122 ADDI $t2, $zero, 0
-123 ADD $t1, $t2, $zero
-124 SW $t1, $sp, 0
+118 LW $t4, $sp, 0
+119 ADDI $t5, $zero, 0
+120 ADD $t4, $t5, $zero
+121 SW $t4, $sp, 0
 .L5
-125 LW $t3, $sp, 0
-126 ADDI $t4, $zero, 10
-127 SLT $t5, $t3, $t4
-128 BEQ $t5, $zero, L6
-129 LW $t6, $sp, 0
-130 LW $t7, $t6, 0
-131 IN $t8
-132 ADD $t7, $t8, $zero
-133 SW $t7, $t6, 0
-134 LW $t9, $sp, 0
-135 LW $t10, $sp, 0
-136 ADDI $t11, $zero, 1
-137 ADD $t12, $t10, $t11
-138 ADD $t9, $t12, $zero
-139 SW $t9, $sp, 0
-140 J L5
+122 LW $t6, $sp, 0
+123 ADDI $t7, $zero, 10
+124 BGE $t6, $t7, $zero
+125 LW $t9, $sp, 0
+126 LW $t10, $t9, 0
+127 IN $t11
+128 ADD $t10, $t11, $zero
+129 SW $t10, $t9, 0
+130 LW $t12, $sp, 0
+131 LW $t13, $sp, 0
+132 ADDI $t14, $zero, 1
+133 ADD $t15, $t13, $t14
+134 ADD $t12, $t15, $zero
+135 SW $t12, $sp, 0
+136 J L5
 .L6
-141 LW $t13, $zero, 0
-142 ADD $a0, $t13, $zero
-143 ADDI $t14, $zero, 0
-144 ADD $a1, $t14, $zero
-145 ADDI $t15, $zero, 10
-146 ADD $a2, $t15, $zero
-147 ADDI $sp, $sp, 1
-148 JAL sort
-149 SUBI $sp, $sp, 1
-150 LW $t0, $sp, 0
-151 ADDI $t1, $zero, 0
-152 ADD $t0, $t1, $zero
-153 SW $t0, $sp, 0
+137 LW $t16, $zero, 0
+138 ADD $a0, $t16, $zero
+139 ADDI $t17, $zero, 0
+140 ADD $a1, $t17, $zero
+141 ADDI $t18, $zero, 10
+142 ADD $a2, $t18, $zero
+143 ADDI $sp, $sp, 1
+144 JAL sort
+145 SUBI $sp, $sp, 1
+146 LW $t20, $sp, 0
+147 ADDI $t21, $zero, 0
+148 ADD $t20, $t21, $zero
+149 SW $t20, $sp, 0
 .L7
-154 LW $t2, $sp, 0
-155 ADDI $t3, $zero, 10
-156 SLT $t4, $t2, $t3
-157 BEQ $t4, $zero, L8
+150 LW $t22, $sp, 0
+151 ADDI $t23, $zero, 10
+152 BGE $t22, $t23, $zero
+153 LW $t1, $sp, 0
+154 LW $t2, $t1, 0
+155 ADD $a0, $t2, $zero
+156 OUT $a0
+157 LW $t4, $sp, 0
 158 LW $t5, $sp, 0
-159 LW $t6, $t5, 0
-160 ADD $a0, $t6, $zero
-161 OUT $a0
-162 LW $t8, $sp, 0
-163 LW $t9, $sp, 0
-164 ADDI $t10, $zero, 1
-165 ADD $t11, $t9, $t10
-166 ADD $t8, $t11, $zero
-167 SW $t8, $sp, 0
-168 J L7
+159 ADDI $t6, $zero, 1
+160 ADD $t7, $t5, $t6
+161 ADD $t4, $t7, $zero
+162 SW $t4, $sp, 0
+163 J L7
 .L8
-169 HLT
+164 HLT

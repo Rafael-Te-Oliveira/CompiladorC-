@@ -44,6 +44,13 @@ Register tempRegister(char * temp){                 // Retorna o registrador tem
     else if(strcmp(temp,"$t14") == 0) return $t14;
     else if(strcmp(temp,"$t15") == 0) return $t15;
     else if(strcmp(temp,"$t16") == 0) return $t16;
+    else if(strcmp(temp,"$t17") == 0) return $t17;
+    else if(strcmp(temp,"$t18") == 0) return $t18;
+    else if(strcmp(temp,"$t19") == 0) return $t19;
+    else if(strcmp(temp,"$t20") == 0) return $t20;
+    else if(strcmp(temp,"$t21") == 0) return $t21;
+    else if(strcmp(temp,"$t22") == 0) return $t22;
+    else if(strcmp(temp,"$t23") == 0) return $t23;
     else return -1;
 }
 
@@ -104,6 +111,27 @@ char * registerToString(Register r){        // Transforma registradores em strin
         case $t16:
             strcpy(reg,"$t16");
             break;
+        case $t17:
+            strcpy(reg,"$t17");
+            break;
+        case $t18:
+            strcpy(reg,"$t18");
+            break;
+        case $t19:
+            strcpy(reg,"$t19");
+            break;
+        case $t20:
+            strcpy(reg,"$t20");
+            break;
+        case $t21:
+            strcpy(reg,"$t21");
+            break;
+        case $t22:
+            strcpy(reg,"$t22");
+            break;
+        case $t23:
+            strcpy(reg,"$t23");
+            break;
         case $a0:
             strcpy(reg,"$a0");
             break;
@@ -113,24 +141,6 @@ char * registerToString(Register r){        // Transforma registradores em strin
         case $a2:
             strcpy(reg,"$a2");
             break;
-        case $a3:
-            strcpy(reg,"$a3");
-            break;
-        case $a4:
-            strcpy(reg,"$a4");
-            break;
-        case $a5:
-            strcpy(reg,"$a5");
-            break;
-        case $a6:
-            strcpy(reg,"$a6");
-            break;
-        case $a7:
-            strcpy(reg,"$a7");
-            break;
-        case $a8:
-            strcpy(reg,"$a8");
-            break;
         case $ad:
             strcpy(reg,"$ad");
             break;
@@ -139,9 +149,6 @@ char * registerToString(Register r){        // Transforma registradores em strin
             break;
         case $sp:
             strcpy(reg,"$sp");
-            break;
-        case $md:
-            strcpy(reg,"$md");
             break;
         case $ra:
             strcpy(reg,"$ra");
@@ -259,7 +266,7 @@ void assemblyGen_ALLOC(Quad q){                                     // Tratament
 
 void assemblyGen_CALL(Quad q){                                                              // Tratamento da quadrupla CALL
     if(strcmp(q.arg2,"input") == 0){                                                        // Se for a funcao input
-        assemblyInsert(IN, tempRegister(q.arg1), 0, 0, 0, lineNo, R, Inst, "");             // Insere-se a instrucao IN salvando o valor no registrador temp
+        assemblyInsert(IN, tempRegister(q.arg1), tempRegister(q.arg1), tempRegister(q.arg1), 0, lineNo, R, Inst, "");             // Insere-se a instrucao IN salvando o valor no registrador temp
         lineNo++;                                                                           // Soma-se o numero da linha de instrucao
         unusedRegInsert(tempRegister(q.arg1));                                              // Insere-se na lista de regs nao usados o temp que se armazena o retorno da funcao IN
     }
@@ -428,7 +435,7 @@ void assemblyGen_IFF(Quad q){                                                   
     if(checkNotSet == 0)                                                                    // Caso nao seja um IFF de um LET ou GET
         assemblyInsert(BEQ, tempRegister(q.arg1), $zero, 0, 0, lineNo, I, Inst, q.arg2);    // Insere-se a instrucao BEQ para pulo ao label caso o temp da quadrupla seja falso (temp == 0)
     else{                                                                                   // Caso seja de um LET ou GET
-        assemblyInsert(BNEQ, tempRegister(q.arg1), $zero, 0, 0, lineNo, I, Inst, q.arg2);   // Insere-se a instrucao BNEQ para pulo ao label caso o temp da quadrupla seja falso (temp != 0)
+        assemblyInsert(BNE, tempRegister(q.arg1), $zero, 0, 0, lineNo, I, Inst, q.arg2);   // Insere-se a instrucao BNE para pulo ao label caso o temp da quadrupla seja falso (temp != 0)
         checkNotSet = 0;                                                                    // Reseta a flag para controle
     }
     lineNo++;                                                                               // Soma-se o numero da linha de instrucao
@@ -448,42 +455,8 @@ void assemblygen_Arithmetic(Quad q){                                            
     unusedRegInsert(tempRegister(q.arg1));                                                                                  // Insere-se o reg temp destino na lista de nao usado
 }
 
-void assemblyGen_LT(Quad q){                                                                                        // Tratamento da quadrupla LT
-    assemblyInsert(SLT, tempRegister(q.arg1), tempRegister(q.arg2), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // Insere-se a instrucao SLT (rd = 1 se rs < rt, ou rd = 0 se rs >= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado
-    unusedRegInsert(tempRegister(q.arg1));                                                                          // Insere-se o reg temp destino na lista de nao usado
-}
-
-void assemblyGen_LET(Quad q){                                                                                       // Tratamento da quadrupla LET
-    assemblyInsert(SGT, tempRegister(q.arg1), tempRegister(q.arg2), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // Insere-se a instrucao SGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    checkNotSet = 1;                                                                                                // Seta a flag para que na quad IFF cheque se o temp é 0 (0 == TRUE)
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado
-    unusedRegInsert(tempRegister(q.arg1));                                                                          // Insere-se o reg temp destino na lista de nao usado
-}
-
-void assemblyGen_GT(Quad q){                                                                                        // Tratamento da quadrupla GT
-    assemblyInsert(SGT, tempRegister(q.arg1), tempRegister(q.arg2), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // Insere-se a instrucao SGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado
-    unusedRegInsert(tempRegister(q.arg1));                                                                          // Insere-se o reg temp destino na lista de nao usado
-}
-
-void assemblyGen_GET(Quad q){                                                                                       // Tratamento da quadrupla GET
-    assemblyInsert(SLT, tempRegister(q.arg1), tempRegister(q.arg2), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // Insere-se a instrucao SLT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    checkNotSet = 1;                                                                                                // Seta a flag para que na quad IFF checa se o temp é 0 (0 == TRUE)
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado
-    unusedRegInsert(tempRegister(q.arg1));                                                                          // Insere-se o reg temp destino na lista de nao usado
-}
-
 void assemblyGen_EQ(Quad q, Quad branchInfo){                                                                   // Tratamento da quadrupla EQ
-    assemblyInsert(BNEQ, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);   // Insere-se a instrucao BNEQ, pulando para o respectivo label da quad IFF se os temps da quad EQ nao forem iguais  
+    assemblyInsert(BNE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);   // Insere-se a instrucao BNE, pulando para o respectivo label da quad IFF se os temps da quad EQ nao forem iguais  
     lineNo++;                                                                                                   // Soma-se o numero da linha de instrucao
     unusedRegRemove(tempRegister(q.arg2));                                                                      // Remove-se o reg temp referente ao operando 1 da lista de nao usado
     unusedRegRemove(tempRegister(q.arg3));                                                                      // Remove-se o reg temp referente ao operando 2 da lista de nao usado
@@ -494,6 +467,35 @@ void assemblyGen_NEQ(Quad q, Quad branchInfo){                                  
     lineNo++;                                                                                                   // Soma-se o numero da linha de instrucao
     unusedRegRemove(tempRegister(q.arg2));                                                                      // Remove-se o reg temp referente ao operando 1 da lista de nao usado
     unusedRegRemove(tempRegister(q.arg3));                                                                      // Remove-se o reg temp referente ao operando 2 da lista de nao usado
+}
+
+void assemblyGen_LT(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla LT
+    assemblyInsert(BGE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
+    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
+    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
+    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                          // Insere-se o reg temp destino na lista de nao usado
+}
+
+
+void assemblyGen_GT(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla GT
+    assemblyInsert(BLE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
+    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
+    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
+    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                        // Insere-se o reg temp destino na lista de nao usado
+}
+
+void assemblyGen_LET(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla LT
+    assemblyInsert(BGT, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
+    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
+    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
+    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                          // Insere-se o reg temp destino na lista de nao usado
+}
+
+void assemblyGen_GET(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla GT
+    assemblyInsert(BLT, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
+    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
+    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
+    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                        // Insere-se o reg temp destino na lista de nao usado
 }
 
 void assemblyGen_HLT(Quad q){                               // Tratamento da quadrupla HLT
@@ -528,14 +530,23 @@ void printAssembly(FILE * assemblyFile){ // Funcao para print do codigo Assembly
                     case OR:
                         fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "OR", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
                         break;
-                    case XOR:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "XOR", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                    case BEQ:
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BEQ", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.label);
                         break;
-                    case SLT:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "SLT", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                    case BNE:
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BNE", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.label);
                         break;
-                    case SGT:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "SGT", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                    case BLT:
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BLT", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        break;
+                    case BGT:
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BGT", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        break;
+                    case BLE:
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BLE", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        break;
+                    case BGE:
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BGE", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
                         break;
                     case JR:
                         fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "JR", registerToString(i->inst.rd));
@@ -552,23 +563,11 @@ void printAssembly(FILE * assemblyFile){ // Funcao para print do codigo Assembly
                     case SUBI:
                         fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "SUBI", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
                         break;
-                    case BEQ:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BEQ", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.label);
-                        break;
-                    case BNEQ:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BNEQ", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.label);
-                        break;
                     case LW:
                         fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "LW", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
                         break;
                     case SW:
                         fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "SW", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
-                        break;
-                    case SR:
-                        fprintf(assemblyFile, "%d %s %s, %s\n", i->inst.lineNo, "SR", registerToString(i->inst.rd), registerToString(i->inst.rs));
-                        break;
-                    case SL:
-                        fprintf(assemblyFile, "%d %s %s, %s\n", i->inst.lineNo, "SL", registerToString(i->inst.rd), registerToString(i->inst.rs));
                         break;
                     case J:
                         fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "J", i->inst.label);
@@ -635,15 +634,27 @@ InstructionList assemblyGen(QuadList head){
         else if(strcmp(q->quad.op,"SUB") == 0) assemblygen_Arithmetic(q->quad);
         else if(strcmp(q->quad.op,"MUL") == 0) assemblygen_Arithmetic(q->quad);
         else if(strcmp(q->quad.op,"DIV") == 0) assemblygen_Arithmetic(q->quad);
-        else if(strcmp(q->quad.op,"LT") == 0) assemblyGen_LT(q->quad);
-        else if(strcmp(q->quad.op,"LET") == 0) assemblyGen_LET(q->quad);
-        else if(strcmp(q->quad.op,"GT") == 0) assemblyGen_GT(q->quad);
-        else if(strcmp(q->quad.op,"GET") == 0) assemblyGen_GET(q->quad);
-        else if(strcmp(q->quad.op,"EQ") == 0){                                  // Se for um EQ passa também a quadrupla seguinte de IFF
+        else if(strcmp(q->quad.op,"LT") == 0){
+            assemblyGen_LT(q->quad, q->next->quad);
+            q = q->next;
+        }
+        else if(strcmp(q->quad.op,"GT") == 0){
+            assemblyGen_GT(q->quad, q->next->quad);
+            q = q->next;
+        } 
+        else if(strcmp(q->quad.op,"LET") == 0){
+            assemblyGen_LET(q->quad, q->next->quad);
+            q = q->next;
+        }
+        else if(strcmp(q->quad.op,"GET") == 0){
+            assemblyGen_GET(q->quad, q->next->quad);
+            q = q->next;
+        } 
+        else if(strcmp(q->quad.op,"EQ") == 0){                                 
             assemblyGen_EQ(q->quad, q->next->quad);
             q = q->next;
         }
-        else if(strcmp(q->quad.op,"NEQ") == 0){                                 // Se for um NEQ passa também a quadrupla seguinte de IFF
+        else if(strcmp(q->quad.op,"NEQ") == 0){                              
             assemblyGen_NEQ(q->quad, q->next->quad);
             q = q->next;
         }

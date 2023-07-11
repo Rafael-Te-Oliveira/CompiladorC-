@@ -48,9 +48,9 @@ static void nullProc(TreeNode *t)
 }
 
 /* Printa erro semantico no console */
-static void printSemanticError(TreeNode *tree)
+static void printSemanticError(TreeNode *tree, char * message)
 {
-    fprintf(listing, "ERRO SEMÂNTICO: %s LINHA: %d\n", tree->attr.name, tree->lineno);
+    fprintf(listing, "ERRO SEMÂNTICO: %s LINHA: %d %s\n", tree->attr.name, tree->lineno, message);
     Error = TRUE;
 }
 
@@ -64,39 +64,39 @@ static void insertNode(TreeNode *t)
         switch (t->kind.stmt){
 
         case variableK:
-            if (statementFinderMemloc(t->attr.name, t->attr.scope) == -1 && statementFinderMemloc(t->attr.name, "global") == -1){
+            if (!statementFinder(t->attr.name, t->attr.scope) && !statementFinder(t->attr.name, "global")){
                 if(t->type != voidK){
                     if(t->type == arrayK){
                     stInsert(t->attr.name, t->lineno, 0, location++, t->attr.scope, "variable", "vector", t->attr.len); // Nova def de variavel
                     }
                     else
-                                stInsert(t->attr.name, t->lineno,location++, 0, t->attr.scope, "variable", "integer", 1); // Nova def de variavel
+                            stInsert(t->attr.name, t->lineno, 0, location++, t->attr.scope, "variable", "integer", 1); // Nova def de variavel
                         }
                         else
-                            printSemanticError(t); //Variavel declarada como void 
+                            printSemanticError(t, "Variavel declarada como void"); 
                     } 
                     else
-                        printSemanticError(t); //Variavel ja declarada 
+                        printSemanticError(t, "Variavel ja declarada!"); 
                     break;
         
         case paramK:
-                    if (statementFinderMemloc(t->attr.name, t->attr.scope)==-1 && statementFinderMemloc(t->attr.name, "global")== -1){ // Variavel nao esta na tabela
+                    if (!statementFinder(t->attr.name, t->attr.scope) && !statementFinder(t->attr.name, "global")){ // Variavel nao esta na tabela
                         if(t->type != voidK){
                                 if(t->type == arrayK)
-                                    stInsert(t->attr.name, t->lineno,location++, 0, t->attr.scope, "variable", "vector arg", 2); // Nova def de variavel
+                                    stInsert(t->attr.name, t->lineno, 0, location++, t->attr.scope, "variable", "vector arg", 2); // Nova def de variavel
                                 else
-                                    stInsert(t->attr.name, t->lineno,location++, 0, t->attr.scope, "variable", "integer", 1); // Nova def de variavel
+                                    stInsert(t->attr.name, t->lineno, 0, location++, t->attr.scope, "variable", "integer", 1); // Nova def de variavel
                         }
                         else
-                            printSemanticError(t); // Variavel declarada como void"  
+                            printSemanticError(t, "Variavel declarada como void"); 
                     } 
                     else
-                        printSemanticError(t); //Variavel ja declarada
+                        printSemanticError(t, "Variavel ja declarada");
                     break;
         
         case functionK:
             numParam = paramCounter(t); //conta parametros
-            if (statementFinderMemloc(t->attr.name, t->attr.scope) == -1 && statementFinderMemloc(t->attr.name, "global") == -1)
+            if (!statementFinder(t->attr.name, t->attr.scope) && !statementFinder(t->attr.name, "global"))
             {
                 if (t->type == integerK)
                     stInsert(t->attr.name, t->lineno, numParam, location++, t->attr.scope, "function", "integer", 1);
@@ -104,12 +104,12 @@ static void insertNode(TreeNode *t)
                     stInsert(t->attr.name, t->lineno, numParam, location++, t->attr.scope, "function", "void", 1);
             }
             else
-                printSemanticError(t);// Função já foi declarada
+                printSemanticError(t, "Função já foi declarada");
             break;
         case callK:
             numParam = paramCounter(t);
-            if (statementFinderMemloc(t->attr.name, t->attr.scope) == -1 && statementFinderMemloc(t->attr.name, "global") == -1)
-                printSemanticError(t); // Chamada de função inválida
+            if ((strcmp(t->attr.name, "input") != 0 && strcmp(t->attr.name, "output") != 0) && (!statementFinder(t->attr.name, t->attr.scope) && !statementFinder(t->attr.name, "global")))
+                printSemanticError(t, "Chamada de função inválida");
             else
                 stInsert(t->attr.name, t->lineno, numParam, location++, t->attr.scope, "call", "-", 1);
         case returnK:
@@ -122,8 +122,8 @@ static void insertNode(TreeNode *t)
         switch (t->kind.exp)
         {
         case idK:
-            if (statementFinderMemloc(t->attr.name, t->attr.scope) == -1 && statementFinderMemloc(t->attr.name, "global") == -1)
-                printSemanticError(t); // Expressão não foi declarada
+            if (!statementFinder(t->attr.name, t->attr.scope) && !statementFinder(t->attr.name, "global"))
+                printSemanticError(t, "Identificador não foi declarado");
             else{
                 if(t->type == arrayK)
                             stInsert(t->attr.name, t->lineno, 0, 0, t->attr.scope, "variable", "vector", 1); // Insere id na tabela
@@ -131,13 +131,24 @@ static void insertNode(TreeNode *t)
                             stInsert(t->attr.name, t->lineno, 0, 0, t->attr.scope, "variable", "integer", 1); // Insere id na tabela
                     }
             break;
-            
+
         case vectorK:
-            if (statementFinderMemloc(t->attr.name, t->attr.scope) == -1 && statementFinderMemloc(t->attr.name, "global") == -1)
-                printSemanticError(t); // Expressão não foi declarada
-            else
-                stInsert(t->attr.name, t->lineno, 0, 0, t->attr.scope, "vector", "integer", 1);
-            break;
+                    if (!statementFinder(t->attr.name, t->attr.scope) && !statementFinder(t->attr.name, "global"))// Vetor nao esta na tabela
+                        printSemanticError(t,"Vetor nao declarado");
+                    else{
+                        if(t->child[0]->kind.exp == constantK && statementFinder(t->attr.name,"global")){
+                            if (t->child[0]->attr.val >= statementFinderSize(t->attr.name,"global"))
+                                printSemanticError(t,"Indice de vetor fora do intervalo");
+                        }
+                        else if(t->child[0]->kind.exp == constantK){
+                            if (t->child[0]->attr.val >= statementFinderSize(t->attr.name,t->attr.scope) && strcmp(statementFinderType(t->attr.name,t->attr.scope),"vector arg") != 0)
+                                printSemanticError(t,"Indice de vetor fora do intervalo");
+                        }
+                        stInsert(t->attr.name,t->lineno, 0, 0, t->attr.scope, "variable", "vector", 1); // Insere vetor na tabela
+                    }
+                    break;
+
+
         case typeK:
             break;
         default:
@@ -154,7 +165,7 @@ void buildSymtab(TreeNode *syntaxTree)// Cria tabela de simbolos
     stInsert("output",0, 0, location++, "global","função", "integer", 1);
     stInsert("input",0, 0, location++, "global","função", "integer", 1);
     traverse(syntaxTree, insertNode, nullProc);
-    if (statementFinderMemloc("main", "global") == -1)
+    if (!statementFinder("main", "global"))
     {
         printf("ERRO SEMÂNTICO: main()\n");
         Error = TRUE;
@@ -167,29 +178,48 @@ static void checkNode(TreeNode *t) // Checa tipos
 {
     switch (t->nodekind)
     {
-    case expressionK:
-        switch (t->kind.exp)
-        {
-        case operationK:
-            break;
-        default:
-            break;
-        }
-        break;
     case statementK:
         switch (t->kind.stmt)
         {
         case ifK:
             if (t->child[0]->type == integerK && t->child[1]->type == integerK)
-                printSemanticError(t->child[0]); // Expressão do IF inválida
+                printSemanticError(t->child[0], "Expressão do IF inválida");
             break;
+        case whileK:
+            if (t->child[0]->type == integerK && t->child[1]->type == integerK)
+                printSemanticError(t->child[0], "Expressão do WHILE inválida");
+            break;
+       case variableK:
+             if (t->type == arrayK && t->child[0] == NULL && t->attr.len == 0)
+                printSemanticError(t,"Uso de vetor sem index");
+            else if (statementFinder(t->attr.name, "global")){ // Variavel declarada no escopo global com conflitos no uso
+                if(t->type == integerK && strcmp(statementFinderType(t->attr.name, "global"), "vector") == 0)
+                    printSemanticError(t,"Variavel declarada como vetor sendo usada como inteiro");
+                else if (t->type == arrayK && strcmp(statementFinderType(t->attr.name, "global"), "integer") == 0)
+                    printSemanticError(t,"Variavel declarada como inteiro sendo usada como vetor");
+            }
+            break;
+       
         case assignK:
             if (t->child[0]->type == voidK || t->child[1]->type == voidK)
-                printSemanticError(t->child[0]); // Atribuição de valor não inteiro
+                printSemanticError(t->child[0], "Atribuição de valor não inteiro");
             else if (t->child[1]->kind.stmt == callK)
                 if ((statementFinderType(t->child[1]->attr.name, t->child[1]->attr.scope) == voidK))
-                    printSemanticError(t->child[1]); //  Atribuição de função VOID
+                    printSemanticError(t->child[1], "Atribuição em função VOID");
             break;
+
+        case callK:
+                    if(strcmp(t->attr.name, "input") == 0 && statementFinderNparam(t->attr.name, t->attr.scope) != 0){ // Erro input com parametro
+                        printSemanticError(t, "Quantidade de parametros diferente da definicao");
+                    }
+                    else if(strcmp(t->attr.name, "output") == 0 && statementFinderNparam(t->attr.name, t->attr.scope) != 1) { // Erro output com parametro conflitante
+                        printSemanticError(t, "Quantidade de parametros diferente da definicao");
+                    }
+			        else if( (strcmp(t->attr.name, "input") != 0 && strcmp(t -> attr.name, "output") != 0) && (statementFinderNparam(t->attr.name, t->attr.scope) != statementFinderNparam(t->attr.name, "global"))){ // Erro funcao com parametro diferente da declaracao
+				        printSemanticError(t, "Quantidade de parametros diferente da definicao");
+			        }
+		            break;
+        
         default:
             break;
         }

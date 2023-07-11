@@ -51,7 +51,7 @@ var_declaration     :   INT ident SEMICOLON
                  |   INT ident OPEN_BRACKET num CLOSE_BRACKET SEMICOLON{
                         $$ = newExpNode(typeK);
                         $$->type = integerK;
-                        $$->attr.name = "integer";
+                        $$->attr.name = "vector integer";
                         $$->child[0] = $2;
                         $2->nodekind = statementK;
                         $2->kind.stmt = variableK;
@@ -138,9 +138,10 @@ param               :   INT ident
 							$2->nodekind = statementK;
                             $2->kind.stmt = paramK;
                             $$->type = arrayK;
+                            $2->type = arrayK;
                             $$->attr.name = "vector integer";
                             $$->child[0] = $2;
-						    $2->type = arrayK;
+						    
                         }
                     ;
                     

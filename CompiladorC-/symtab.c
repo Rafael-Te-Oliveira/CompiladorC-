@@ -13,13 +13,13 @@ static int hash (char* name, char* scope)
     while (name[i] != '\0')
     { 
         temp = ((temp << SHIFT) + name[i]) % SIZE;
-        ++i;
+        i++;
     }
     i = 0;
     while (scope[i] != '\0')
     { 
         temp = ((temp << SHIFT) + scope[i]) % SIZE;
-        ++i;
+        i++;
     }
     return temp;
 }
@@ -35,7 +35,7 @@ typedef struct BucketListRec
 { 
      char* name;
      LineList lines;
-     int memloc ; 
+     int memloc; 
      int nParam;
      int size;
 	 char* scope;
@@ -63,7 +63,7 @@ void stInsert( char * name, int lineno,int nParam, int memloc, char* scope,
         l->lines = (LineList) malloc(sizeof(struct LineListRec));
         l->lines->lineno = lineno;
         l->nParam = nParam;
-        l->memloc = memloc;
+        l->memloc = -1;
         l->size = size;
         l->lines->next = NULL;
         l->scope = scope;
@@ -76,11 +76,13 @@ void stInsert( char * name, int lineno,int nParam, int memloc, char* scope,
     else
     {
         LineList t = l->lines;
-        while (t->next != NULL) 
+        while (t->next != NULL && t->lineno != lineno) 
             t = t->next;
+        if(t->lineno != lineno){
         t->next = (LineList) malloc(sizeof(struct LineListRec));
         t->next->lineno = lineno;
-        t->next->next = NULL;  
+        t->next->next = NULL; 
+        } 
     }
 } 
 
@@ -223,7 +225,7 @@ void printMemInfo(FILE * memoryFile){
         if (hashTable[i] != NULL){ 
             BucketList l = hashTable[i];
             while (l != NULL){
-                if(strcmp(l->typeID,"funcao") == 0){
+                if(strcmp(l->typeID,"function") == 0){
                     fprintf(memoryFile,"---------       ");
                     fprintf(memoryFile,"%-14s  ",l->name);
                     fprintf(memoryFile,"%-14s  ",l->scope);

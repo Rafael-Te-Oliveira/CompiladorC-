@@ -4,12 +4,12 @@
 #include "cgen.h"
 
 typedef enum{
-    ADD, SUB, MUL, DIV, NOT, AND, OR, XOR, SLT, SGT, JR, IN, OUT, ADDI, SUBI, BEQ, BNEQ, LW, SW, SR, SL, J, JAL, NOP, HLT 
+    NADA, ADDI, SUBI, J, JR, BEQ, BNE, BLT, BGT, BLE, BGE, LW, SW, JAL, OUT, IN, NOP, HLT, ADD, SUB, MUL, DIV, AND, OR, NOT
 }InstructionKind;
 
 typedef enum{   
-    $zero, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $t12, $t13, $t14, $t15, $t16,
-    $a0, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $ad, $v0, $sp, $md, $ra
+    $zero, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $t12, $t13, $t14, $t15, $t16, $t17,
+    $t18, $t19, $t20, $t21, $t22, $t23, $a0, $a1, $a2, $ad, $v0, $sp, $ra
 }Register;
 // $zero: possui sempre o valor 0
 // $t: registradores temporarios
@@ -17,7 +17,6 @@ typedef enum{
 // $ad: registrador de endereco para variaveis vetores como argumentos
 // $v0: regsitrador de retorno de funcao int
 // $sp: registrador de topo de pilha
-// $md: resto de divisao
 // $ra: endereco de retorno de chamada de funcao
 
 typedef enum{

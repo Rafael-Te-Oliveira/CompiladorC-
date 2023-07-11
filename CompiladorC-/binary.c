@@ -18,11 +18,39 @@ void decimalToBinaryPrint(int number, int bitNo, FILE * binFile){   // Funcao qu
 
 void binaryInsert(int opCode, int rd, int rs, int rt, int IMM, Type type){      // Insere uma instrucao binaria
     BinInstruction newInst;
-    newInst.opCode = opCode;
+    if (opCode>17) {
+        newInst.opCode = 0;
+        switch (opCode){
+            case 18:
+                newInst.IMM = 0;
+                break;
+            case 19:
+                newInst.IMM = 1;
+                break;
+            case 20:
+                newInst.IMM = 2;
+                break;
+            case 21:
+                newInst.IMM = 3;
+                break;
+            case 22:
+                newInst.IMM = 4;
+                break;
+            case 23:
+                newInst.IMM = 5;
+                break;
+            case 24:
+                newInst.IMM = 6;
+                break;
+        }
+    }
+    else {
+        newInst.opCode = opCode;
+        newInst.IMM = IMM;
+    }
     newInst.rd = rd;
     newInst.rs = rs;
     newInst.rt = rt;
-    newInst.IMM = IMM;
     newInst.type = type;
     BinaryList newBinary = (BinaryList) malloc(sizeof(struct BinaryListRec));
     newBinary->bin = newInst;
@@ -37,7 +65,9 @@ void binaryInsert(int opCode, int rd, int rs, int rt, int IMM, Type type){      
 }
 
 void binaryGen_I_Type(Instruction inst){                                                    // Trata as instrucoes do tipo I
-    if(inst.instKind == BEQ || inst.instKind == BNEQ){                                      // Se a instrucao usar branch para pular para algum endereco
+    if(inst.instKind == BEQ || inst.instKind == BNE 
+    || inst.instKind == BLT || inst.instKind == BGT
+    || inst.instKind == BLE || inst.instKind == BGE){                                      // Se a instrucao usar branch para pular para algum endereco
         int instLine = searchInstLine_Label(atoi(&inst.label[1]));                          // Branch sempre para labels, logo deve-se procurar a linha de instrucao referente a ele
         binaryInsert(inst.instKind, inst.rd, inst.rs, inst.rt, instLine, inst.type);        // Insere a instrucao com as respectivas informacoes
     }
@@ -65,25 +95,25 @@ void printBinary(FILE * binFile){                                               
     while(b != NULL){
         switch(b->bin.type){
             case R:
-                decimalToBinaryPrint(b->bin.opCode, 5, binFile);
+                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
                 decimalToBinaryPrint(b->bin.rd, 5, binFile);
                 decimalToBinaryPrint(b->bin.rs, 5, binFile);
                 decimalToBinaryPrint(b->bin.rt, 5, binFile);
-                decimalToBinaryPrint(0, 12, binFile);
+                decimalToBinaryPrint(b->bin.IMM, 11, binFile);
                 break;
             case I:
-                decimalToBinaryPrint(b->bin.opCode, 5, binFile);
+                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
                 decimalToBinaryPrint(b->bin.rd, 5, binFile);
                 decimalToBinaryPrint(b->bin.rs, 5, binFile);
-                decimalToBinaryPrint(b->bin.IMM, 17, binFile);
+                decimalToBinaryPrint(b->bin.IMM, 16, binFile);
                 break;
             case JP:
-                decimalToBinaryPrint(b->bin.opCode, 5, binFile);
-                decimalToBinaryPrint(b->bin.IMM, 27, binFile);
+                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
+                decimalToBinaryPrint(b->bin.IMM, 26, binFile);
                 break;
             case O:
-                decimalToBinaryPrint(b->bin.opCode, 5, binFile);
-                decimalToBinaryPrint(0, 27, binFile);
+                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
+                decimalToBinaryPrint(0, 26, binFile);
                 break;
         }
         fprintf(binFile,"\n");
@@ -120,7 +150,7 @@ void binaryGen(InstructionList instListHead){                                   
         i = i->next;
     }
 
-    FILE * codefile = fopen("Output/codigoBinario.output", "w+");
+    FILE * codefile = fopen("Output/codigoBinario.txt", "w+");
     printBinary(codefile);
     fclose(codefile);
 }

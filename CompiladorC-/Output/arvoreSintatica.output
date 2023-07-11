@@ -238,7 +238,7 @@
 	47: }
 	48: }
 	50: EOF
-Type integer
+Type vector integer
   Variable vet
 Type integer
   Function minloc

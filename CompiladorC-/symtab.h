@@ -8,9 +8,7 @@
  */
 void stInsert( char * name, int lineno,int nParam, int memloc, char* scope, char* typeID, char* typeData, int size);
 
-/* Function statementFinder returns the memory 
- * location of a variable or -1 if not found
- */
+
 int statementFinder (char * name, char* scope );
 
 int statementFinderMemloc (char* name, char* scope);

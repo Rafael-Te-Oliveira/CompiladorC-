@@ -5,31 +5,27 @@ $sp+1           low             minloc          integer         1
 0               vet             global          vector          10              
 $sp+4           x               minloc          integer         1               
 $sp+1           low             sort            integer         1               
-$sp+20          input           main            -               1               
 $sp+2           high            sort            integer         1               
-0               output          global          integer         1               
 $sp+4           k               sort            integer         1               
 $sp+0           a               sort            vector arg      2               
-$sp+0           vet             main            integer         1               
-1               input           global          integer         1               
 $sp+5           t               sort            integer         1               
 $sp+5           k               minloc          integer         1               
 $sp+2           high            minloc          integer         1               
 $sp+0           i               main            integer         1               
-$sp+17          minloc          sort            -               1               
-$sp+21          sort            main            -               1               
-$sp+22          output          main            -               1               
 $sp+3           i               minloc          integer         1               
 $sp+3           i               sort            integer         1               
 
 ----------------------------------------------------------------------------------------------------
 
+---------       main            global          void            ----------      118             
+---------       sort            global          void            ----------      53              
+---------       minloc          global          integer         ----------      2               
 ---------       L0              ----------      label           ----------      22
----------       L1              ----------      label           ----------      51
----------       L2              ----------      label           ----------      44
----------       L3              ----------      label           ----------      62
----------       L4              ----------      label           ----------      120
----------       L5              ----------      label           ----------      125
----------       L6              ----------      label           ----------      141
----------       L7              ----------      label           ----------      154
----------       L8              ----------      label           ----------      169
+---------       L1              ----------      label           ----------      49
+---------       L2              ----------      label           ----------      42
+---------       L3              ----------      label           ----------      60
+---------       L4              ----------      label           ----------      117
+---------       L5              ----------      label           ----------      122
+---------       L6              ----------      label           ----------      137
+---------       L7              ----------      label           ----------      150
+---------       L8              ----------      label           ----------      164

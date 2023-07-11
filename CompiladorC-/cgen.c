@@ -20,7 +20,7 @@ char * newLabel(){                                                      // Funca
 char * newTemp(){                                                       // Funcao que cria novo temp
     char * temp = (char *)malloc((ntemp_size + 3) * sizeof(char));
     sprintf(temp, "$t%d", ntemp);
-    ntemp = (ntemp + 1) % 17;                                           // Limite de temp $t0 - $t16
+    ntemp = (ntemp + 1) % 24;                                           // Limite de temp $t0 - $t17
     return temp;
 }
 
