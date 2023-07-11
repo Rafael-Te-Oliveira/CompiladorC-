@@ -128,9 +128,9 @@ void genStatement(TreeNode * tree){
             arg3 = "-";
             quadInsert("ASSIGN", arg1, arg2, arg3);
 
-            if(indexFlag == 1){                         // Caso a variavel em que deve ser armazenada seja um vetor
+            if(indexFlag > 1){                         // Caso a variavel em que deve ser armazenada seja um vetor
                 arg3 = tempAux2;                        // Carrega-se o temp usado como indice
-                indexFlag = 0;                          // Reseta-se a flag para uso posterior caso necessario
+                indexFlag--;                          // Reseta-se a flag para uso posterior caso necessario
             }
             aux1 = arg1;
             arg1 = tree->child[0]->attr.name;
@@ -271,7 +271,10 @@ void genExpression(TreeNode * tree){
         case vectorK:
             cGen(tree->child[0]);
             arg3 = tempAux;
-            if(indexFlag == 1)  tempAux2 = arg3;
+            if(indexFlag == 1)  {
+                tempAux2 = arg3;
+                indexFlag++;
+            }
             tempAux = newTemp();
             arg1 = tempAux;
             arg2 = tree->attr.name;

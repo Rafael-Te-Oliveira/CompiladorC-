@@ -1,31 +1,13 @@
   Local             Nome          Escopo         TipoDado         Tamanho        Linha da instrucao
 ---------       ------------    ----------      ----------      -----------     --------------------
-$sp+0           a               minloc          vector arg      2               
-$sp+1           low             minloc          integer         1               
-0               vet             global          vector          10              
-$sp+4           x               minloc          integer         1               
-$sp+1           low             sort            integer         1               
-$sp+2           high            sort            integer         1               
-$sp+4           k               sort            integer         1               
-$sp+0           a               sort            vector arg      2               
-$sp+5           t               sort            integer         1               
-$sp+5           k               minloc          integer         1               
-$sp+2           high            minloc          integer         1               
-$sp+0           i               main            integer         1               
-$sp+3           i               minloc          integer         1               
-$sp+3           i               sort            integer         1               
+$sp+0           p               gcd             integer         1               
+$sp+1           y               main            integer         1               
+$sp+1           v               gcd             integer         1               
+$sp+0           x               main            integer         1               
 
 ----------------------------------------------------------------------------------------------------
 
----------       main            global          void            ----------      118             
----------       sort            global          void            ----------      53              
----------       minloc          global          integer         ----------      2               
----------       L0              ----------      label           ----------      22
----------       L1              ----------      label           ----------      49
----------       L2              ----------      label           ----------      42
----------       L3              ----------      label           ----------      60
----------       L4              ----------      label           ----------      117
----------       L5              ----------      label           ----------      122
----------       L6              ----------      label           ----------      137
----------       L7              ----------      label           ----------      150
----------       L8              ----------      label           ----------      164
+---------       main            global          void            ----------      30              
+---------       gcd             global          integer         ----------      2               
+---------       L0              ----------      label           ----------      11
+---------       L1              ----------      label           ----------      29

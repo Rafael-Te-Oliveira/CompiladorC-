@@ -1,23 +1,26 @@
-int vet [5];
+void atribui(int a[], int b, int c){
+    b = 8;
+    c = 10;
 
-void imprime(int a[]){
-
-    output(a[0]);
-    output(a[1]);
-    output(a[2]);
-    output(a[3]);
-    output(a[4]);
+    a[0] = 1;
+    a[0] = a[0]*b;
+    a[1] = 11;
+    a[1] = a[0]*c;
+    a[2] = 111;
+    a[3] = a[1];
+    a[4] = a[0];
 }
 
 void main(void){
-    int i; int k; 
-    i = 10;
-    k = 100;
-    vet[0] = 1;
-    vet[1] = 11;
-    vet[2] = 111;
-    vet[3] = 1111;
-    vet[4] = 8888;
+    int vetor[5];
+    int x; int y;
+
+    atribui(vetor, x, y);
+
+    output(vetor[0]);
+    output(vetor[1]);
+    output(vetor[2]);
+    output(vetor[3]);
+    output(vetor[4]);
     
-    imprime(vet);
 }
