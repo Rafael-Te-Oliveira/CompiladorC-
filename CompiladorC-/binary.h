@@ -4,7 +4,7 @@
 #include "assembly.h"
 
 typedef struct{
-    int opCode, rd, rs, rt, IMM;
+    int opCode, rs, rt, rd, IMM;
     Type type;
 } BinInstruction;
 

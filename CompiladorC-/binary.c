@@ -2,13 +2,13 @@
 #include "binary.h"
 #include "symtab.h"
 
-BinaryList binListHead = NULL;                                      // Inicio da lista de instrucoes binarias
+BinaryList binListHead = NULL;                                     
 
-void decimalToBinaryPrint(int number, int bitNo, FILE * binFile){   // Funcao que converte decimal em binario para print das instrucoes
-    char * binary = malloc(bitNo * sizeof(char));                   // Char para representar o binario de tamanho bitsNo
-    for(int i = bitNo - 1; i >= 0; i--, number = number / 2){       // Converte o numero decimal para binario, inserindo do fim da string ao comeco, dividindo o numero a ser convertido
-        int bit = number % 2;                                       // Decide o nivel logico do bit atual
-        binary[i] = bit + '0';                                      // Insere da direita a esquerda da sequencia de caracteres
+void decimalToBinary(int number, int bitNo, FILE * binFile){   // Converte decimal em binario
+    char * binary = malloc(bitNo * sizeof(char));                   
+    for(int i = bitNo - 1; i >= 0; i--, number = number / 2){       
+        int bit = number % 2;                                       
+        binary[i] = bit + '0';                                     
     }
     binary[bitNo] = '\0';
 
@@ -16,41 +16,19 @@ void decimalToBinaryPrint(int number, int bitNo, FILE * binFile){   // Funcao qu
     free(binary);                                                   
 }
 
-void binaryInsert(int opCode, int rd, int rs, int rt, int IMM, Type type){      // Insere uma instrucao binaria
+void binaryInsert(int opCode, int rs, int rt, int rd, int IMM, Type type){     
     BinInstruction newInst;
     if (opCode>17) {
         newInst.opCode = 0;
-        switch (opCode){
-            case 18:
-                newInst.IMM = 0;
-                break;
-            case 19:
-                newInst.IMM = 1;
-                break;
-            case 20:
-                newInst.IMM = 2;
-                break;
-            case 21:
-                newInst.IMM = 3;
-                break;
-            case 22:
-                newInst.IMM = 4;
-                break;
-            case 23:
-                newInst.IMM = 5;
-                break;
-            case 24:
-                newInst.IMM = 6;
-                break;
-        }
+        newInst.IMM = opCode%18; //imediato referencia a operaçao
     }
     else {
         newInst.opCode = opCode;
         newInst.IMM = IMM;
     }
-    newInst.rd = rd;
     newInst.rs = rs;
     newInst.rt = rt;
+    newInst.rd = rd;
     newInst.type = type;
     BinaryList newBinary = (BinaryList) malloc(sizeof(struct BinaryListRec));
     newBinary->bin = newInst;
@@ -64,56 +42,56 @@ void binaryInsert(int opCode, int rd, int rs, int rt, int IMM, Type type){      
     }
 }
 
-void binaryGen_I_Type(Instruction inst){                                                    // Trata as instrucoes do tipo I
+void binaryTypeI(Instruction inst){                                                    
     if(inst.instKind == BEQ || inst.instKind == BNE 
     || inst.instKind == BLT || inst.instKind == BGT
-    || inst.instKind == BLE || inst.instKind == BGE){                                      // Se a instrucao usar branch para pular para algum endereco
-        int instLine = searchInstLine_Label(atoi(&inst.label[1]));                          // Branch sempre para labels, logo deve-se procurar a linha de instrucao referente a ele
-        binaryInsert(inst.instKind, inst.rd, inst.rs, inst.rt, instLine, inst.type);        // Insere a instrucao com as respectivas informacoes
+    || inst.instKind == BLE || inst.instKind == BGE){                                      // Se a instrucao for branch
+        int instLine = searchInstLineLabel(atoi(&inst.label[1]));                          // procura a linha de instrucao
+        binaryInsert(inst.instKind, inst.rs, inst.rt, inst.rd, instLine, inst.type);       
     }
     else                                                                                    // Caso contrario
-        binaryInsert(inst.instKind, inst.rd, inst.rs, inst.rt, inst.immediate, inst.type);  // Insere a instrucao com as respectivas informacoes
+        binaryInsert(inst.instKind, inst.rs, inst.rt, inst.rd, inst.immediate, inst.type);  
 }
 
-void binaryGen_J_Type(Instruction inst){                                                // Trata as instrucao do tipo J
-    int instLine;                                                                       // Variavel para armazenar o numero da linha da instrucao referente a funcao ou label
-    if(inst.instKind == J){                                                             // Se for a instrucao J
-        if(strcmp(inst.label,"main") == 0)                                              // Unica instrucao J que leva o endereco de uma funcao, eh a segunda instrucao referente a main
-            instLine = statementFinderInstLine(inst.label);                                  // Procura o numero da linha de instrucao referente a main
-        else                                                                            // Se nao for o J do main, eh um J de label
-            instLine = searchInstLine_Label(atoi(&inst.label[1]));                      // Procura o numero da instrucao do label no labelMap do assembly
-        binaryInsert(inst.instKind, inst.rd, inst.rs, inst.rt, instLine, inst.type);    // Insere a instrucao com as respectivas informacoes
+void binaryTypeJ(Instruction inst){                                                
+    int instLine;                                                                       // Numero da linha da instrucao que referencia funcao ou label
+    if(inst.instKind == JP){                                                            // Se instrucao Jump
+        if(strcmp(inst.label,"main") == 0)                                             
+            instLine = statementFinderInstLine(inst.label);                             // Procura o numero da linha main
+        else                                                                           
+            instLine = searchInstLineLabel(atoi(&inst.label[1]));                       // Procura o numero da label no labelMap
+        binaryInsert(inst.instKind, inst.rs, inst.rt, inst.rd, instLine, inst.type);    
     }
-    else{                                                                               // Se for a instrucao JAL
-        instLine = statementFinderInstLine(inst.label);                                      // Procura o numero da linha de instrucao referente a funcao
-        binaryInsert(inst.instKind, inst.rd, inst.rs, inst.rt, instLine, inst.type);    // Insere a instrucao com as respectivas informacoes
+    else{                                                                               // Se for JAL
+        instLine = statementFinderInstLine(inst.label);                                 // Procura o numero da linha da funcao
+        binaryInsert(inst.instKind, inst.rs, inst.rt, inst.rd, instLine, inst.type);    
     }
 }
 
-void printBinary(FILE * binFile){                                               // Funcao que printa as instrucao binarias
+void printBinary(FILE * binFile){                                               
     BinaryList b = binListHead;
     while(b != NULL){
         switch(b->bin.type){
             case R:
-                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
-                decimalToBinaryPrint(b->bin.rd, 5, binFile);
-                decimalToBinaryPrint(b->bin.rs, 5, binFile);
-                decimalToBinaryPrint(b->bin.rt, 5, binFile);
-                decimalToBinaryPrint(b->bin.IMM, 11, binFile);
+                decimalToBinary(b->bin.opCode, 6, binFile);
+                decimalToBinary(b->bin.rs, 5, binFile);
+                decimalToBinary(b->bin.rt, 5, binFile);
+                decimalToBinary(b->bin.rd, 5, binFile);
+                decimalToBinary(b->bin.IMM, 11, binFile);
                 break;
             case I:
-                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
-                decimalToBinaryPrint(b->bin.rd, 5, binFile);
-                decimalToBinaryPrint(b->bin.rs, 5, binFile);
-                decimalToBinaryPrint(b->bin.IMM, 16, binFile);
+                decimalToBinary(b->bin.opCode, 6, binFile);
+                decimalToBinary(b->bin.rs, 5, binFile);
+                decimalToBinary(b->bin.rt, 5, binFile);
+                decimalToBinary(b->bin.IMM, 16, binFile);
                 break;
-            case JP:
-                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
-                decimalToBinaryPrint(b->bin.IMM, 26, binFile);
+            case J:
+                decimalToBinary(b->bin.opCode, 6, binFile);
+                decimalToBinary(b->bin.IMM, 26, binFile);
                 break;
-            case O:
-                decimalToBinaryPrint(b->bin.opCode, 6, binFile);
-                decimalToBinaryPrint(0, 26, binFile);
+            case H:
+                decimalToBinary(b->bin.opCode, 6, binFile);
+                decimalToBinary(0, 26, binFile);
                 break;
         }
         fprintf(binFile,"\n");
@@ -121,26 +99,26 @@ void printBinary(FILE * binFile){                                               
     }
 }
 
-void binaryGen(InstructionList instListHead){                                                                               // Gerador de codigo binario
+void binaryGen(InstructionList instListHead){                                                                             
     InstructionList i = instListHead;
 
     while(i != NULL){
         if(i->inst.lineKind == Inst){
             switch(i->inst.type){
                 case R:
-                    binaryInsert(i->inst.instKind, i->inst.rd, i->inst.rs, i->inst.rt, i->inst.immediate, i->inst.type);
+                    binaryInsert(i->inst.instKind, i->inst.rs, i->inst.rt, i->inst.rd, i->inst.immediate, i->inst.type);
                     break;
                 
                 case I:
-                    binaryGen_I_Type(i->inst);
+                    binaryTypeI(i->inst);
                     break;
                 
-                case JP:
-                    binaryGen_J_Type(i->inst);
+                case J:
+                    binaryTypeJ(i->inst);
                     break;
                 
-                case O:
-                    binaryInsert(i->inst.instKind, i->inst.rd, i->inst.rs, i->inst.rt, i->inst.immediate, i->inst.type);
+                case H:
+                    binaryInsert(i->inst.instKind, i->inst.rs, i->inst.rt, i->inst.rd, i->inst.immediate, i->inst.type);
                     break;
 
                 default:

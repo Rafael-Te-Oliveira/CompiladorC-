@@ -1,106 +1,82 @@
-	4: Reserved Word: int
-	4: ID: gcd
-	4: (
-	4: Reserved Word: int
-	4: ID: p
-	4: ,
-	4: Reserved Word: int
-	4: ID: v
-	4: )
-	5: {
-	6: Reserved Word: if
-	6: (
-	6: ID: v
-	6: ==
-	6: Number: 0
-	6: )
-	6: Reserved Word: return
-	6: ID: p
-	6: ;
-	7: Reserved Word: else
-	7: Reserved Word: return
-	7: ID: gcd
-	7: (
-	7: ID: v
-	7: ,
-	7: ID: p
-	7: -
-	7: ID: p
-	7: /
-	7: ID: v
-	7: *
-	7: ID: v
-	7: )
-	7: ;
-	9: }
-	11: Reserved Word: void
-	11: ID: main
+	1: Reserved Word: int
+	1: ID: fact
+	1: (
+	1: Reserved Word: int
+	1: ID: n
+	1: )
+	1: {
+	2: Reserved Word: if
+	2: (
+	2: ID: n
+	2: <=
+	2: Number: 0
+	2: )
+	2: {
+	3: Reserved Word: return
+	3: Number: 1
+	3: ;
+	4: }
+	5: Reserved Word: return
+	5: ID: n
+	5: *
+	5: ID: fact
+	5: (
+	5: ID: n
+	5: -
+	5: Number: 1
+	5: )
+	5: ;
+	6: }
+	8: Reserved Word: void
+	8: ID: main
+	8: (
+	8: Reserved Word: void
+	8: )
+	8: {
+	9: Reserved Word: int
+	9: ID: n
+	9: ;
+	10: ID: n
+	10: Symbol: =
+	10: ID: input
+	10: (
+	10: )
+	10: ;
+	11: ID: output
 	11: (
-	11: Reserved Word: void
+	11: ID: fact
+	11: (
+	11: ID: n
 	11: )
-	12: {
-	12: Reserved Word: int
-	12: ID: x
-	12: ;
-	12: Reserved Word: int
-	12: ID: y
-	12: ;
-	13: ID: x
-	13: Symbol: =
-	13: Number: 36
-	13: ;
-	13: ID: y
-	13: Symbol: =
-	13: Number: 54
-	13: ;
-	14: ID: output
-	14: (
-	14: ID: gcd
-	14: (
-	14: ID: x
-	14: ,
-	14: ID: y
-	14: )
-	14: )
-	14: ;
-	15: }
-	15: EOF
+	11: )
+	11: ;
+	12: }
+	13: EOF
 Type integer
-  Function gcd
-    Type integer
-      Unknown ExpNode kind
+  Function fact
     Type integer
       Unknown ExpNode kind
     If
-      Operation: ==
-        Id: v
+      Operation: <=
+        Id: n
         Constant: 0
       Return
-        Id: p
-      Return
-        Call to Function gcd 
-          Id: v
+        Constant: 1
+    Return
+      Operation: *
+        Id: n
+        Call to Function fact 
           Operation: -
-            Id: p
-            Operation: *
-              Operation: /
-                Id: p
-                Id: v
-              Id: v
+            Id: n
+            Constant: 1
 Type void
   Function main
     Type void
     Type integer
-      Variable x
-    Type integer
-      Variable y
+      Variable n
     Assign
-      Id: x
-      Constant: 36
-    Assign
-      Id: y
-      Constant: 54
+      Id: n
+      Call to Function input 
     Call to Function output 
-      Call to Function gcd 
-        Id: x
-        Id: y
+      Call to Function fact 
+        Id: n

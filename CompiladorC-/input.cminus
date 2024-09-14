@@ -1,26 +1,12 @@
-void atribui(int a[], int b, int c){
-    b = 8;
-    c = 10;
-
-    a[0] = 1;
-    a[0] = a[0]*b;
-    a[1] = 11;
-    a[1] = a[0]*c;
-    a[2] = 111;
-    a[3] = a[1];
-    a[4] = a[0];
+int fact ( int n){
+if(n <= 0) {
+return 1;
+}
+return n * fact (n - 1) ;
 }
 
-void main(void){
-    int vetor[5];
-    int x; int y;
-
-    atribui(vetor, x, y);
-
-    output(vetor[0]);
-    output(vetor[1]);
-    output(vetor[2]);
-    output(vetor[3]);
-    output(vetor[4]);
-    
+void main ( void ) {
+int n;
+n = input () ;
+output ( fact (n));
 }

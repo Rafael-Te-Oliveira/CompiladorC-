@@ -1,15 +1,15 @@
 /* Um programa para calcular o mdc
    segundo o algoritmo de Euclides. */
 
-int gcd (int p, int v)
+int gcd (int w, int v)
 {       
-	if (v == 0) return p ;
-	else return gcd(v,p-p/v*v);
-	/* p-p/v*v == p mod v */
+	if (v == 0) return w ;
+	else return gcd(v,w-w/v*v);
+	/* w-w/v*v == w mod v */
 }
 
 void main(void)
 {	int x; int y;
-	x = 36; y = 54;
+	x = input(); y = input();
 	output(gcd(x,y));
 }

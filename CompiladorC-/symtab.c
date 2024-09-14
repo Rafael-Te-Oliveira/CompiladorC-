@@ -164,6 +164,8 @@ void printSymTab(FILE * tabSim)
 { int i;
   fprintf(tabSim,"NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS\n");
   fprintf(tabSim,"--------      ------------     ------------    ------------      ------------\n");
+  fprintf(tabSim,"input           global          function        integer          --                \n");
+  fprintf(tabSim,"output          global          function        void             --                \n");
   for (i=0;i<SIZE;++i)
   { if (hashTable[i] != NULL)
     { BucketList l = hashTable[i];

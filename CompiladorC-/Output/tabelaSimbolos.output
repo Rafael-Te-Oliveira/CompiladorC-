@@ -2,14 +2,13 @@
 Tabela de Símbolos:
 NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS
 --------      ------------     ------------    ------------      ------------
-main            global          function        void              11 
-p               gcd             variable        integer            4    6    7 
-output          global          função        integer            0 
-input           global          função        integer            0 
-y               main            variable        integer           12   13   14 
-gcd             gcd             call            -                  7 
-gcd             main            call            -                 14 
-gcd             global          function        integer            4 
-v               gcd             variable        integer            4    6    7 
-x               main            variable        integer           12   13   14 
-output          main            call            -                 14 
+input           global          function        integer          --                
+output          global          function        void             --                
+fact            main            call            -                 11 
+main            global          function        void               8 
+input           main            call            -                 10 
+n               fact            variable        integer            1    2    5 
+fact            global          function        integer            1 
+fact            fact            call            -                  5 
+n               main            variable        integer            9   10   11 
+output          main            call            -                 11 

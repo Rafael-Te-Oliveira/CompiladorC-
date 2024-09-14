@@ -3,30 +3,29 @@
 #include "cgen.h"
 #include "symtab.h"
 
-InstructionList instListHead = NULL;    // Inicio da lista de instrucoes Assembly
-UnusedRegisterList RegListHead = NULL;  // Inicio da lista de registradores nao usados
-UnusedRegisterList RegListTail = NULL;  // Fim da lista de registradores nao usados
-Register argRegister;                   // Seleciona o registrador de argumento
+InstructionList instListHead = NULL;    
+freeRegList RegListHead = NULL;  
+freeRegList RegListTail = NULL;  
+Register argRegister;                   
 int sPos;                               // Local do stack na memoria
 int globalVarLocation = 0;              // Onde colocar variaveis globais na memoria
 int lineNo = 0;                         // Numero da linha da instrucao Assembly
-char * currentScope;                    // Escopo atual alterado uma vez que a quadrupla FUN aparece
-int argCounter;                         // Conta quantos argumentos ainda faltam para se guardar na memoria
-int checkNotSet;                        // Flag para checagem apos comparacao logica de LET e GET (se $t for 0, entao a comparacao eh verdadeira)
-int * labelMap;                             // Num das linhas de instrucoes referentes aos labels
+char * currentScope;                    
+int argCounter;                                               
+int * labelMap;                             
 
-int isNumber(char * str){                   // Verifica se uma string contem apenas digitos
+int isNumber(char * str){                   // Verifica se contem apenas digitos
     for(int i = 0; i < strlen(str); i++)
         if(isdigit(str[i]) == 0) return 0;
 
     return 1;
 }
 
-int searchInstLine_Label(int labelNo){      // Retorna o numero da instrucao referente ao label para uso na geracao do codigo binario
+int searchInstLineLabel(int labelNo){      // Retorna o numero da instrucao referente ao label
     return labelMap[labelNo];
 }
 
-Register tempRegister(char * temp){                 // Retorna o registrador temporario $t(0-16) dado a string que o representa
+Register tempRegister(char * temp){                
     if(strcmp(temp,"$t0") == 0) return $t0;
     else if(strcmp(temp,"$t1") == 0) return $t1;
     else if(strcmp(temp,"$t2") == 0) return $t2;
@@ -54,7 +53,7 @@ Register tempRegister(char * temp){                 // Retorna o registrador tem
     else return -1;
 }
 
-char * registerToString(Register r){        // Transforma registradores em string novamente apenas para print do codigo Assembly
+char * registerToString(Register r){        
     char * reg = malloc(6*(sizeof(char)));
     switch(r){
         case $zero:
@@ -159,8 +158,8 @@ char * registerToString(Register r){        // Transforma registradores em strin
     return reg;
 }
 
-void unusedRegInsert(Register r){
-    UnusedRegisterList newUnusedReg = (UnusedRegisterList) malloc(sizeof(struct RegisterListRec));
+void freeRegInsert(Register r){
+    freeRegList newUnusedReg = (freeRegList) malloc(sizeof(struct freeRegListRec));
     newUnusedReg->r = r;
     newUnusedReg->next = NULL;
     if(RegListHead == NULL){
@@ -175,37 +174,37 @@ void unusedRegInsert(Register r){
     }
 }
 
-void unusedRegRemove(Register r){
-    UnusedRegisterList unusedReg = RegListHead;
+void freeRegRemove(Register r){
+    freeRegList unusedReg = RegListHead;
     while(unusedReg != NULL && unusedReg->r != r) unusedReg = unusedReg->next;
     if(unusedReg == NULL) ;
-    else if(unusedReg == RegListHead){              // Se for o primeiro elemento
-        if(unusedReg == RegListTail){               // Se for o unico elemento da lista
+    else if(unusedReg == RegListHead){              
+        if(unusedReg == RegListTail){              
             RegListHead = NULL;
             RegListTail = NULL;
         }
-        else{                                       // Se nao for o unico elemento da lista
+        else{                                      
             RegListHead = RegListHead->next;
             RegListHead->prev = NULL;
         }    
     }
-    else if(unusedReg == RegListTail){              // Se for o ultimo elemento da lista
+    else if(unusedReg == RegListTail){             
         RegListTail = RegListTail->prev;
         RegListTail->next = NULL;
     }
-    else{                                           // Se for um elemento do meio da lista
+    else{                                          
         unusedReg->prev->next = unusedReg->next;
         unusedReg->next->prev = unusedReg->prev;
     }
     free(unusedReg);
 }
 
-void assemblyInsert(InstructionKind instKind, Register rd, Register rs, Register rt, int immediate, int lineNo, Type tp, LineKind lineKind, char * lab){ // Insere uma instrucao ou label Assembly
+void assemblyInsert(InstructionKind instKind, Register rs, Register rt, Register rd, int immediate, int lineNo, Type tp, LineKind lineKind, char * lab){ // Insere uma instrucao ou label Assembly
     Instruction newInst;
     newInst.instKind = instKind;
-    newInst.rd = rd;
     newInst.rs = rs;
     newInst.rt = rt;
+    newInst.rd = rd;
     newInst.immediate = immediate;
     newInst.lineNo = lineNo;
     newInst.type = tp;
@@ -224,353 +223,346 @@ void assemblyInsert(InstructionKind instKind, Register rd, Register rs, Register
     }
 }
 
-void assemblyGen_FUN(Quad q){                                   // Tratamento da quadrupla FUN
-    int * instLine = malloc(sizeof(int));                       // Aloca-se um inteiro para representar o num da linha de instrucao do inicio da funcao
-    *instLine = lineNo;
-    insertMemoryData(q.arg2, "global", -1, instLine);           // Insere na tabela para uso posterior do codigo binario
-    assemblyInsert(0, 0, 0, 0, 0, lineNo, 0, Lab, q.arg2);      // Converte em um label que define o inicio da funcao
-    sPos = 0;                                                   // Inicia o topo da pilha como 0
-    currentScope = q.arg2;                                      // Armazena-se escopo atual
-    argRegister = $a0;                                          // Inicializa o registrador de argumento como $a0 (o primeiro a ser passado)
-    argCounter = statementFinderNparam(q.arg2, "global");           // Guarda-se quantidade de argumentos da funcao
+void assemblyQuadFUN(Quad q){                                   
+    int * instLine = malloc(sizeof(int));                       
+    *instLine = lineNo;                                         // numero da linha da funçao
+    insertMemoryData(q.arg2, "global", -1, instLine);           // guarda na memória
+    assemblyInsert(0, 0, 0, 0, 0, lineNo, 0, Lab, q.arg2);      // Insere um label
+    sPos = 0;                                                   // Inicia topo da pilha
+    currentScope = q.arg2;                                      // Armazena escopo
+    argRegister = $a0;                                          // Inicializa o registrador de argumento como $a0
+    argCounter = statementFinderNparam(q.arg2, "global");       // Guarda numero de argumentos da funcao
 }
 
-void assemblyGen_ARG(Quad q){                                               // Tratamento da quadrupla ARG
+void assemblyQuadARG(Quad q){                                               
     insertMemoryData(q.arg2, q.arg3, sPos, NULL);                           // Insere na area local da memoria o numero inteiro
     assemblyInsert(SW, argRegister, $sp, 0, sPos, lineNo, I, Inst, "");     // Instrucao de SW do argumento
-    sPos++;                                                                 // Soma-se o topo da pilha
-    lineNo++;                                                               // Soma-se o numero da linha de instrucao
-    argRegister++;                                                          // Soma-se o registrador $a de argumento para selecao do proximo
-    argCounter--;                                                           // Desconta-se a quantidade de argumentos restantes
-    if(argCounter == 0)                                                     // Se for o ultimo argumento
-        argRegister = $a0;                                                  // Atualiza-se o registrador de argumento para o primeiro novamente para uso posterior
+    sPos++;                                                                 // Incrementa pilha
+    lineNo++;                                                               // Incrementa numero da linha de instrucao
+    argRegister++;                                                          // Proximo reg de argumento
+    argCounter--;                                                           // Decrementa quantidade de argumentos restantes
+    if(argCounter == 0)                                                     // Se era ultimo
+        argRegister = $a0;                                                  // Reseta para o primeiro
 }
 
-void assemblyGen_PARAM(Quad q){                                                             // Tratamento da quadrupla PARAM
-    assemblyInsert(ADD, argRegister, tempRegister(q.arg1), $zero, 0, lineNo, R, Inst, "");  // Passa o conteudo do registrador temp para o registrador de argumento
-    lineNo++;                                                                               // Soma-se o numero da linha de instrucao
-    argRegister++;                                                                          // Soma-se o registrador $a de argumento para selecionar o proximo
-    unusedRegRemove(tempRegister(q.arg1));                                                  // Remove-se o reg temp da lista de nao usado
+void assemblyQuadPARAM(Quad q){                                                             
+    assemblyInsert(ADD, argRegister, tempRegister(q.arg1), $zero, 0, lineNo, R, Inst, "");  // Move o conteudo do temp para o argumento
+    lineNo++;                                                                               
+    argRegister++;                                                                         
+    freeRegRemove(tempRegister(q.arg1));                                                    // Remove o reg temp da lista de livres
 }
 
-void assemblyGen_ALLOC(Quad q){                                     // Tratamento da quadrupla ALLOC                                                                                                                 // Se a variavel a ser alocada nao for um vetor
-    if(strcmp(q.arg2,"global") == 0){                               // Se o escopo da variavel for global
-        insertMemoryData(q.arg1, q.arg2, globalVarLocation, NULL);  // Aloca-se um espaço na memoria na area global
-        globalVarLocation += statementFinderSize(q.arg1, q.arg2);        // Soma-se a proxima posicao a ser inserida na area global
+void assemblyQuadALLOC(Quad q){            
+    if(strcmp(q.arg2,"global") == 0){                               // Se variavel for global
+        insertMemoryData(q.arg1, q.arg2, globalVarLocation, NULL);  // Aloca espaço na memoria global
+        globalVarLocation += statementFinderSize(q.arg1, q.arg2);   // Soma a proxima posicao a ser inserida na global
     }
-    else{                                                           // Se for uma variavel local
-        insertMemoryData(q.arg1, q.arg2, sPos, NULL);               // Aloca-se um espaco na memoria na area local
-        sPos += statementFinderSize(q.arg1, q.arg2);                     // Soma-se o topo da pilha
+    else{                                                           // Se variavel for local
+        insertMemoryData(q.arg1, q.arg2, sPos, NULL);               // Aloca espaco na memoria na area local
+        sPos += statementFinderSize(q.arg1, q.arg2);                // Soma o topo da pilha
     }
 }
 
-void assemblyGen_CALL(Quad q){                                                              // Tratamento da quadrupla CALL
-    if(strcmp(q.arg2,"input") == 0){                                                        // Se for a funcao input
-        assemblyInsert(IN, tempRegister(q.arg1), tempRegister(q.arg1), tempRegister(q.arg1), 0, lineNo, R, Inst, "");             // Insere-se a instrucao IN salvando o valor no registrador temp
-        lineNo++;                                                                           // Soma-se o numero da linha de instrucao
-        unusedRegInsert(tempRegister(q.arg1));                                              // Insere-se na lista de regs nao usados o temp que se armazena o retorno da funcao IN
+void assemblyQuadCALL(Quad q){                                                              
+    if(strcmp(q.arg2,"input") == 0){                                                       
+        assemblyInsert(IN, tempRegister(q.arg1), tempRegister(q.arg1), tempRegister(q.arg1), 0, lineNo, R, Inst, "");       
+        lineNo++;                                                                         
+        freeRegInsert(tempRegister(q.arg1));                                             
     }
-    else if(strcmp(q.arg2,"output") == 0){                                                  // Se for a funcao output
-        assemblyInsert(OUT, $a0, 0, 0, 0, lineNo, R, Inst, "");                             // Insere-se a instrucao OUT passando o argumento a ser impresso na saida
-        lineNo++;                                                                           // Soma-se o numero da linha de instrucao
-        argRegister = $a0;                                                                  // Reinicializa o registrador de argumento como $a0 (o primeiro a ser passado) para uso posterior
+    else if(strcmp(q.arg2,"output") == 0){                                                 
+        assemblyInsert(OUT, $a0, 0, 0, 0, lineNo, R, Inst, "");                            
+        lineNo++;                                                                           
+        argRegister = $a0;                                                                  
     }
-    else{                                                                                   // Se nao for a funcao input ou output
-        // Empilha registradores que ainda nao foram utilizados
-        UnusedRegisterList unusedRegister = RegListHead;                                    // Variavel para iterar sobre a lista de registradores nao usados
-        while(unusedRegister != NULL){                                                      // Verifica se ha registradores que nao foram usados
-            assemblyInsert(SW, unusedRegister->r, $sp, 0, sPos, lineNo, I, Inst, "");       // Insere-se na pilha aqueles que nao foram usados
-            lineNo++;                                                                       // Soma-se o numero da linha de instrucao
-            sPos++;                                                                         // Soma-se o topo da pilha
-            unusedRegister = unusedRegister->next;                                          // Avanca para o proximo registrador da lista
+    else{                                                                                  
+        freeRegList unusedRegister = RegListHead;                                           // Variavel para iterar lista de registradores livres
+        while(unusedRegister != NULL){                                                      
+            assemblyInsert(SW, unusedRegister->r, $sp, 0, sPos, lineNo, I, Inst, "");       // Insere na pilha aqueles que nao foram usados
+            lineNo++;                                                                       
+            sPos++;                                                                         // Incrementa pilha
+            unusedRegister = unusedRegister->next;                                          // proximo registrador
         }
 
-        if(strcmp(currentScope, "main") != 0){                                              // Se a chamada ocorrer dentro de um escopo que nao seja o main (recursao), empilha-se o $ra
-            assemblyInsert(SW, $ra, $sp, 0, sPos, lineNo, I, Inst, "");                     // Insere-se a instrucao SW salvando o endereco de retorno salvo em $ra da chamada anterior
-            sPos++;                                                                         // Soma-se o topo da pilha
-            lineNo++;                                                                       // Soma-se o numero da linha de instrucao
+        if(strcmp(currentScope, "main") != 0){                                              // Se recursao, empilha $ra
+            assemblyInsert(SW, $ra, $sp, 0, sPos, lineNo, I, Inst, "");                     // SW endereco de retorno salvo em $ra da chamada anterior
+            sPos++;                                                                         // Incrementa pilha
+            lineNo++;                                                                       
         }
 
-        assemblyInsert(ADDI, $sp, $sp, 0, sPos, lineNo, I, Inst, "");                       // Soma-se o inicio da proxima funcao na memoria, atribuindo o topo da pilha a $sp
-        lineNo++;                                                                           // Soma-se o numero da linha de instrucao
-        argRegister = $a0;                                                                  // Reinicializa o registrador de argumento como $a0 (o primeiro a ser passado) para uso posterior
-        assemblyInsert(JAL, 0, 0, 0, 0, lineNo, JP, Inst, q.arg2);                          // Insere-se a instrucao JAL que pula para funcao e guarda no registrador $ra o endereco de retorno
-        lineNo++;                                                                           // Soma-se o numero da linha de instrucao
-        assemblyInsert(SUBI, $sp, $sp, 0, sPos, lineNo, I, Inst, "");                       // Insere-se a instrucao SUBI que volta o registrador $sp pro escopo anterior
-        lineNo++;                                                                           // Soma-se o numero da linha de instrucao
-        if(strcmp(currentScope, "main") != 0){                                              // Se a chamada ocorrer dentro de um escopo que nao seja o main (recursao) 
+        assemblyInsert(ADDI, $sp, $sp, 0, sPos, lineNo, I, Inst, "");                       // Soma o inicio da proxima funcao na memoria
+        lineNo++;                                                                           
+        argRegister = $a0;                                                                  
+        assemblyInsert(JAL, 0, 0, 0, 0, lineNo, J, Inst, q.arg2);                           // JAL para funcao
+        lineNo++;                                                                           
+        assemblyInsert(SUBI, $sp, $sp, 0, sPos, lineNo, I, Inst, "");                       // SUBI retorna $sp pro escopo anterior
+        lineNo++;                                                                           
+        if(strcmp(currentScope, "main") != 0){                                              // Se recursao
             sPos--;                                                                         // Desempilha o endereco de retorno da pilha
-            assemblyInsert(LW, $ra, $sp, 0, sPos, lineNo, I, Inst, "");                     // Volta-se o endereco de retorno da chamada atual para o registrador $ra
-            lineNo++;                                                                       // Soma-se o numero da linha de instrucao
+            assemblyInsert(LW, $ra, $sp, 0, sPos, lineNo, I, Inst, "");                     // Retorna o endereco de retorno da chamada atual para o registrador $ra
+            lineNo++;                                                                       
         }
 
-        // Desempilha registradores que ainda nao foram utilizados
-        unusedRegister = RegListTail;                                                       // Comecando do fim da fila
-        while(unusedRegister != NULL){                                                      // Enquanto ainda houver registradores para serem desempilhados
+        unusedRegister = RegListTail;                                                       
+        while(unusedRegister != NULL){                                                      
             sPos--;                                                                         // Desempilha o registrador da pilha
-            assemblyInsert(LW, unusedRegister->r, $sp, 0, sPos, lineNo, I, Inst, "");       // Carreaga-se da pilha os registradores
-            lineNo++;                                                                       // Soma-se o numero da linha de instrucao
-            unusedRegister = unusedRegister->prev;                                          // Retrocede para o registrador anterior da lsita
+            assemblyInsert(LW, unusedRegister->r, $sp, 0, sPos, lineNo, I, Inst, "");       // LW pilha os registradores
+            lineNo++;                                                                       
+            unusedRegister = unusedRegister->prev;                                          
         }
 
-        if(strcmp(statementFinderType(q.arg2,"global"),"integer") == 0){                           // Se a funcao tiver retorno int, salva-se o conteudo de $v0 no registrador temp necessario
-            assemblyInsert(ADD, tempRegister(q.arg1), $v0, $zero, 0, lineNo, R, Inst, "");  // Insere-se a instrucao ADD que faz a passagem do valor retornado ao temp
-            lineNo++;                                                                       // Soma-se o numero da linha de instrucao
-            unusedRegInsert(tempRegister(q.arg1));                                          // Insere na lista de regs nao usados o temp que se armazena o retorno da funcao
+        if(strcmp(statementFinderType(q.arg2,"global"),"integer") == 0){                    // Se retorno int, salva conteudo de $v0 no temp 
+            assemblyInsert(ADD, tempRegister(q.arg1), $v0, $zero, 0, lineNo, R, Inst, "");  // Move o valor retornado ao temp
+            lineNo++;                                                                       
+            freeRegInsert(tempRegister(q.arg1));                                            
         }
     }
 }
 
-void assemblyGen_RET(Quad q){                                                       // Tratamento da quadrupla RET
-    assemblyInsert(ADD, $v0, tempRegister(q.arg1), $zero, 0, lineNo, R, Inst, "");  // Insere-se a instrucao ADD, que copia o conteudo do temp para o registrador $v0
-    lineNo++;                                                                       // Soma-se o numero da linha de instrucao
-    assemblyInsert(JR, $ra, 0, 0, 0, lineNo, R, Inst, "");                          // Insere-se a instrucao JR, que pula para o endereco presente em $ra, o endereco de retorno da funcao
-    lineNo++;                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg1));                                          // Remove-se o reg temp da lista de nao usado
+void assemblyQuadRET(Quad q){                                                       
+    assemblyInsert(ADD, $v0, tempRegister(q.arg1), $zero, 0, lineNo, R, Inst, "");  // move o conteudo do temp para o registrador $v0
+    lineNo++;                                                                       
+    assemblyInsert(JR, $ra, 0, 0, 0, lineNo, R, Inst, "");                          // JR para o endereco presente em $ra
+    lineNo++;                                                                       
+    freeRegRemove(tempRegister(q.arg1));                                          
 }
 
-void assemblyGen_END(Quad q){                                   // Tratamento da quadrupla END
-    if(strcmp(q.arg1,"main") != 0){                             // Se nao for a funcao main, adicionamos um retorno ao fim da mesma
-        assemblyInsert(JR, $ra, 0, 0, 0, lineNo, R, Inst, "");  // Insere-se a instrucao JR para o pulo ao endereco em $ra
-        lineNo++;                                               // Soma-se o numero da linha de instrucao
+void assemblyQuadEND(Quad q){                                   
+    if(strcmp(q.arg1,"main") != 0){                             // Se nao for main
+        assemblyInsert(JR, $ra, 0, 0, 0, lineNo, R, Inst, "");  // JR para endereco em $ra
+        lineNo++;                                               
     }
 }
 
-void assemblyGen_LOAD(Quad q){                                                                                                      // Tratamento da quadrupla LOAD
-    if(isNumber(q.arg2)){                                                                                                           // Se o inteiro a se der load vier de uma constante
-        assemblyInsert(ADDI, tempRegister(q.arg1), $zero, 0, atoi(q.arg2), lineNo, I, Inst, "");                                    // Insere-se a instrucao ADDI, salvando no registrador $temp a constante
-        lineNo++;                                                                                                                   // Soma-se o numero da linha de instrucao
+void assemblyQuadLOAD(Quad q){                                                                                                     
+    if(isNumber(q.arg2)){                                                                                                           // Se constante
+        assemblyInsert(ADDI, tempRegister(q.arg1), $zero, 0, atoi(q.arg2), lineNo, I, Inst, "");                                    // ADDI constante
+        lineNo++;                                                                                                                   
     }                                                           
-    else{                                                                                                                           // Se o inteiro vier de uma variavel salva na memoria
-        int location;                                                                                                               // Local da variavel na memoria
-        if(statementFinder(q.arg2,"global") == 1){                                                                                        // Se o escopo da variavel for global
-            location = statementFinderMemloc(q.arg2,"global");                                                                            // Pega o local da variavel na memoria na area global
-            if(strcmp(q.arg3,"-") != 0){                                                                                            // Se for um vetor e precisar acessar algum indice
-                assemblyInsert(LW, tempRegister(q.arg1), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");                   // Usa-se o LW da posicao em location mais o indice do vetor
-                unusedRegRemove(tempRegister(q.arg3));                                                                              // Remove-se o reg temp do indice da lista de nao usado
+    else{                                                                                                                           // Se variavel na memoria
+        int location;                                                                                                               
+        if(statementFinder(q.arg2,"global") == 1){                                                                                 
+            location = statementFinderMemloc(q.arg2,"global");                                                                      
+            if(strcmp(q.arg3,"-") != 0){                                                                                            // Se for um vetor
+                assemblyInsert(LW, tempRegister(q.arg1), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");                   // LW da posicao em location + o indice
+                freeRegRemove(tempRegister(q.arg3));                                                                                
             }
             else                                                                                                                    // Se nao for um vetor
-                assemblyInsert(LW, tempRegister(q.arg1), $zero, 0, location, lineNo, I, Inst, "");                                  // Usa-se o LW da posicao em location
-            lineNo++;                                                                                                               // Soma-se o numero da linha de instrucao
+                assemblyInsert(LW, tempRegister(q.arg1), $zero, 0, location, lineNo, I, Inst, "");                                  // LW da posicao em location
+            lineNo++;                                                                                                               
         }               
-        else{                                                                                                                       // Se for uma variavel local
-            location = statementFinderMemloc(q.arg2,currentScope);                                                                        // Pega o local da variavel na memoria na area local
-            if(strcmp(q.arg3,"-") != 0){                                                                                            // Se for um vetor e precisar acessar algum indice
-                if(strcmp(statementFinderType(q.arg2,currentScope),"vector arg") == 0){                                                     // Se for um vetor como argumento, ele possui o endereco base de um vetor de outro escopo
-                    assemblyInsert(LW, tempRegister(q.arg1), $sp, 0, location, lineNo, I, Inst, "");                                // Insere-se a instrucao LW para carregar o endereco base desse vetor
-                    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-                    assemblyInsert(ADD, tempRegister(q.arg1), tempRegister(q.arg1), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // Insere-se a instrucao ADD para pegar o endereco base do vetor + indice
-                    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao    
-                    assemblyInsert(LW, tempRegister(q.arg1), tempRegister(q.arg1), 0, 0, lineNo, I, Inst, "");                      // Insere-se a instrucao LW para carregar o conteudo do vetor naquele indice
+        else{                                                                                                                       // Se variavel local
+            location = statementFinderMemloc(q.arg2,currentScope);                                                                  
+            if(strcmp(q.arg3,"-") != 0){                                                                                            // Se for um vetor
+                if(strcmp(statementFinderType(q.arg2,currentScope),"vector arg") == 0){                                             // Se for um vetor como argumento
+                    assemblyInsert(LW, tempRegister(q.arg1), $sp, 0, location, lineNo, I, Inst, "");                                // LW endereco base vetor
+                    lineNo++;                                                                                                       
+                    assemblyInsert(ADD, tempRegister(q.arg1), tempRegister(q.arg1), tempRegister(q.arg3), 0, lineNo, R, Inst, "");  // ADD endereco base do vetor + indice
+                    lineNo++;                                                                                                           
+                    assemblyInsert(LW, tempRegister(q.arg1), tempRegister(q.arg1), 0, 0, lineNo, I, Inst, "");                      //LW conteudo do vetor naquele indice
                 }       
-                else{                                                                                                               // Se for um vetor alocado na area local da funcao
-                    assemblyInsert(ADD, tempRegister(q.arg3), tempRegister(q.arg3), $sp, 0, lineNo, R, Inst, "");                   // Insere-se a instrucao ADD para pegar o endereco do vetor no indice em relacao a pilha
-                    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao    
-                    assemblyInsert(LW, tempRegister(q.arg1), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");               // Insere-se a instrucao LW para dar load de um valor em uma vetor no indice salvo na memoria
+                else{                                                                                                               // Se for um vetor local
+                    assemblyInsert(ADD, tempRegister(q.arg3), tempRegister(q.arg3), $sp, 0, lineNo, R, Inst, "");                   // ADD endereco do vetor
+                    lineNo++;                                                                                                          
+                    assemblyInsert(LW, tempRegister(q.arg1), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");               // LW valor no vetor no indice salvo na memoria
                 }
-                unusedRegRemove(tempRegister(q.arg3));                                                                              // Remove-se o reg temp do indice da lista de nao usado
+                freeRegRemove(tempRegister(q.arg3));                                                                              
             }       
             else                                                                                                                    // Se nao for um vetor
-                assemblyInsert(LW, tempRegister(q.arg1), $sp, 0, location, lineNo, I, Inst, "");                                    // Insere-se a instrucao LW para carregar o dado daquele endereco
-            lineNo++;                                                                                                               // Soma-se o numero da linha de instrucao
+                assemblyInsert(LW, tempRegister(q.arg1), $sp, 0, location, lineNo, I, Inst, "");                                    // LW dado daquele endereco
+            lineNo++;                                                                                                               
         }   
     }
-    unusedRegInsert(tempRegister(q.arg1));                                                                                          // Insere na lista de regs nao usados ao se dar load em um temp
+    freeRegInsert(tempRegister(q.arg1));                                                                                          
 }
 
-void assemblyGen_STORE(Quad q){                                                                                     // Tratamento da quadrupla STORE
-    int location;                                                                                                   // Local da variavel na memoria
-    if(statementFinder(q.arg1,"global") == 1){                                                                            // Se o escopo da variavel for global
-        location = statementFinderMemloc(q.arg1,"global");                                                                // Pega o local da variavel na memoria na area global
-        if(strcmp(q.arg3,"-") != 0){                                                                                // Se for um vetor e precisar acessar algum indice
-            assemblyInsert(SW, tempRegister(q.arg2), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");       // Usa-se o SW da posicao em location mais o indice do vetor
-            unusedRegRemove(tempRegister(q.arg3));                                                                  // Remove-se o reg temp de indice da lista de nao usado
+void assemblyQuadSTORE(Quad q){                                                                                     
+    int location;                                                                                                   
+    if(statementFinder(q.arg1,"global") == 1){                                                                     
+        location = statementFinderMemloc(q.arg1,"global");                                                          
+        if(strcmp(q.arg3,"-") != 0){                                                                                // Se for um vetor
+            assemblyInsert(SW, tempRegister(q.arg2), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");       // SW posicao em location + indice do vetor
+            freeRegRemove(tempRegister(q.arg3));                                                                    
         }
         else                                                                                                        // Se nao for um vetor
-            assemblyInsert(SW, tempRegister(q.arg2), $zero, 0, location, lineNo, I, Inst, "");                      // Usa-se o SW da posicao em location
-        lineNo++;                                                                                                   // Soma-se o numero da linha de instrucao
+            assemblyInsert(SW, tempRegister(q.arg2), $zero, 0, location, lineNo, I, Inst, "");                      // SW da posicao em location
+        lineNo++;                                                                                                  
     }
-    else{                                                                                                           // Se for uma variavel local                                  
-        location = statementFinderMemloc(q.arg1,currentScope);                                                            // Pega o local da variavel na memoria na area local
-        if(strcmp(q.arg3,"-") != 0){                                                                                // Se for um vetor e precisar acessar algum indice
-            if(strcmp(statementFinderType(q.arg1,currentScope),"vector arg") == 0){                                         // Se for um vetor como argumento, ele possui o endereco base de um vetor de outro escopo 
-                assemblyInsert(LW, $ad, $sp, 0, location, lineNo, I, Inst, "");                                     // Insere-se a instrucao LW para carregar o endereco base desse vetor no registrador $ad
-                lineNo++;                                                                                           // Soma-se o numero da linha de instrucao
-                assemblyInsert(ADD, $ad, $ad, tempRegister(q.arg3), 0, lineNo, R, Inst, "");                        // Insere-se a instrucao ADD para pegar o endereco base do vetor + indice
-                lineNo++;                                                                                           // Soma-se o numero da linha de instrucao    
-                assemblyInsert(SW, tempRegister(q.arg2), $ad, 0, 0, lineNo, I, Inst, "");                           // Insere-se a instrucao SW para guardar o conteudo do vetor naquele indice
+    else{                                                                                                                                       
+        location = statementFinderMemloc(q.arg1,currentScope);                                                      
+        if(strcmp(q.arg3,"-") != 0){                                                                                // Se for um vetor
+            if(strcmp(statementFinderType(q.arg1,currentScope),"vector arg") == 0){                                 // Se for um vetor como argumento
+                assemblyInsert(LW, $ad, $sp, 0, location, lineNo, I, Inst, "");                                     // LW carrega o endereco base desse vetor em $ad
+                lineNo++;                                                                                           
+                assemblyInsert(ADD, $ad, $ad, tempRegister(q.arg3), 0, lineNo, R, Inst, "");                        // ADD endereco base do vetor + indice
+                lineNo++;                                                                                              
+                assemblyInsert(SW, tempRegister(q.arg2), $ad, 0, 0, lineNo, I, Inst, "");                           // SW conteudo do vetor naquele indice
             }       
-            else{                                                                                                   // Se for um vetor alocado na area local da funcao
-                assemblyInsert(ADD, tempRegister(q.arg3), tempRegister(q.arg3), $sp, 0, lineNo, R, Inst, "");       // Insere-se a instrucao ADD para pegar o endereco indice deslocado apenas de $sp
-                lineNo++;                                                                                           // Soma-se o numero da linha de instrucao
-                assemblyInsert(SW, tempRegister(q.arg2), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");   // Insere-se a instrucao SW para dar store de um temp em um vetor no indice salvo na memoria a partir do endereco base + indice + $sp
+            else{                                                                                                   // Se for um vetor alocado local
+                assemblyInsert(ADD, tempRegister(q.arg3), tempRegister(q.arg3), $sp, 0, lineNo, R, Inst, "");       // ADD endereco indice deslocado de $sp
+                lineNo++;                                                                                           
+                assemblyInsert(SW, tempRegister(q.arg2), tempRegister(q.arg3), 0, location, lineNo, I, Inst, "");   // SW temp em um vetor no indice endereco base + indice + $sp
             }
-            unusedRegRemove(tempRegister(q.arg3));                                                                  // Remove-se o reg temp de indice da lista de nao usado
+            freeRegRemove(tempRegister(q.arg3));                                                                    
         }       
         else                                                                                                        // Se nao for um vetor
-            assemblyInsert(SW, tempRegister(q.arg2), $sp, 0, location, lineNo, I, Inst, "");                        // Insese-se a instrucao SW para guardar um dado naquele endereco
-        lineNo++;                                                                                                   // Soma-se o numero da linha de instrucao
+            assemblyInsert(SW, tempRegister(q.arg2), $sp, 0, location, lineNo, I, Inst, "");                        // SW para guardar um dado naquele endereco
+        lineNo++;                                                                                                  
     }
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp da lista de nao usado     
+    freeRegRemove(tempRegister(q.arg2));                                                                               
 }
 
-void assemblyGen_ASSIGN(Quad q){                                                                        // Tratamento da quadrupla ASSIGN
-    assemblyInsert(ADD, tempRegister(q.arg1), tempRegister(q.arg2), $zero, 0, lineNo, R, Inst, "");     // Insere-se a instrucao ADD para copiar o conteudo de um registrador para o outro
-    lineNo++;                                                                                           // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                              // Remove-se o reg temp, que passou o inteiro para o outro reg destino, da lista de nao usado
+void assemblyQuadASSIGN(Quad q){                                                                        
+    assemblyInsert(ADD, tempRegister(q.arg1), tempRegister(q.arg2), $zero, 0, lineNo, R, Inst, "");    
+    lineNo++;                                                                                          
+    freeRegRemove(tempRegister(q.arg2));                                                              
 }
 
-void assemblyGen_LABEL(Quad q){                             // Tratamento da quarupla LABEL
-    char * labNo = &q.arg1[1];                              // Pega o numero do label
-    labelMap[atoi(labNo)] = lineNo;                         // Insere no vetor de labels a linha da instrucao que ele representa
-    assemblyInsert(0, 0, 0, 0, 0, lineNo, 0, Lab, q.arg1);  // Converte em um label numerico para controle do programa
+void assemblyQuadLABEL(Quad q){                             
+    char * labNo = &q.arg1[1];                              
+    labelMap[atoi(labNo)] = lineNo;                         
+    assemblyInsert(0, 0, 0, 0, 0, lineNo, 0, Lab, q.arg1);  
 }
 
-void assemblyGen_GOTO(Quad q){                                  // Tratamento da quadrupla GOTO
-    assemblyInsert(J, 0, 0, 0, 0, lineNo, JP, Inst, q.arg1);    // Insere-se a instrucao de J para o label desejado
-    lineNo++;                                                   // Soma-se o numero da linha de instrucao
+void assemblyQuadGOTO(Quad q){                                  
+    assemblyInsert(JP, 0, 0, 0, 0, lineNo, J, Inst, q.arg1);    
+    lineNo++;                                                   
 }
 
-void assemblyGen_IFF(Quad q){                                                               // Tratamento da quadrupla IFF
-    if(checkNotSet == 0)                                                                    // Caso nao seja um IFF de um LET ou GET
-        assemblyInsert(BEQ, tempRegister(q.arg1), $zero, 0, 0, lineNo, I, Inst, q.arg2);    // Insere-se a instrucao BEQ para pulo ao label caso o temp da quadrupla seja falso (temp == 0)
-    else{                                                                                   // Caso seja de um LET ou GET
-        assemblyInsert(BNE, tempRegister(q.arg1), $zero, 0, 0, lineNo, I, Inst, q.arg2);   // Insere-se a instrucao BNE para pulo ao label caso o temp da quadrupla seja falso (temp != 0)
-        checkNotSet = 0;                                                                    // Reseta a flag para controle
-    }
-    lineNo++;                                                                               // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg1));                                                  // Remove-se o reg temp da lista de nao usado
+void assemblyQuadIFF(Quad q){                                                              
+    assemblyInsert(BNE, tempRegister(q.arg1), $zero, 0, 0, lineNo, I, Inst, q.arg2);   
+    lineNo++;                                                                              
+    freeRegRemove(tempRegister(q.arg1));                                                  
 }
 
-void assemblygen_Arithmetic(Quad q){                                                                                        // Tratamento de quadruplas aritmeticas
-    InstructionKind operation;                                                                                              // Operacao a ser realizada
-    if(strcmp(q.op,"ADD") == 0) operation = ADD;                                                                            // Quadrupla ADD
-    else if(strcmp(q.op,"SUB") == 0) operation = SUB;                                                                       // Quadrupla SUB
-    else if(strcmp(q.op,"MUL") == 0) operation = MUL;                                                                       // Quadrupla MUL
-    else operation = DIV;                                                                                                   // Quadrupla DIV
-    assemblyInsert(operation, tempRegister(q.arg1), tempRegister(q.arg2), tempRegister(q.arg3), 0, lineNo, R, Inst, "");    // Insere-se a instrucao referente a quadrupla aritmetica
-    lineNo++;                                                                                                               // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                                  // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                                  // Remove-se o reg temp referente ao operando 2 da lista de nao usado
-    unusedRegInsert(tempRegister(q.arg1));                                                                                  // Insere-se o reg temp destino na lista de nao usado
+void assemblyQuadArit(Quad q){                                                                                        
+    InstructionKind operation;                                                                                              
+    if(strcmp(q.op,"ADD") == 0) operation = ADD;                                                                            
+    else if(strcmp(q.op,"SUB") == 0) operation = SUB;                                                                       
+    else if(strcmp(q.op,"MUL") == 0) operation = MUL;                                                                       
+    else operation = DIV;                                                                                                   
+    assemblyInsert(operation, tempRegister(q.arg1), tempRegister(q.arg2), tempRegister(q.arg3), 0, lineNo, R, Inst, "");    
+    lineNo++;                                                                                                               
+    freeRegRemove(tempRegister(q.arg2));                                                                                 
+    freeRegRemove(tempRegister(q.arg3));                                                                                 
+    freeRegInsert(tempRegister(q.arg1));                                                                                 
 }
 
-void assemblyGen_EQ(Quad q, Quad branchInfo){                                                                   // Tratamento da quadrupla EQ
-    assemblyInsert(BNE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);   // Insere-se a instrucao BNE, pulando para o respectivo label da quad IFF se os temps da quad EQ nao forem iguais  
-    lineNo++;                                                                                                   // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                      // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                      // Remove-se o reg temp referente ao operando 2 da lista de nao usado
+void assemblyQuadEQ(Quad q, Quad branchInfo){                                                                  
+    assemblyInsert(BNE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);    
+    lineNo++;                                                                                                  
+    freeRegRemove(tempRegister(q.arg2));                                                                     
+    freeRegRemove(tempRegister(q.arg3));                                                                     
 }
 
-void assemblyGen_NEQ(Quad q, Quad branchInfo){                                                                  // Tratamento da quadrupla NEQ
-    assemblyInsert(BEQ, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);    // Insere-se a instrucao BEQ, pulando para o respectivo label se os temp da quad NEQ forem iguais  
-    lineNo++;                                                                                                   // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                      // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                      // Remove-se o reg temp referente ao operando 2 da lista de nao usado
+void assemblyQuadNEQ(Quad q, Quad branchInfo){                                                                  
+    assemblyInsert(BEQ, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);     
+    lineNo++;                                                                                                  
+    freeRegRemove(tempRegister(q.arg2));                                                                     
+    freeRegRemove(tempRegister(q.arg3));                                                                     
 }
 
-void assemblyGen_LT(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla LT
-    assemblyInsert(BGE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                          // Insere-se o reg temp destino na lista de nao usado
+void assemblyQuadLT(Quad q, Quad branchInfo){                                                                                     
+    assemblyInsert(BGE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2); 
+    lineNo++;                                                                                                       
+    freeRegRemove(tempRegister(q.arg2));                                                                         
+    freeRegRemove(tempRegister(q.arg3));                                                                         
 }
 
 
-void assemblyGen_GT(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla GT
-    assemblyInsert(BLE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                        // Insere-se o reg temp destino na lista de nao usado
+void assemblyQuadGT(Quad q, Quad branchInfo){                                                                                        
+    assemblyInsert(BLE, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2); 
+    lineNo++;                                                                                                      
+    freeRegRemove(tempRegister(q.arg2));                                                                         
+    freeRegRemove(tempRegister(q.arg3));                                                                         
 }
 
-void assemblyGen_LET(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla LT
-    assemblyInsert(BGT, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                          // Insere-se o reg temp destino na lista de nao usado
+void assemblyQuadLET(Quad q, Quad branchInfo){                                                                                      
+    assemblyInsert(BGT, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  
+    lineNo++;                                                                                                     
+    freeRegRemove(tempRegister(q.arg2));                                                                         
+    freeRegRemove(tempRegister(q.arg3));                                                                          
 }
 
-void assemblyGen_GET(Quad q, Quad branchInfo){                                                                                        // Tratamento da quadrupla GT
-    assemblyInsert(BLT, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  // Insere-se a instrucao BGT (rd = 1 se rs > rt, ou rd = 0 se rs <= rt)
-    lineNo++;                                                                                                       // Soma-se o numero da linha de instrucao
-    unusedRegRemove(tempRegister(q.arg2));                                                                          // Remove-se o reg temp referente ao operando 1 da lista de nao usado
-    unusedRegRemove(tempRegister(q.arg3));                                                                          // Remove-se o reg temp referente ao operando 2 da lista de nao usado                                                                        // Insere-se o reg temp destino na lista de nao usado
+void assemblyQuadGET(Quad q, Quad branchInfo){                                                                                        
+    assemblyInsert(BLT, tempRegister(q.arg2), tempRegister(q.arg3), 0, 0, lineNo, I, Inst, branchInfo.arg2);  
+    lineNo++;                                                                                              
+    freeRegRemove(tempRegister(q.arg2));                                                                     
+    freeRegRemove(tempRegister(q.arg3));                                                                                                                                            
 }
 
-void assemblyGen_HLT(Quad q){                               // Tratamento da quadrupla HLT
-    assemblyInsert(HLT, 0, 0, 0, 0, lineNo, O, Inst, "");   // Insere-se a instrucao HLT que para o funcionamento do processador
-    lineNo++;                                               // Soma-se o numero da linha de instrucao
+void assemblyQuadHLT(Quad q){                               
+    assemblyInsert(HLT, 0, 0, 0, 0, lineNo, H, Inst, "");   
+    lineNo++;                                               
 }
 
-void printAssembly(FILE * assemblyFile){ // Funcao para print do codigo Assembly gerado
+void printAssembly(FILE * assemblyFile){
     InstructionList i = instListHead;
     while(i != NULL){
         switch(i->inst.lineKind){
             case Inst:
                 switch(i->inst.instKind){
                     case ADD:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "ADD", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "ADD", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case SUB:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "SUB", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "SUB", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case MUL:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "MUL", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "MUL", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case DIV:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "DIV", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "DIV", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case NOT:
-                        fprintf(assemblyFile, "%d %s %s %s\n", i->inst.lineNo, "NOT", registerToString(i->inst.rd), registerToString(i->inst.rs));
+                        fprintf(assemblyFile, "%d %s %s %s\n", i->inst.lineNo, "NOT", registerToString(i->inst.rs), registerToString(i->inst.rt));
                         break;
                     case AND:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "AND", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "AND", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case OR:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "OR", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "OR", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case BEQ:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BEQ", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.label);
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BEQ", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.label);
                         break;
                     case BNE:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BNE", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.label);
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BNE", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.label);
                         break;
                     case BLT:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BLT", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BLT", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case BGT:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BGT", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BGT", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case BLE:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BLE", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BLE", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case BGE:
-                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BGE", registerToString(i->inst.rd), registerToString(i->inst.rs), registerToString(i->inst.rt));
+                        fprintf(assemblyFile, "%d %s %s, %s, %s\n", i->inst.lineNo, "BGE", registerToString(i->inst.rs), registerToString(i->inst.rt), registerToString(i->inst.rd));
                         break;
                     case JR:
-                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "JR", registerToString(i->inst.rd));
+                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "JR", registerToString(i->inst.rs));
                         break;
                     case IN:
-                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "IN", registerToString(i->inst.rd));
+                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "IN", registerToString(i->inst.rs));
                         break;
                     case OUT:
-                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "OUT", registerToString(i->inst.rd));
+                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "OUT", registerToString(i->inst.rs));
                         break;
                     case ADDI:
-                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "ADDI", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
+                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "ADDI", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.immediate);
                         break;
                     case SUBI:
-                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "SUBI", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
+                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "SUBI", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.immediate);
                         break;
                     case LW:
-                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "LW", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
+                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "LW", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.immediate);
                         break;
                     case SW:
-                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "SW", registerToString(i->inst.rd), registerToString(i->inst.rs), i->inst.immediate);
+                        fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "SW", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.immediate);
                         break;
-                    case J:
-                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "J", i->inst.label);
+                    case JP:
+                        fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "JP", i->inst.label);
                         break;
                     case JAL:
                         fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "JAL", i->inst.label);
@@ -597,7 +589,7 @@ void printAssembly(FILE * assemblyFile){ // Funcao para print do codigo Assembly
     }
 }
 
-void printLabelInfo(FILE * memoryFile){                                         // Printa no arquivo de memoria informacoes sobre os labels
+void printLabelInfo(FILE * memoryFile){                                         
     for(int i=0; i<nlabel; i++){
         fprintf(memoryFile,"---------       ");
         fprintf(memoryFile,"L%-13d  ", i);
@@ -607,66 +599,66 @@ void printLabelInfo(FILE * memoryFile){                                         
 }
 
 InstructionList assemblyGen(QuadList head){
-    labelMap = malloc(nlabel * sizeof(int));                                    // Inicializa map dos labels
-    sPos = globalSize;                                                          // Inicializa o inicio da pilha
+    labelMap = malloc(nlabel * sizeof(int));                                    
+    sPos = globalSize;                                                         
     
-    assemblyInsert(ADDI, $sp, $zero, 0, sPos, lineNo, I, Inst, "");             // Instrucao para armazenar inicio da pilha em $sp
-    lineNo++;                                                                   // Soma-se o numero da linha de instrucao
-    assemblyInsert(J, 0, 0, 0, 0, lineNo, JP, Inst, "main");                    // Instrucao para pular para a funcao main
-    lineNo++;                                                                   // Soma-se o numero da linha de instrucao
+    assemblyInsert(ADDI, $sp, $zero, 0, sPos, lineNo, I, Inst, "");            
+    lineNo++;                                                                  
+    assemblyInsert(JP, 0, 0, 0, 0, lineNo, J, Inst, "main");                    
+    lineNo++;                                                                  
     
-    QuadList q = head;                                                          // Lista de quadruplas geradas para sua iteracao
-    while(q != NULL){                                                           // Enquanto houver alguma quadrupla, chama sua respectiva funcao para geracao da instrucao Assembly
-        if(strcmp(q->quad.op,"FUN") == 0) assemblyGen_FUN(q->quad);
-        else if(strcmp(q->quad.op,"ARG") == 0) assemblyGen_ARG(q->quad);
-        else if(strcmp(q->quad.op,"PARAM") == 0) assemblyGen_PARAM(q->quad);
-        else if(strcmp(q->quad.op,"ALLOC") == 0) assemblyGen_ALLOC(q->quad);
-        else if(strcmp(q->quad.op,"CALL") == 0) assemblyGen_CALL(q->quad);
-        else if(strcmp(q->quad.op,"RET") == 0) assemblyGen_RET(q->quad);
-        else if(strcmp(q->quad.op,"END") == 0) assemblyGen_END(q->quad);
-        else if(strcmp(q->quad.op,"LOAD") == 0) assemblyGen_LOAD(q->quad);
-        else if(strcmp(q->quad.op,"STORE") == 0) assemblyGen_STORE(q->quad);
-        else if(strcmp(q->quad.op,"ASSIGN") == 0) assemblyGen_ASSIGN(q->quad);
-        else if(strcmp(q->quad.op,"LABEL") == 0) assemblyGen_LABEL(q->quad);
-        else if(strcmp(q->quad.op,"GOTO") == 0) assemblyGen_GOTO(q->quad);
-        else if(strcmp(q->quad.op,"IFF") == 0) assemblyGen_IFF(q->quad);
-        else if(strcmp(q->quad.op,"ADD") == 0) assemblygen_Arithmetic(q->quad);
-        else if(strcmp(q->quad.op,"SUB") == 0) assemblygen_Arithmetic(q->quad);
-        else if(strcmp(q->quad.op,"MUL") == 0) assemblygen_Arithmetic(q->quad);
-        else if(strcmp(q->quad.op,"DIV") == 0) assemblygen_Arithmetic(q->quad);
+    QuadList q = head;                                                          
+    while(q != NULL){                                                           
+        if(strcmp(q->quad.op,"FUN") == 0) assemblyQuadFUN(q->quad);
+        else if(strcmp(q->quad.op,"ARG") == 0) assemblyQuadARG(q->quad);
+        else if(strcmp(q->quad.op,"PARAM") == 0) assemblyQuadPARAM(q->quad);
+        else if(strcmp(q->quad.op,"ALLOC") == 0) assemblyQuadALLOC(q->quad);
+        else if(strcmp(q->quad.op,"CALL") == 0) assemblyQuadCALL(q->quad);
+        else if(strcmp(q->quad.op,"RET") == 0) assemblyQuadRET(q->quad);
+        else if(strcmp(q->quad.op,"END") == 0) assemblyQuadEND(q->quad);
+        else if(strcmp(q->quad.op,"LOAD") == 0) assemblyQuadLOAD(q->quad);
+        else if(strcmp(q->quad.op,"STORE") == 0) assemblyQuadSTORE(q->quad);
+        else if(strcmp(q->quad.op,"ASSIGN") == 0) assemblyQuadASSIGN(q->quad);
+        else if(strcmp(q->quad.op,"LABEL") == 0) assemblyQuadLABEL(q->quad);
+        else if(strcmp(q->quad.op,"GOTO") == 0) assemblyQuadGOTO(q->quad);
+        else if(strcmp(q->quad.op,"IFF") == 0) assemblyQuadIFF(q->quad);
+        else if(strcmp(q->quad.op,"ADD") == 0) assemblyQuadArit(q->quad);
+        else if(strcmp(q->quad.op,"SUB") == 0) assemblyQuadArit(q->quad);
+        else if(strcmp(q->quad.op,"MUL") == 0) assemblyQuadArit(q->quad);
+        else if(strcmp(q->quad.op,"DIV") == 0) assemblyQuadArit(q->quad);
         else if(strcmp(q->quad.op,"LT") == 0){
-            assemblyGen_LT(q->quad, q->next->quad);
+            assemblyQuadLT(q->quad, q->next->quad);
             q = q->next;
         }
         else if(strcmp(q->quad.op,"GT") == 0){
-            assemblyGen_GT(q->quad, q->next->quad);
+            assemblyQuadGT(q->quad, q->next->quad);
             q = q->next;
         } 
         else if(strcmp(q->quad.op,"LET") == 0){
-            assemblyGen_LET(q->quad, q->next->quad);
+            assemblyQuadLET(q->quad, q->next->quad);
             q = q->next;
         }
         else if(strcmp(q->quad.op,"GET") == 0){
-            assemblyGen_GET(q->quad, q->next->quad);
+            assemblyQuadGET(q->quad, q->next->quad);
             q = q->next;
         } 
         else if(strcmp(q->quad.op,"EQ") == 0){                                 
-            assemblyGen_EQ(q->quad, q->next->quad);
+            assemblyQuadEQ(q->quad, q->next->quad);
             q = q->next;
         }
         else if(strcmp(q->quad.op,"NEQ") == 0){                              
-            assemblyGen_NEQ(q->quad, q->next->quad);
+            assemblyQuadNEQ(q->quad, q->next->quad);
             q = q->next;
         }
-        else if(strcmp(q->quad.op,"HLT") == 0) assemblyGen_HLT(q->quad);
+        else if(strcmp(q->quad.op,"HLT") == 0) assemblyQuadHLT(q->quad);
         q = q->next;
     }
 
-    FILE * codefile = fopen("Output/assembly.output", "w+");
+    FILE * codefile = fopen("Output/assembly.txt", "w+");
     printAssembly(codefile);
     fclose(codefile);
 
-    FILE * memoryFile = fopen("Output/memory.output", "w+");
+    FILE * memoryFile = fopen("Output/memory.txt", "w+");
     printMemInfo(memoryFile);
     printLabelInfo(memoryFile);
     fclose(memoryFile);

@@ -20,7 +20,7 @@ char * newLabel(){                                                      // Funca
 char * newTemp(){                                                       // Funcao que cria novo temp
     char * temp = (char *)malloc((ntemp_size + 3) * sizeof(char));
     sprintf(temp, "$t%d", ntemp);
-    ntemp = (ntemp + 1) % 24;                                           // Limite de temp $t0 - $t17
+    ntemp = (ntemp + 1) % 24;                                           // Limite de temp $t0 - $t23
     return temp;
 }
 
@@ -120,7 +120,7 @@ void genStatement(TreeNode * tree){
 
         case assignK:
             if(tree->child[0]->kind.exp == vectorK)     // Caso a variavel em que deve ser armazenada seja um vetor
-                indexFlag = 1;                          // Deve-se carregar o indice calculado na funcao genExpression (case vectorX), setando a flag indexFlag
+                indexFlag = 1;                          // Deve-se carregar o indice calculado na funcao genExpression
             cGen(tree->child[0]);
             arg1 = tempAux;
             cGen(tree->child[1]);
@@ -351,7 +351,7 @@ QuadList codeGen(TreeNode * syntaxTree){
     globalSize = 0;
     cGen(syntaxTree);
     quadInsert("HLT", "-", "-", "-");
-    FILE * codefile = fopen("Output/codigoIntermediario.output", "w+");
+    FILE * codefile = fopen("Output/codigoIntermediario.txt", "w+");
     printCode(codefile);
     fclose(codefile);
     return head;

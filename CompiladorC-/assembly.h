@@ -4,25 +4,17 @@
 #include "cgen.h"
 
 typedef enum{
-    NADA, ADDI, SUBI, J, JR, BEQ, BNE, BLT, BGT, BLE, BGE, LW, SW, JAL, OUT, IN, NOP, HLT, ADD, SUB, MUL, DIV, AND, OR, NOT
+    ND, ADDI, SUBI, JP, JR, BEQ, BNE, BLT, BGT, BLE, BGE, LW, SW, JAL, OUT, IN, NOP, HLT, ADD, SUB, MUL, DIV, AND, OR, NOT
 }InstructionKind;
 
 typedef enum{   
     $zero, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $t8, $t9, $t10, $t11, $t12, $t13, $t14, $t15, $t16, $t17,
     $t18, $t19, $t20, $t21, $t22, $t23, $a0, $a1, $a2, $ad, $v0, $sp, $ra
 }Register;
-// $zero: possui sempre o valor 0
-// $t: registradores temporarios
-// $a: registradores de argumentos
-// $ad: registrador de endereco para variaveis vetores como argumentos
-// $v0: regsitrador de retorno de funcao int
-// $sp: registrador de topo de pilha
-// $ra: endereco de retorno de chamada de funcao
 
 typedef enum{
-    R, I, JP, O
+    R, I, J, H
 }Type;
-// JP = Tipo J
 
 typedef enum{
     Inst, Lab
@@ -30,7 +22,7 @@ typedef enum{
 
 typedef struct{
     InstructionKind instKind;
-    Register rd, rs, rt;
+    Register rs, rt, rd;
     int immediate, lineNo;
     Type type;
     LineKind lineKind;
@@ -42,16 +34,15 @@ typedef struct InstructionListRec{
     struct InstructionListRec * next; 
 } * InstructionList;
 
-typedef struct RegisterListRec{
+typedef struct freeRegListRec{
     Register r;
-    struct RegisterListRec * prev;
-    struct RegisterListRec * next;
-} * UnusedRegisterList;
+    struct freeRegListRec * prev;
+    struct freeRegListRec * next;
+} * freeRegList;
 
-extern int * labelMap;                             // Num das linhas de instrucoes referentes aos labels
+extern int * labelMap;                      
 
-InstructionList assemblyGen(QuadList head); // Gerador de codigo Assembly
+InstructionList assemblyGen(QuadList head); 
 
-int searchInstLine_Label(int labelNo);      // Procura numero da linha de instrucao referente ao label para uso na geracao de codigo binario
-
+int searchInstLineLabel(int labelNo);     
 #endif
