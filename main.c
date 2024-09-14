@@ -12,11 +12,10 @@ int lineno = 0;
 FILE *source;
 FILE *listing;
 FILE *code;
-FILE * arvSin;
-FILE * tabSim;
+FILE *arvSin;
+FILE *tabSim;
 
 int Error = FALSE;
-
 
 int main(int argc, char *argv[])
 {
@@ -37,21 +36,20 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-
     listing = stdout;
-    arvSin = fopen("Output/arvoreSintatica.output", "w+");
-    tabSim = fopen("Output/tabelaSimbolos.output", "w+");
+    arvSin = fopen("output/arvoreSintatica.output", "w+");
+    tabSim = fopen("output/tabelaSimbolos.output", "w+");
 
     printf("\nINICIANDO COMPILAÇÃO: %s\n", pgm);
     syntaxTree = parse();
     fprintf(listing, "\nGerando arvore sintática...\n");
     printTree(syntaxTree);
-    
+
     if (!Error)
     {
         QuadList quadList;
         InstructionList assemblyList;
-        
+
         fprintf(listing, "\nGerando tabela de símbolos...\n");
         buildSymtab(syntaxTree);
         typeCheck(syntaxTree);
