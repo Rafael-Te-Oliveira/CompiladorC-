@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     }
     strcpy(pgm, argv[1]);
     if (strchr(pgm, '.') == NULL)
-        strcat(pgm, ".cms");
+        strcat(pgm, ".cminus");
     source = fopen(pgm, "r");
     if (source == NULL)
     {
