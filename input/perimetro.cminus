@@ -1,0 +1,10 @@
+void main ( void ) {
+int a;
+int b;
+int p;
+a = input () ;
+b = input () ;
+
+p = 2*a + 2*b;
+output (p);
+}

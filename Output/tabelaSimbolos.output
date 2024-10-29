@@ -4,13 +4,9 @@ NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS
 --------      ------------     ------------    ------------      ------------
 input           global          function        integer          --                
 output          global          function        void             --                
-main            global          function        void              11 
-input           main            call            -                 13 
-u               gcd             variable        integer            4    6    7 
-y               main            variable        integer           12   13   14 
-gcd             gcd             call            -                  7 
-gcd             main            call            -                 14 
-gcd             global          function        integer            4 
-v               gcd             variable        integer            4    6    7 
-x               main            variable        integer           12   13   14 
-output          main            call            -                 14 
+main            global          function        void               1 
+input           main            call            -                  9 
+entrada         main            variable        integer            4    9   10 
+i               main            variable        integer            2    6    8   12 
+produto         main            variable        integer            3    5   10   11 
+output          main            call            -                 11 

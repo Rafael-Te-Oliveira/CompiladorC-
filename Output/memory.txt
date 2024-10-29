@@ -1,13 +1,11 @@
   Local             Nome          Escopo         TipoDado         Tamanho        Linha da instrucao
 ---------       ------------    ----------      ----------      -----------     --------------------
-$sp+0           u               gcd             integer         1               
-$sp+1           y               main            integer         1               
-$sp+1           v               gcd             integer         1               
-$sp+0           x               main            integer         1               
+$sp+2           entrada         main            integer         1               
+$sp+0           i               main            integer         1               
+$sp+1           produto         main            integer         1               
 
 ----------------------------------------------------------------------------------------------------
 
----------       main            global          void            ----------      30              
----------       gcd             global          integer         ----------      2               
----------       L0              ----------      label           ----------      11
----------       L1              ----------      label           ----------      29
+---------       main            global          void            ----------      2               
+---------       L0              ----------      label           ----------      10
+---------       L1              ----------      label           ----------      33

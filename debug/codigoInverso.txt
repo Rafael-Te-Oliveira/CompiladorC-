@@ -1,0 +1,43 @@
+instrução: addi, RD: 30, RT: 0, RS: não usado, IMEDIATO: 10, ENDEREÇO: não usado
+instrução: jump, RD: não usado, RT: não usado, RS: não usado, IMEDIATO: não usado, ENDEREÇO: 2
+instrução: lw, RD: 1, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 2, RT: 0, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: soma, RD: 1, RT: 2, RS: 0, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: sw, RD: 1, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 3, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 4, RT: 0, RS: não usado, IMEDIATO: 10, ENDEREÇO: não usado
+instrução: bge, RD: 3, RT: 4, RS: não usado, IMEDIATO: 23, ENDEREÇO: não usado
+instrução: lw, RD: 6, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 7, RT: 6, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 8, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 9, RT: 0, RS: não usado, IMEDIATO: 1, ENDEREÇO: não usado
+instrução: soma, RD: 10, RT: 8, RS: 9, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: soma, RD: 7, RT: 10, RS: 0, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: sw, RD: 7, RT: 6, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 11, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 12, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 13, RT: 0, RS: não usado, IMEDIATO: 1, ENDEREÇO: não usado
+instrução: soma, RD: 14, RT: 12, RS: 13, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: soma, RD: 11, RT: 14, RS: 0, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: sw, RD: 11, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: jump, RD: não usado, RT: não usado, RS: não usado, IMEDIATO: não usado, ENDEREÇO: 6
+instrução: lw, RD: 15, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 16, RT: 0, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: soma, RD: 15, RT: 16, RS: 0, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: sw, RD: 15, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 17, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 18, RT: 0, RS: não usado, IMEDIATO: 10, ENDEREÇO: não usado
+instrução: bge, RD: 17, RT: 18, RS: não usado, IMEDIATO: 42, ENDEREÇO: não usado
+instrução: lw, RD: 20, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 21, RT: 20, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: soma, RD: 25, RT: 21, RS: 0, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: out, RD: não usado, RT: não usado, RS: não usado, IMEDIATO: não usado, ENDEREÇO: 52428800
+instrução: lw, RD: 23, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: lw, RD: 24, RT: 30, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: addi, RD: 1, RT: 0, RS: não usado, IMEDIATO: 1, ENDEREÇO: não usado
+instrução: soma, RD: 2, RT: 24, RS: 1, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: soma, RD: 23, RT: 2, RS: 0, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: soma, RD: 20, RT: 20, RS: 30, IMEDIATO: não usado, ENDEREÇO: não usado
+instrução: sw, RD: 23, RT: 20, RS: não usado, IMEDIATO: 0, ENDEREÇO: não usado
+instrução: jump, RD: não usado, RT: não usado, RS: não usado, IMEDIATO: não usado, ENDEREÇO: 27
+instrução: halt, RD: não usado, RT: não usado, RS: não usado, IMEDIATO: não usado, ENDEREÇO: 0
