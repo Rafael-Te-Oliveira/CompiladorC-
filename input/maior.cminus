@@ -2,9 +2,11 @@ void main ( void ) {
 int a;
 int b;
 
-if(a>b){
-    output(a);
-}else{
+a = input();
+b = input();
+if(a<b){
     output(b);
+}else{
+    output(a);
 }
 }

@@ -4,87 +4,59 @@
 	1: Reserved Word: void
 	1: )
 	1: {
-	2: Reserved Word: int
-	2: ID: i
-	2: ;
 	3: Reserved Word: int
-	3: ID: produto
+	3: ID: a
 	3: ;
 	4: Reserved Word: int
-	4: ID: entrada
+	4: ID: b
 	4: ;
-	5: ID: produto
-	5: Symbol: =
-	5: Number: 1
+	5: Reserved Word: int
+	5: ID: s
 	5: ;
-	6: ID: i
-	6: Symbol: =
-	6: Number: 1
-	6: ;
-	8: Reserved Word: while
+	7: ID: a
+	7: Symbol: =
+	7: ID: input
+	7: (
+	7: )
+	7: ;
+	8: ID: b
+	8: Symbol: =
+	8: ID: input
 	8: (
-	8: ID: i
-	8: <=
-	8: Number: 10
 	8: )
-	8: {
-	9: ID: entrada
-	9: Symbol: =
-	9: ID: input
-	9: (
-	9: )
-	9: ;
-	10: ID: produto
+	8: ;
+	10: ID: s
 	10: Symbol: =
-	10: ID: produto
-	10: *
-	10: ID: entrada
+	10: ID: a
+	10: -
+	10: ID: b
 	10: ;
-	11: ID: output
-	11: (
-	11: ID: produto
-	11: )
-	11: ;
-	12: ID: i
-	12: Symbol: =
-	12: ID: i
-	12: +
-	12: Number: 1
+	12: ID: output
+	12: (
+	12: ID: s
+	12: )
 	12: ;
 	13: }
-	14: }
-	14: EOF
+	13: EOF
 Type void
   Function main
     Type void
     Type integer
-      Variable i
+      Variable a
     Type integer
-      Variable produto
+      Variable b
     Type integer
-      Variable entrada
+      Variable s
     Assign
-      Id: produto
-      Constant: 1
+      Id: a
+      Call to Function input 
     Assign
-      Id: i
-      Constant: 1
-    While
-      Operation: <=
-        Id: i
-        Constant: 10
-      Assign
-        Id: entrada
-        Call to Function input 
-      Assign
-        Id: produto
-        Operation: *
-          Id: produto
-          Id: entrada
-      Call to Function output 
-        Id: produto
-      Assign
-        Id: i
-        Operation: +
-          Id: i
-          Constant: 1
+      Id: b
+      Call to Function input 
+    Assign
+      Id: s
+      Operation: -
+        Id: a
+        Id: b
+    Call to Function output 
+      Id: s

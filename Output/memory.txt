@@ -1,11 +1,9 @@
   Local             Nome          Escopo         TipoDado         Tamanho        Linha da instrucao
 ---------       ------------    ----------      ----------      -----------     --------------------
-$sp+2           entrada         main            integer         1               
-$sp+0           i               main            integer         1               
-$sp+1           produto         main            integer         1               
+$sp+0           a               main            integer         1               
+$sp+1           b               main            integer         1               
+$sp+2           s               main            integer         1               
 
 ----------------------------------------------------------------------------------------------------
 
 ---------       main            global          void            ----------      2               
----------       L0              ----------      label           ----------      10
----------       L1              ----------      label           ----------      33

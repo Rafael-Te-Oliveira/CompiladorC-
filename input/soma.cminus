@@ -1,22 +1,12 @@
 void main(void) {
 
-	int arr[4];
-    int i ;
-	int soma;
-    i = 0;
+    int a;
+    int b;
+    int soma;
 
-    while (i < 4) {
-        arr[i] = input();
-        i = i + 1;
-    }
+    a = input();
+    b = input();
 
-    i = 0;
-	soma = 0;
-
-    while (i < 4) {
-        soma = soma + arr[i];
-        i = i + 1;
-    }
-
+    soma = a + b;
 	output(soma);
 }
