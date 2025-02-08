@@ -4,9 +4,8 @@ NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS
 --------      ------------     ------------    ------------      ------------
 input           global          function        integer          --                
 output          global          function        void             --                
-a               main            variable        integer            3    7   10 
+a               main            variable        integer            2    5    6 
 main            global          function        void               1 
-input           main            call            -                  7    8 
-b               main            variable        integer            4    8   10 
-s               main            variable        integer            5   10   12 
-output          main            call            -                 12 
+input           main            call            -                  5    9 
+programa        main            variable        integer            3    9   10 
+output          main            call            -                  6   10   12 

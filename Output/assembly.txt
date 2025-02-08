@@ -5,17 +5,17 @@
 3 IN $t1
 4 ADD $t0, $t1, $zero
 5 SW $t0, $sp, 0
-6 LW $t2, $sp, 1
-7 IN $t3
-8 ADD $t2, $t3, $zero
-9 SW $t2, $sp, 1
-10 LW $t4, $sp, 2
-11 LW $t5, $sp, 0
-12 LW $t6, $sp, 1
-13 SUB $t7, $t5, $t6
-14 ADD $t4, $t7, $zero
-15 SW $t4, $sp, 2
-16 LW $t8, $sp, 2
+6 LW $t2, $sp, 0
+7 ADD $a0, $t2, $zero
+8 OUT $a0
+9 LW $t4, $sp, 1
+10 IN $t5
+11 ADD $t4, $t5, $zero
+12 SW $t4, $sp, 1
+13 LW $t6, $sp, 1
+14 ADD $a0, $t6, $zero
+15 OUT $a0
+16 ADDI $t8, $zero, 999
 17 ADD $a0, $t8, $zero
 18 OUT $a0
 19 HLT

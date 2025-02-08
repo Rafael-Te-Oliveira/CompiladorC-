@@ -4,59 +4,57 @@
 	1: Reserved Word: void
 	1: )
 	1: {
+	2: Reserved Word: int
+	2: ID: a
+	2: ;
 	3: Reserved Word: int
-	3: ID: a
+	3: ID: programa
 	3: ;
-	4: Reserved Word: int
-	4: ID: b
-	4: ;
-	5: Reserved Word: int
-	5: ID: s
+	5: ID: a
+	5: Symbol: =
+	5: ID: input
+	5: (
+	5: )
 	5: ;
-	7: ID: a
-	7: Symbol: =
-	7: ID: input
-	7: (
-	7: )
-	7: ;
-	8: ID: b
-	8: Symbol: =
-	8: ID: input
-	8: (
-	8: )
-	8: ;
-	10: ID: s
-	10: Symbol: =
-	10: ID: a
-	10: -
-	10: ID: b
+	6: ID: output
+	6: (
+	6: ID: a
+	6: )
+	6: ;
+	9: ID: programa
+	9: Symbol: =
+	9: ID: input
+	9: (
+	9: )
+	9: ;
+	10: ID: output
+	10: (
+	10: ID: programa
+	10: )
 	10: ;
 	12: ID: output
 	12: (
-	12: ID: s
+	12: Number: 999
 	12: )
 	12: ;
 	13: }
-	13: EOF
+	14: EOF
 Type void
   Function main
     Type void
     Type integer
       Variable a
     Type integer
-      Variable b
-    Type integer
-      Variable s
+      Variable programa
     Assign
       Id: a
       Call to Function input 
-    Assign
-      Id: b
-      Call to Function input 
-    Assign
-      Id: s
-      Operation: -
-        Id: a
-        Id: b
     Call to Function output 
-      Id: s
+      Id: a
+    Assign
+      Id: programa
+      Call to Function input 
+    Call to Function output 
+      Id: programa
+    Call to Function output 
+      Constant: 999
