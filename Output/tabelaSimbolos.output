@@ -4,8 +4,22 @@ NOME          ESCOPO           TIPO_ID         TIPO_DATA         LINHAS
 --------      ------------     ------------    ------------      ------------
 input           global          function        integer          --                
 output          global          function        void             --                
-a               main            variable        integer            2    5    6 
-main            global          function        void               1 
-input           main            call            -                  5    9 
-programa        main            variable        integer            3    9   10 
-output          main            call            -                  6   10   12 
+programaTres    global          variable        integer            4 
+quantum         main            variable        integer           10   18   20   23 
+programaDois    main            variable        integer           35   54 
+main            global          function        void               8 
+input           main            call            -                 15   18   25   30 
+programaQuatro  global          variable        integer            5 
+programaCinco   global          variable        integer            6 
+programaDois    global          variable        integer            3 
+programaCinco   main            variable        integer           44   63 
+programaUm      global          variable        integer            2 
+programaQuatro  main            variable        integer           41   60 
+programaTres    main            variable        integer           38   57 
+programaUm      main            variable        integer           32   51 
+programasAtivos  global          variable        integer            1 
+i               main            variable        integer           11   27   28   29   48 
+preempcao       main            variable        integer            9   15   17 
+programa        main            variable        integer           12   30   31   34   37   40   43 
+programasAtivos  main            variable        integer           25   28   50 
+output          main            call            -                 23   52   55   58   61   64   68 
