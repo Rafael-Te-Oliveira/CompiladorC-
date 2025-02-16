@@ -328,6 +328,18 @@ void assemblyQuadCALL(Quad q)
         lineNo++;
         argRegister = $a0;
     }
+    else if (strcmp(q.arg2, "quantum") == 0)
+    {
+        assemblyInsert(QNT, $a0, 0, 0, 0, lineNo, R, Inst, "");
+        lineNo++;
+        argRegister = $a0;
+    }
+    else if (strcmp(q.arg2, "program") == 0)
+    {
+        assemblyInsert(PRG, $a0, 0, 0, 0, lineNo, R, Inst, "");
+        lineNo++;
+        argRegister = $a0;
+    }
     else
     {
         freeRegList unusedRegister = RegListHead; // Variavel para iterar lista de registradores livres
@@ -646,6 +658,12 @@ void printAssembly(FILE *assemblyFile)
                 break;
             case OUT:
                 fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "OUT", registerToString(i->inst.rs));
+                break;
+            case QNT:
+                fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "QNT", registerToString(i->inst.rs));
+                break;
+            case PRG:
+                fprintf(assemblyFile, "%d %s %s\n", i->inst.lineNo, "PRG", registerToString(i->inst.rs));
                 break;
             case ADDI:
                 fprintf(assemblyFile, "%d %s %s, %s, %d\n", i->inst.lineNo, "ADDI", registerToString(i->inst.rs), registerToString(i->inst.rt), i->inst.immediate);

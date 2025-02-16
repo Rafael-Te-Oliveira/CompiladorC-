@@ -25,7 +25,7 @@
 .L3
 21 LW $t12, $sp, 1
 22 ADD $a0, $t12, $zero
-23 OUT $a0
+23 QNT $a0
 24 LW $t14, $zero, 0
 25 IN $t15
 26 ADD $t14, $t15, $zero
@@ -103,35 +103,35 @@
 90 BNE $t9, $t10, L13
 91 ADDI $t12, $zero, 1
 92 ADD $a0, $t12, $zero
-93 OUT $a0
+93 PRG $a0
 .L13
 94 LW $t14, $zero, 2
 95 ADDI $t15, $zero, 1
 96 BNE $t14, $t15, L14
 97 ADDI $t17, $zero, 2
 98 ADD $a0, $t17, $zero
-99 OUT $a0
+99 PRG $a0
 .L14
 100 LW $t19, $zero, 3
 101 ADDI $t20, $zero, 1
 102 BNE $t19, $t20, L15
 103 ADDI $t22, $zero, 3
 104 ADD $a0, $t22, $zero
-105 OUT $a0
+105 PRG $a0
 .L15
 106 LW $t0, $zero, 4
 107 ADDI $t1, $zero, 1
 108 BNE $t0, $t1, L16
 109 ADDI $t3, $zero, 4
 110 ADD $a0, $t3, $zero
-111 OUT $a0
+111 PRG $a0
 .L16
 112 LW $t5, $zero, 5
 113 ADDI $t6, $zero, 1
 114 BNE $t5, $t6, L17
 115 ADDI $t8, $zero, 5
 116 ADD $a0, $t8, $zero
-117 OUT $a0
+117 PRG $a0
 .L17
 118 JP L11
 .L12

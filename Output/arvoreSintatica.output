@@ -68,7 +68,7 @@
 	20: Number: 999
 	20: ;
 	21: }
-	23: ID: output
+	23: ID: quantum
 	23: (
 	23: ID: quantum
 	23: )
@@ -181,7 +181,7 @@
 	51: Number: 1
 	51: )
 	51: {
-	52: ID: output
+	52: ID: program
 	52: (
 	52: Number: 1
 	52: )
@@ -194,7 +194,7 @@
 	54: Number: 1
 	54: )
 	54: {
-	55: ID: output
+	55: ID: program
 	55: (
 	55: Number: 2
 	55: )
@@ -207,7 +207,7 @@
 	57: Number: 1
 	57: )
 	57: {
-	58: ID: output
+	58: ID: program
 	58: (
 	58: Number: 3
 	58: )
@@ -220,7 +220,7 @@
 	60: Number: 1
 	60: )
 	60: {
-	61: ID: output
+	61: ID: program
 	61: (
 	61: Number: 4
 	61: )
@@ -233,7 +233,7 @@
 	63: Number: 1
 	63: )
 	63: {
-	64: ID: output
+	64: ID: program
 	64: (
 	64: Number: 5
 	64: )
@@ -288,7 +288,7 @@ Type void
         Assign
           Id: quantum
           Constant: 999
-      Call to Function output 
+      Call to Function quantum 
         Id: quantum
       Assign
         Id: programasAtivos
@@ -354,31 +354,31 @@ Type void
           Operation: ==
             Id: programaUm
             Constant: 1
-          Call to Function output 
+          Call to Function program 
             Constant: 1
         If
           Operation: ==
             Id: programaDois
             Constant: 1
-          Call to Function output 
+          Call to Function program 
             Constant: 2
         If
           Operation: ==
             Id: programaTres
             Constant: 1
-          Call to Function output 
+          Call to Function program 
             Constant: 3
         If
           Operation: ==
             Id: programaQuatro
             Constant: 1
-          Call to Function output 
+          Call to Function program 
             Constant: 4
         If
           Operation: ==
             Id: programaCinco
             Constant: 1
-          Call to Function output 
+          Call to Function program 
             Constant: 5
       Call to Function output 
         Constant: 9999

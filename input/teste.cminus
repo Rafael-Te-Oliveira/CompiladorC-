@@ -20,7 +20,7 @@ void main(void){
 			quantum = 999;
 		}
 		
-		output(quantum);/*defQuantum*/
+		quantum(quantum);
 
 		programasAtivos = input();
 
@@ -49,19 +49,19 @@ void main(void){
 		
 		while(programasAtivos > 0){
 			if(programaUm == 1){
-				output(1);
+				program(1);
 			}
 			if(programaDois == 1){
-				output(2);
+				program(2);
 			}
 			if(programaTres == 1){
-				output(3);
+				program(3);
 			}
 			if(programaQuatro == 1){
-				output(4);
+				program(4);
 			}
 			if(programaCinco == 1){
-				output(5);
+				program(5);
 			}
 		}
 

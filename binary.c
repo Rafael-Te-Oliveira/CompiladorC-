@@ -21,7 +21,7 @@ void decimalToBinary(int number, int bitNo, FILE *binFile)
 void binaryInsert(int opCode, int rs, int rt, int rd, int IMM, Type type)
 {
     BinInstruction newInst;
-    if (opCode > 17)
+    if (opCode > 17 && opCode < 30)
     {
         newInst.opCode = 0;
         newInst.IMM = opCode % 18; // imediato referencia a operaçao
