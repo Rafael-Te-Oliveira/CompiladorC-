@@ -2,99 +2,112 @@
 	1: ID: programasAtivos
 	1: ;
 	2: Reserved Word: int
-	2: ID: programaUm
+	2: ID: programas
+	2: [
+	2: Number: 9
+	2: ]
 	2: ;
-	3: Reserved Word: int
-	3: ID: programaDois
-	3: ;
-	4: Reserved Word: int
-	4: ID: programaTres
-	4: ;
+	4: Reserved Word: void
+	4: ID: main
+	4: (
+	4: Reserved Word: void
+	4: )
+	4: {
 	5: Reserved Word: int
-	5: ID: programaQuatro
+	5: ID: preempcao
 	5: ;
 	6: Reserved Word: int
-	6: ID: programaCinco
+	6: ID: quantum
 	6: ;
-	8: Reserved Word: void
-	8: ID: main
-	8: (
-	8: Reserved Word: void
-	8: )
-	8: {
-	9: Reserved Word: int
-	9: ID: preempcao
-	9: ;
-	10: Reserved Word: int
-	10: ID: quantum
-	10: ;
-	11: Reserved Word: int
-	11: ID: i
+	7: Reserved Word: int
+	7: ID: i
+	7: ;
+	8: Reserved Word: int
+	8: ID: programa
+	8: ;
+	10: Reserved Word: while
+	10: (
+	10: Number: 1
+	10: >
+	10: Number: 0
+	10: )
+	10: {
+	11: ID: output
+	11: (
+	11: Number: 10000
+	11: )
 	11: ;
-	12: Reserved Word: int
-	12: ID: programa
+	12: ID: preempcao
+	12: Symbol: =
+	12: ID: input
+	12: (
+	12: )
 	12: ;
-	14: Reserved Word: while
+	14: Reserved Word: if
 	14: (
+	14: ID: preempcao
+	14: ==
 	14: Number: 1
-	14: >
-	14: Number: 0
 	14: )
 	14: {
-	15: ID: preempcao
-	15: Symbol: =
-	15: ID: input
+	15: ID: output
 	15: (
+	15: Number: 20000
 	15: )
 	15: ;
-	17: Reserved Word: if
-	17: (
-	17: ID: preempcao
-	17: ==
-	17: Number: 1
-	17: )
+	16: ID: quantum
+	16: Symbol: =
+	16: ID: input
+	16: (
+	16: )
+	16: ;
+	17: }
+	17: Reserved Word: else
 	17: {
 	18: ID: quantum
 	18: Symbol: =
-	18: ID: input
-	18: (
-	18: )
+	18: Number: 999
 	18: ;
 	19: }
-	19: Reserved Word: else
-	19: {
-	20: ID: quantum
-	20: Symbol: =
-	20: Number: 999
-	20: ;
-	21: }
-	23: ID: quantum
+	21: ID: quantum
+	21: (
+	21: ID: quantum
+	21: )
+	21: ;
+	23: ID: output
 	23: (
-	23: ID: quantum
+	23: Number: 30000
 	23: )
 	23: ;
-	25: ID: programasAtivos
-	25: Symbol: =
-	25: ID: input
-	25: (
-	25: )
-	25: ;
+	24: ID: programasAtivos
+	24: Symbol: =
+	24: ID: input
+	24: (
+	24: )
+	24: ;
+	26: ID: i
+	26: Symbol: =
+	26: Number: 0
+	26: ;
+	27: Reserved Word: while
+	27: (
 	27: ID: i
-	27: Symbol: =
-	27: Number: 0
-	27: ;
-	28: Reserved Word: while
-	28: (
+	27: <
+	27: ID: programasAtivos
+	27: )
+	27: {
 	28: ID: i
-	28: <
-	28: ID: programasAtivos
-	28: )
-	28: {
-	29: ID: i
-	29: Symbol: =
-	29: ID: i
+	28: Symbol: =
+	28: ID: i
+	28: +
+	28: Number: 1
+	28: ;
+	29: ID: output
+	29: (
+	29: Number: 30000
 	29: +
-	29: Number: 1
+	29: ID: i
+	29: )
 	29: ;
 	30: ID: programa
 	30: Symbol: =
@@ -102,164 +115,72 @@
 	30: (
 	30: )
 	30: ;
-	31: Reserved Word: if
-	31: (
-	31: ID: programa
-	31: ==
-	31: Number: 1
-	31: )
-	31: {
-	32: ID: programaUm
+	32: ID: programas
+	32: [
+	32: ID: programa
+	32: ]
 	32: Symbol: =
 	32: Number: 1
 	32: ;
 	33: }
-	34: Reserved Word: if
-	34: (
-	34: ID: programa
-	34: ==
-	34: Number: 2
-	34: )
-	34: {
-	35: ID: programaDois
+	35: ID: i
 	35: Symbol: =
-	35: Number: 1
+	35: Number: 0
 	35: ;
-	36: }
-	37: Reserved Word: if
+	37: Reserved Word: while
 	37: (
-	37: ID: programa
-	37: ==
-	37: Number: 3
+	37: ID: programasAtivos
+	37: >
+	37: Number: 0
 	37: )
 	37: {
-	38: ID: programaTres
+	38: ID: i
 	38: Symbol: =
-	38: Number: 1
+	38: Number: 0
 	38: ;
-	39: }
-	40: Reserved Word: if
-	40: (
-	40: ID: programa
-	40: ==
-	40: Number: 4
-	40: )
-	40: {
-	41: ID: programaQuatro
-	41: Symbol: =
+	39: Reserved Word: while
+	39: (
+	39: ID: i
+	39: <
+	39: Number: 10
+	39: )
+	39: {
+	40: ID: i
+	40: Symbol: =
+	40: ID: i
+	40: +
+	40: Number: 1
+	40: ;
+	41: Reserved Word: if
+	41: (
+	41: ID: programas
+	41: [
+	41: ID: i
+	41: ]
+	41: ==
 	41: Number: 1
-	41: ;
-	42: }
-	43: Reserved Word: if
-	43: (
-	43: ID: programa
-	43: ==
-	43: Number: 5
-	43: )
-	43: {
-	44: ID: programaCinco
-	44: Symbol: =
-	44: Number: 1
-	44: ;
+	41: )
+	41: {
+	42: ID: program
+	42: (
+	42: ID: i
+	42: )
+	42: ;
+	43: }
+	44: }
 	45: }
-	46: }
-	48: ID: i
-	48: Symbol: =
-	48: Number: 0
-	48: ;
-	50: Reserved Word: while
-	50: (
-	50: ID: programasAtivos
-	50: >
-	50: Number: 0
-	50: )
-	50: {
-	51: Reserved Word: if
-	51: (
-	51: ID: programaUm
-	51: ==
-	51: Number: 1
-	51: )
-	51: {
-	52: ID: program
-	52: (
-	52: Number: 1
-	52: )
-	52: ;
-	53: }
-	54: Reserved Word: if
-	54: (
-	54: ID: programaDois
-	54: ==
-	54: Number: 1
-	54: )
-	54: {
-	55: ID: program
-	55: (
-	55: Number: 2
-	55: )
-	55: ;
-	56: }
-	57: Reserved Word: if
-	57: (
-	57: ID: programaTres
-	57: ==
-	57: Number: 1
-	57: )
-	57: {
-	58: ID: program
-	58: (
-	58: Number: 3
-	58: )
-	58: ;
-	59: }
-	60: Reserved Word: if
-	60: (
-	60: ID: programaQuatro
-	60: ==
-	60: Number: 1
-	60: )
-	60: {
-	61: ID: program
-	61: (
-	61: Number: 4
-	61: )
-	61: ;
-	62: }
-	63: Reserved Word: if
-	63: (
-	63: ID: programaCinco
-	63: ==
-	63: Number: 1
-	63: )
-	63: {
-	64: ID: program
-	64: (
-	64: Number: 5
-	64: )
-	64: ;
-	65: }
-	66: }
-	68: ID: output
-	68: (
-	68: Number: 9999
-	68: )
-	68: ;
-	69: }
-	82: }
-	83: EOF
+	47: ID: output
+	47: (
+	47: Number: 9999
+	47: )
+	47: ;
+	48: }
+	49: }
+	49: EOF
 Type integer
   Variable programasAtivos
-Type integer
-  Variable programaUm
-Type integer
-  Variable programaDois
-Type integer
-  Variable programaTres
-Type integer
-  Variable programaQuatro
-Type integer
-  Variable programaCinco
+Type vector integer
+  Variable programas
 Type void
   Function main
     Type void
@@ -275,6 +196,8 @@ Type void
       Operation: >
         Constant: 1
         Constant: 0
+      Call to Function output 
+        Constant: 10000
       Assign
         Id: preempcao
         Call to Function input 
@@ -282,6 +205,8 @@ Type void
         Operation: ==
           Id: preempcao
           Constant: 1
+        Call to Function output 
+          Constant: 20000
         Assign
           Id: quantum
           Call to Function input 
@@ -290,6 +215,8 @@ Type void
           Constant: 999
       Call to Function quantum 
         Id: quantum
+      Call to Function output 
+        Constant: 30000
       Assign
         Id: programasAtivos
         Call to Function input 
@@ -305,44 +232,17 @@ Type void
           Operation: +
             Id: i
             Constant: 1
+        Call to Function output 
+          Operation: +
+            Constant: 30000
+            Id: i
         Assign
           Id: programa
           Call to Function input 
-        If
-          Operation: ==
+        Assign
+          Vector: programas
             Id: programa
-            Constant: 1
-          Assign
-            Id: programaUm
-            Constant: 1
-        If
-          Operation: ==
-            Id: programa
-            Constant: 2
-          Assign
-            Id: programaDois
-            Constant: 1
-        If
-          Operation: ==
-            Id: programa
-            Constant: 3
-          Assign
-            Id: programaTres
-            Constant: 1
-        If
-          Operation: ==
-            Id: programa
-            Constant: 4
-          Assign
-            Id: programaQuatro
-            Constant: 1
-        If
-          Operation: ==
-            Id: programa
-            Constant: 5
-          Assign
-            Id: programaCinco
-            Constant: 1
+          Constant: 1
       Assign
         Id: i
         Constant: 0
@@ -350,35 +250,24 @@ Type void
         Operation: >
           Id: programasAtivos
           Constant: 0
-        If
-          Operation: ==
-            Id: programaUm
-            Constant: 1
-          Call to Function program 
-            Constant: 1
-        If
-          Operation: ==
-            Id: programaDois
-            Constant: 1
-          Call to Function program 
-            Constant: 2
-        If
-          Operation: ==
-            Id: programaTres
-            Constant: 1
-          Call to Function program 
-            Constant: 3
-        If
-          Operation: ==
-            Id: programaQuatro
-            Constant: 1
-          Call to Function program 
-            Constant: 4
-        If
-          Operation: ==
-            Id: programaCinco
-            Constant: 1
-          Call to Function program 
-            Constant: 5
+        Assign
+          Id: i
+          Constant: 0
+        While
+          Operation: <
+            Id: i
+            Constant: 10
+          Assign
+            Id: i
+            Operation: +
+              Id: i
+              Constant: 1
+          If
+            Operation: ==
+              Vector: programas
+                Id: i
+              Constant: 1
+            Call to Function program 
+              Id: i
       Call to Function output 
         Constant: 9999

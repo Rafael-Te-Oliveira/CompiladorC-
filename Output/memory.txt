@@ -1,11 +1,7 @@
   Local             Nome          Escopo         TipoDado         Tamanho        Linha da instrucao
 ---------       ------------    ----------      ----------      -----------     --------------------
-3               programaTres    global          integer         1               
 $sp+1           quantum         main            integer         1               
-4               programaQuatro  global          integer         1               
-5               programaCinco   global          integer         1               
-2               programaDois    global          integer         1               
-1               programaUm      global          integer         1               
+1               programas       global          vector          9               
 0               programasAtivos  global          integer         1               
 $sp+2           i               main            integer         1               
 $sp+0           preempcao       main            integer         1               
@@ -15,20 +11,13 @@ $sp+3           programa        main            integer         1
 
 ---------       main            global          void            ----------      2               
 ---------       L0              ----------      label           ----------      2
----------       L1              ----------      label           ----------      123
----------       L2              ----------      label           ----------      17
----------       L3              ----------      label           ----------      21
----------       L4              ----------      label           ----------      32
----------       L5              ----------      label           ----------      81
----------       L6              ----------      label           ----------      52
----------       L7              ----------      label           ----------      59
----------       L8              ----------      label           ----------      66
----------       L9              ----------      label           ----------      73
----------       L10             ----------      label           ----------      80
----------       L11             ----------      label           ----------      85
----------       L12             ----------      label           ----------      119
----------       L13             ----------      label           ----------      94
----------       L14             ----------      label           ----------      100
----------       L15             ----------      label           ----------      106
----------       L16             ----------      label           ----------      112
----------       L17             ----------      label           ----------      118
+---------       L1              ----------      label           ----------      98
+---------       L2              ----------      label           ----------      23
+---------       L3              ----------      label           ----------      27
+---------       L4              ----------      label           ----------      41
+---------       L5              ----------      label           ----------      65
+---------       L6              ----------      label           ----------      69
+---------       L7              ----------      label           ----------      94
+---------       L8              ----------      label           ----------      76
+---------       L9              ----------      label           ----------      93
+---------       L10             ----------      label           ----------      92

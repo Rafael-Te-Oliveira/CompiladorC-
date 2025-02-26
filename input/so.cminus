@@ -1,9 +1,5 @@
 int programasAtivos;
-int programaUm;
-int programaDois;
-int programaTres;
-int programaQuatro;
-int programaCinco;
+int programas[10];
 
 void main(void){
 	int preempcao;
@@ -12,71 +8,42 @@ void main(void){
 	int programa;
 
 	while(1>0){
+		output(10000);
 		preempcao = input();
 
 		if(preempcao == 1){
+			output(20000);
 			quantum = input();
 		}else{
 			quantum = 999;
 		}
 		
-		output(quantum);/*defQuantum*/
+		quantum(quantum);
 
+		output(30000);
 		programasAtivos = input();
 
 		i=0;
 		while(i<programasAtivos){
 			i=i+1;
+			output(30000 + i);
 			programa = input();
-			if(programa == 1){
-				programaUm = 1;
-			}
-			if(programa == 2){
-				programaDois = 1;
-			}
-			if(programa == 3){
-				programaTres = 1;
-			}
-			if(programa == 4){
-				programaQuatro = 1;
-			}
-			if(programa == 5){
-				programaCinco = 1;
-			}
+
+			programas[programa] = 1;
 		}
 		
 		i=0;
 		
 		while(programasAtivos > 0){
-			if(programaUm == 1){
-				output(1);
-			}
-			if(programaDois == 1){
-				output(2);
-			}
-			if(programaTres == 1){
-				output(3);
-			}
-			if(programaQuatro == 1){
-				output(4);
-			}
-			if(programaCinco == 1){
-				output(5);
-			}
+			i = 0;
+			while(i<10){
+				i = i + 1;
+				if(programas[i] == 1){
+					program(i);
+				}
+			}	
 		}
 
 		output(9999);
 	}
-
-	/*int a;
-	int programa;
-	
-	a = input();
-	output(a); 
-
-	
-	programa = input();
-	output(programa);
-
-	output(999);*/
 }
